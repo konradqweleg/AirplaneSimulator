@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:airplane/plane/Plane.dart';
 import 'package:airplane/widget/HeightWidget.dart';
+import 'package:airplane/widget/MapWidget.dart';
 import 'package:airplane/widget/RestrictorWidget.dart';
 import 'package:airplane/widget/EngineWidget.dart';
 import 'package:airplane/widget/FuelWidget.dart';
+import 'package:airplane/widget/VelocityWidget.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -67,6 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                Text("Środowisko"),
                 Text("Wskaźniki"),
                 Text("Przyrządy")
               ],
@@ -75,6 +78,17 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                Container(
+                  margin: EdgeInsets.only(top: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+
+                     MapWidget(plane.distance.metres)
+
+                    ],
+                  ),
+                ),
                 Container(
                   margin: EdgeInsets.only(top: 20),
                   child: Column(
@@ -93,7 +107,13 @@ class _MyHomePageState extends State<MyHomePage> {
                           EngineWidget(plane.left, "LEWY"),
                           EngineWidget(plane.right, "PRAWY")
                         ],
+                      ),
+                      Row(
+                        children: [
+                          VelocityWidget(plane.velocity.v)
+                        ],
                       )
+
 
                     ],
                   ),
@@ -115,6 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ],
                   ),
                 ),
+
 
               ],
             ),
