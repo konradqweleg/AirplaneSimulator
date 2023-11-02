@@ -1,5 +1,6 @@
 import 'package:airplane/plane/Engine.dart';
 import 'package:airplane/plane/Height.dart';
+import 'package:airplane/plane/SimulateVelocity.dart';
 import 'package:airplane/plane/Velocity.dart';
 
 import 'Distance.dart';
@@ -15,6 +16,7 @@ class Boeing_737_800{
   Height height = Height();
   Velocity velocity = Velocity();
   Distance distance = Distance();
+  SimulateVelocity simulateVelocity = SimulateVelocity();
 
   Tank getTankDevice(){
     return tank;
@@ -27,33 +29,12 @@ class Boeing_737_800{
 
 
 
-
-    double maxInActualVelocitySet = velocity.maxVWhenStartingMS * (restrictor.left+restrictor.right);
-    print("MAX  "+  (maxInActualVelocitySet*3.6).toStringAsPrecision(4));
-    print("VEL "+(velocity.v*3.6).toStringAsPrecision(4));
+   double old_velocity = velocity.v;
+   velocity = simulateVelocity.getActualVelocity([left,right],restrictor,height,velocity);
 
 
-    double beforeUpdateVelocity = velocity.v;
-    if(velocity.v < maxInActualVelocitySet) {
-      velocity.v += velocity.startMaxV * (restrictor.left + restrictor.right);
 
-    }else{
-      print("TU");
-      if(velocity.v < maxInActualVelocitySet) {
-        double diffrence = velocity.v - (restrictor.left + restrictor.right);
-        if ((velocity.v - (diffrence / 75) + 1.0) > 0) {
-          velocity.v -= (diffrence / 75) + 1.0;
-        }
-
-        if (velocity.v < 0) {
-          velocity.v = 0;
-        }
-      }
-
-    }
-
-
-    distance.metres += ((beforeUpdateVelocity + velocity.v)/2);
+    distance.metres += ((old_velocity + velocity.v)/2);
 
   }
 
