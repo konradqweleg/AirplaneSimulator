@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:airplane/plane/Plane.dart';
+import 'package:airplane/widget/AtitudeInfoValuesWidget.dart';
+import 'package:airplane/widget/AttitudeIndicatorWidget.dart';
+import 'package:airplane/widget/ControlColumnWidget.dart';
 import 'package:airplane/widget/HeightWidget.dart';
 import 'package:airplane/widget/MapWidget.dart';
 import 'package:airplane/widget/RestrictorWidget.dart';
@@ -110,7 +113,13 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       Row(
                         children: [
-                          VelocityWidget(plane.velocity.v)
+                          VelocityWidget(plane.velocity.velocity)
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          AttitudeInidactorWidget(plane.controlColumn.xPosition,plane.controlColumn.yPosition),
+                          AttitudeInforValues(plane.controlColumn.xPosition,plane.controlColumn.yPosition)
                         ],
                       )
 
@@ -127,8 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       RestrictorWidget(plane.restrictor),
                       Row(
                         children: [
-                          EngineWidget(plane.left, "LEWY"),
-                          EngineWidget(plane.right, "PRAWY")
+                         ControlColumnWidget(plane.controlColumn)
                         ],
                       )
 

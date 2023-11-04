@@ -1,3 +1,4 @@
+import 'package:airplane/plane/ControlColumn.dart';
 import 'package:airplane/plane/Engine.dart';
 import 'package:airplane/plane/Height.dart';
 import 'package:airplane/plane/SimulateVelocity.dart';
@@ -17,6 +18,7 @@ class Boeing_737_800{
   Velocity velocity = Velocity();
   Distance distance = Distance();
   SimulateVelocity simulateVelocity = SimulateVelocity();
+  ControlColumn controlColumn = ControlColumn();
 
   Tank getTankDevice(){
     return tank;
@@ -29,12 +31,12 @@ class Boeing_737_800{
 
 
 
-   double old_velocity = velocity.v;
-   velocity = simulateVelocity.getActualVelocity([left,right],restrictor,height,velocity);
+   double old_velocity = velocity.velocity;
+   velocity = simulateVelocity.getActualAcceleration([left,right],restrictor,height,velocity);
 
 
 
-    distance.metres += ((old_velocity + velocity.v)/2);
+    distance.metres += ((old_velocity + velocity.velocity)/2);
 
   }
 
