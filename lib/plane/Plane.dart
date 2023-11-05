@@ -33,10 +33,8 @@ class Boeing_737_800{
 
    double old_velocity = velocity.velocity;
    velocity = simulateVelocity.getActualAcceleration([left,right],restrictor,height,velocity);
-
-
-
     distance.metres += ((old_velocity + velocity.velocity)/2);
+    height.calculateHeight(velocity, controlColumn);
 
   }
 

@@ -16,8 +16,57 @@ class OpenPainterAInd extends CustomPainter {
   int max_x = 250;
   int max_y = 150;
 
-  var verticalHorizontPoints = [Offset(0,75 ),Offset(246, 75)];
-  var horizontalHorizontPoints = [Offset(125, 0),Offset(125, 150)];
+
+
+
+
+  void drawCrossPattern(Canvas canvas){
+
+    var colorCrossPatternLine = Paint()
+      ..color = Colors.black
+      ..strokeCap = StrokeCap.square
+      ..strokeWidth = 1;
+
+    var verticalHorizontPoints = [Offset(0,75 ),Offset(246, 75)];
+    var horizontalHorizontPoints = [Offset(125, 0),Offset(125, 150)];
+
+     canvas.drawLine(verticalHorizontPoints[0], verticalHorizontPoints[1], colorCrossPatternLine);
+     canvas.drawLine(horizontalHorizontPoints[0], horizontalHorizontPoints[1], colorCrossPatternLine);
+
+  }
+
+
+  void drawHorizonBackground(Canvas canvas){
+    var skyBackgroundColor = Paint()
+      ..color = const HSLColor.fromAHSL(1.0, 210, 0.3, 0.7).toColor()
+      ..strokeCap = StrokeCap.square
+      ..strokeWidth = 1;
+
+    double leftSkyPosition = 0;
+    double topSkyPosition = 0;
+    double rightSkyPosition = 250;
+    double bottomSkyPosition = 75;
+
+    Rect rectSky = Rect.fromLTRB(leftSkyPosition, topSkyPosition, rightSkyPosition, bottomSkyPosition);
+    canvas.drawRect(rectSky, skyBackgroundColor);
+
+
+    var groundBackgroundColor = Paint()
+      ..color = Colors.brown
+      ..strokeCap = StrokeCap.square
+      ..strokeWidth = 1;
+
+    double leftGroundPosition = 0;
+    double topGroundPosition = 75;
+    double rightGroundPosition = 250;
+    double bottomGroundPosition = 150;
+
+    Rect rectGround = Rect.fromLTRB(leftGroundPosition, topGroundPosition, rightGroundPosition, bottomGroundPosition);
+    canvas.drawRect(rectGround, groundBackgroundColor);
+
+
+  }
+
 
   List<Offset> rotateLine(Offset point1, Offset point2, double angleDegrees) {
     // Oblicz środek odcinka
@@ -49,7 +98,7 @@ class OpenPainterAInd extends CustomPainter {
   }
 
   void drawLineVertical(Canvas canvas,double positionVertical,double positionHorizontal){
-    var paint1 = Paint()
+    var lineColor = Paint()
       ..color = Colors.green
       ..strokeCap = StrokeCap.square
       ..strokeWidth = 5;
@@ -57,34 +106,28 @@ class OpenPainterAInd extends CustomPainter {
     var positionX = ((250.0/200.0)*positionVertical);
 
 
-   // canvas.drawLine(Offset(positionX, 0),Offset(positionX,150), paint1);
-
-
-    var paint2= Paint()
-      ..color = Colors.red
-      ..strokeCap = StrokeCap.square
-      ..strokeWidth = 1;
-
-    var positionY = ((150.0/200.0)*positionHorizontal);
-    double angle = (((positionVertical/200)* 90)-45);
-    print("Angle ${angle*2}");
-
-   // Offset twoRotate = rotateLine(Offset(positionX, 0), Offset(positionX,150), 5.0);
-  //  canvas.drawLine(Offset(positionX, 0),twoRotate, paint2);
-
-
-
-
-
-    List<Offset> twoRotate = rotateLine(Offset(0, positionY), Offset(250,positionY), angle);
-    canvas.drawLine(twoRotate[0],twoRotate[1], paint1);
-
+    canvas.drawLine(Offset(positionX, 0),Offset(positionX,150), lineColor);
 
 
   }
 
+
+  void drawLineAttitideIndicator(Canvas canvas,double positionVertical,double positionHorizontal){
+    var lineColor = Paint()
+      ..color = Colors.green
+      ..strokeCap = StrokeCap.square
+      ..strokeWidth = 5;
+
+
+    var positionY = ((150.0/200.0)*positionHorizontal);
+    double rotateAngle = (((positionVertical/200)* 90)-45);
+
+    List<Offset> twoRotate = rotateLine(Offset(0, positionY), Offset(250,positionY), rotateAngle);
+    canvas.drawLine(twoRotate[0],twoRotate[1], lineColor);
+  }
+
   void drawLineHorizontal(Canvas canvas,double positionHorizontal){
-    var paint1 = Paint()
+    var lineHorizontalColor = Paint()
       ..color = Colors.green
       ..strokeCap = StrokeCap.square
       ..strokeWidth = 5;
@@ -92,61 +135,20 @@ class OpenPainterAInd extends CustomPainter {
     var positionY = ((150.0/200.0)*positionHorizontal);
 
 
-   // canvas.drawLine(Offset(0, positionY),Offset(250,positionY), paint1);
+    canvas.drawLine(Offset(0, positionY),Offset(250,positionY), lineHorizontalColor);
 
-
-    // var paint2= Paint()
-    //   ..color = Colors.red
-    //   ..strokeCap = StrokeCap.square
-    //   ..strokeWidth = 1;
-    //
-    //
-    //
-    //
-    // List<Offset> twoRotate = rotateLine(Offset(0, positionY), Offset(250,positionY), 15.0);
-    // canvas.drawLine(twoRotate[0],twoRotate[1], paint2);
   }
 
   @override
   void paint(Canvas canvas, Size size) {
-    var paint1 = Paint()
-      ..color = Colors.black
-      ..strokeCap = StrokeCap.square
-      ..strokeWidth = 1;
 
 
+    drawHorizonBackground(canvas);
+    // drawCrossPattern(canvas);
 
-    var paint1Sky = Paint()
-      ..color = HSLColor.fromAHSL(1.0, 210, 0.3, 0.7).toColor()
-      ..strokeCap = StrokeCap.square
-      ..strokeWidth = 1;
-
-    double left = 0;
-    double top = 0;
-    double right = 250;
-    double bottom = 75;
-
-    Rect rect = Rect.fromLTRB(left, top, right, bottom);
-    canvas.drawRect(rect, paint1Sky);
-
-
-    var paint2Sky = Paint()
-      ..color = Colors.brown
-      ..strokeCap = StrokeCap.square
-      ..strokeWidth = 1;
-
-    double left2 = 0;
-    double top2 = 75;
-    double right2 = 250;
-    double bottom2 = 150;
-
-    Rect rect2 = Rect.fromLTRB(left2, top2, right2, bottom2);
-    canvas.drawRect(rect2, paint2Sky);
-
-  //  canvas.drawLine(verticalHorizontPoints[0], verticalHorizontPoints[1], paint1);
-  //  canvas.drawLine(horizontalHorizontPoints[0], horizontalHorizontPoints[1], paint1);
-    drawLineVertical(canvas, verticalActualPosition,horizontalActualPosition);
-    drawLineHorizontal(canvas, horizontalActualPosition);
+    drawLineAttitideIndicator(canvas, verticalActualPosition,horizontalActualPosition);
+  //  drawLineVertical(canvas, verticalActualPosition,horizontalActualPosition);
+  //  drawLineHorizontal(canvas, horizontalActualPosition);
 
   }
 
