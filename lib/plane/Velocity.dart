@@ -5,6 +5,8 @@ class Velocity{
 
   double speedV1 = 0.00045827;
 
+  double speedV1MetresPerSecond = 72.2;
+
 
 
 }

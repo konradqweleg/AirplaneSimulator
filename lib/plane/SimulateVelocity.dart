@@ -1,3 +1,5 @@
+import 'package:airplane/plane/ControlColumn.dart';
+
 import 'Engine.dart';
 import 'Height.dart';
 import 'Restrictor.dart';
@@ -20,6 +22,10 @@ class SimulateVelocity{
 
   double changeKMPerHourToMetresOnSeconds(double kmPerHour){
     return kmPerHour/3.6;
+  }
+
+  double changeMPerSecondeToKMPerHour(double mPerSecond){
+    return mPerSecond * 3.6;
   }
 
   //Przyspieszenie
@@ -70,12 +76,15 @@ class SimulateVelocity{
     }
   }
 
-  double updateVelocity(double maxVelocityOnActualPositionRestrictor, double maxVelocityOnPointRestrictor,double sumPositionRestrictors,double actualVelocity){
+  double updateVelocity(double maxVelocityOnActualPositionRestrictor, double maxVelocityOnPointRestrictor,ControlColumn controlColumn, double sumPositionRestrictors,double actualVelocity){
     log("Aktualna prędkosc ${actualVelocity} przed zmianą");
     //If speed is lower then limit for actual restrictor position speed up
     if(actualVelocity < maxVelocityOnActualPositionRestrictor) {
       log("Wzrost prekośći  o ${(maxVelocityOnPointRestrictor * (sumPositionRestrictors) )}");
-      double newVelocity = actualVelocity + (maxVelocityOnPointRestrictor * (sumPositionRestrictors) );
+
+      double factorIncreaseVelocityBaseOnControlColumn = (90 - (100 -  controlColumn.xPosition))/90;
+
+      double newVelocity = actualVelocity + (maxVelocityOnPointRestrictor * (sumPositionRestrictors) * factorIncreaseVelocityBaseOnControlColumn );
       log("Powiększona prędkość ${newVelocity}");
       return newVelocity;
     }
@@ -99,11 +108,21 @@ class SimulateVelocity{
     }
   }
 
-  Velocity getActualAcceleration(List<Engine> engines,Restritor restrictor,Height height, Velocity actualVelocity){
+  Velocity getActualAcceleration(List<Engine> engines,Restritor restrictor,Height height, Velocity actualVelocity,ControlColumn controlColumn){
     double maxSpeedOnActualPositionRestrictor = calculateMaxVelocityOnActualPositionRestrictor(height,restrictor,engines);
     double maxSpeedOnPointRestrictor = getMaxAcceleration(height);
 
-    actualVelocity.velocity = updateVelocity(maxSpeedOnActualPositionRestrictor, maxSpeedOnPointRestrictor, restrictor.left + restrictor.right, actualVelocity.velocity);
+    double maxVelocityOnPhaseFly = getMaxVelocity(height);
+    print("MAX predkość ${maxVelocityOnPhaseFly} vs aktualba ${ (actualVelocity.velocity)}");
+
+    if(actualVelocity.velocity > maxVelocityOnPhaseFly){
+      print("PRZEKROCZONO");
+      return actualVelocity;
+    }else {
+      actualVelocity.velocity = updateVelocity(
+          maxSpeedOnActualPositionRestrictor, maxSpeedOnPointRestrictor,controlColumn,
+          restrictor.left + restrictor.right, actualVelocity.velocity);
+    }
     return actualVelocity;
   }
 }
