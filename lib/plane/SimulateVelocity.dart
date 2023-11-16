@@ -11,7 +11,7 @@ class SimulateVelocity{
   double MAX_SPEED_ON_FLY_KM_PER_HOUR = 1000.0;
   double GROUND_HEIGHT_THRESHOLD_IN_METRES = 1.0;
 
-  bool IS_LOG_ENABLED = true;
+  bool IS_LOG_ENABLED = false;
 
   void log(String text){
     if(IS_LOG_ENABLED){
@@ -82,7 +82,7 @@ class SimulateVelocity{
     if(actualVelocity < maxVelocityOnActualPositionRestrictor) {
       log("Wzrost prekośći  o ${(maxVelocityOnPointRestrictor * (sumPositionRestrictors) )}");
 
-      double factorIncreaseVelocityBaseOnControlColumn = (90 - (100 -  controlColumn.xPosition))/90;
+      double factorIncreaseVelocityBaseOnControlColumn = (90 - (100 -  controlColumn.horizontalPosition))/90;
 
       double newVelocity = actualVelocity + (maxVelocityOnPointRestrictor * (sumPositionRestrictors) * factorIncreaseVelocityBaseOnControlColumn );
       log("Powiększona prędkość ${newVelocity}");
@@ -113,10 +113,10 @@ class SimulateVelocity{
     double maxSpeedOnPointRestrictor = getMaxAcceleration(height);
 
     double maxVelocityOnPhaseFly = getMaxVelocity(height);
-    print("MAX predkość ${maxVelocityOnPhaseFly} vs aktualba ${ (actualVelocity.velocity)}");
+    //print("MAX predkość ${maxVelocityOnPhaseFly} vs aktualba ${ (actualVelocity.velocity)}");
 
     if(actualVelocity.velocity > maxVelocityOnPhaseFly){
-      print("PRZEKROCZONO");
+    //  print("PRZEKROCZONO");
       return actualVelocity;
     }else {
       actualVelocity.velocity = updateVelocity(

@@ -7,6 +7,10 @@ class Velocity{
 
   double speedV1MetresPerSecond = 72.2;
 
+  double maxSpeedInMetersPerSecond = 277.77;
+  double minSpeedInFly = 72.2;
+
+
 
 
 }

@@ -54,22 +54,22 @@ class ControlColumnWidgetState extends State<ControlColumnWidget> {
                 RotatedBox(
                   quarterTurns: 3,
                   child: Slider(
-                    value: widget.controlColumn.xPosition,
+                    value: widget.controlColumn.horizontalPosition,
                     max: 200.0,
                     onChanged: (newValue) {
                       setState(() {
-                        widget.controlColumn.xPosition = newValue;
+                        widget.controlColumn.horizontalPosition = newValue;
 
                       });
                     },
                   ),
                 ),
                 Slider(
-                  value: widget.controlColumn.yPosition,
+                  value: widget.controlColumn.verticalPosition,
                   max: 200.0,
                   onChanged: (newValue) {
                     setState(() {
-                      widget.controlColumn.yPosition = newValue;
+                      widget.controlColumn.verticalPosition = newValue;
 
                     });
                   },

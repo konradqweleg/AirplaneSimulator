@@ -118,8 +118,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       Row(
                         children: [
-                          AttitudeInidactorWidget(plane.controlColumn.xPosition,plane.controlColumn.yPosition),
-                          AttitudeInforValues(plane.controlColumn.xPosition,plane.controlColumn.yPosition)
+                          AttitudeInidactorWidget(plane.controlColumn.horizontalPosition,plane.controlColumn.verticalPosition),
+                          AttitudeInforValues(plane.controlColumn.horizontalPosition,plane.controlColumn.verticalPosition)
                         ],
                       )
 

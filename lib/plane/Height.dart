@@ -28,7 +28,7 @@ class Height{
         if((velocity.velocity < velocity.speedV1MetresPerSecond) && (metresNPM < 1.0)){
           return;
         }else{
-          if(controlColumn.xPosition < 100.0){
+          if(controlColumn.horizontalPosition < 100.0){
             metresNPM = 1.0;
           }
         }
@@ -47,10 +47,10 @@ class Height{
 
   void calculateHeightInFly(Velocity velocity,ControlColumn controlColumn){
     double horizontalSpeedMetersPerSecond = velocity.velocity;
-    double angleOfAttackDegrees =  ( (100 -controlColumn.xPosition) /100 )*90;
+    double angleOfAttackDegrees =  ( (100 -controlColumn.horizontalPosition) /100 )*90;
 
 
-    print("Pozycja y "+controlColumn.xPosition.toString());
+    print("Pozycja y "+controlColumn.horizontalPosition.toString());
 
 
     double rateOfClimb = calculateRateOfClimb(horizontalSpeedMetersPerSecond, angleOfAttackDegrees) * 0.30;
@@ -61,13 +61,68 @@ class Height{
   }
 
 
+
+  double degreesToRadians(double degrees) {
+    return degrees * (3.14159 / 180); // Zamiana stopni na radiany (π ≈ 3.14159)
+  }
+
+
+  double calculateCL(double degrees){
+    double liftCoefficientCL = 0.0;
+    double maxForActualProfileWings = 1.5;
+    double minForZeroDegrees = 0.5;
+
+
+
+    if (degrees <= 15) {
+      liftCoefficientCL = minForZeroDegrees + (maxForActualProfileWings * sin(degreesToRadians(degrees)));
+    } else if (degrees <= 30) {
+      liftCoefficientCL = minForZeroDegrees + (maxForActualProfileWings * sin(degreesToRadians( 15 - ( degrees - 15))));
+    } else if (degrees <= 45) {
+      liftCoefficientCL = (minForZeroDegrees/2) + (maxForActualProfileWings * sin(degreesToRadians(45 - (degrees - 45))) * 0.8);
+    } else {
+      liftCoefficientCL = (minForZeroDegrees/8) + (maxForActualProfileWings * sin(degreesToRadians(45 - (degrees - 45))) * 0.5);
+    }
+
+
+    return liftCoefficientCL;
+
+  }
+
+  void calculateIfStall(Velocity velocity,ControlColumn controlColumn){
+    //double maxSpeedInMetersPerSecond = 277.77;
+    //double minSpeedInFly = 72.2;
+
+    double cl = calculateCL(controlColumn.getHorizontalAngle());
+    print("CL = ${cl}");
+
+    double wingAreaM2 = 124.6;
+
+    double densityGroundKgPerM3 = 1.125;
+    double density13KMNPMKgPerM3 = 0.1935;
+    double rangeDensity = density13KMNPMKgPerM3 - densityGroundKgPerM3;
+    double actualDensity =  densityGroundKgPerM3 -  (metresNPM/13000) * rangeDensity;
+    print("Actual density ${actualDensity}");
+
+    double liftForce = (1/2) * cl * actualDensity  * velocity.velocity * wingAreaM2;
+    print("Lift force ${liftForce}");
+
+
+
+
+  }
+
   void calculateHeight(Velocity velocity,ControlColumn controlColumn){
+    print("Kąt poziomy ${controlColumn.getHorizontalAngle()}");
+    print("Kąt pionowy ${controlColumn.getVerticalAngle()}");
 
     if(isNotV1Speed(velocity)){
       calculateStartHeight(velocity,controlColumn);
     }else{
       calculateHeightInFly(velocity, controlColumn);
     }
+
+    calculateIfStall(velocity, controlColumn);
 
 
   }
