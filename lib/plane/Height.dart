@@ -4,7 +4,7 @@ import 'package:airplane/plane/ControlColumn.dart';
 
 import 'Restrictor.dart';
 import 'Velocity.dart';
-
+//Sprawdz prędkość
 class Height{
   double metresNPM = 0;
   double MAX_RATE_OF_CLIMB_IN_METRES_PER_SECOND = 15;
@@ -67,22 +67,42 @@ class Height{
   }
 
 
+  double calculatePolynomialValue(List<double> coefficients, double x) {
+    double result = 0;
+    int power = coefficients.length - 1;
+
+    for (double coefficient in coefficients) {
+      result += coefficient * pow(x, power);
+      power--;
+    }
+
+    return result;
+  }
+
+
   double calculateCL(double degrees){
     double liftCoefficientCL = 0.0;
     double maxForActualProfileWings = 1.5;
     double minForZeroDegrees = 0.5;
 
+    List<double> coefficientsCL = [-0.000000668968542,0.000131969308,-0.00834117785,0.164330792,0.458479337];
 
-
-    if (degrees <= 15) {
-      liftCoefficientCL = minForZeroDegrees + (maxForActualProfileWings * sin(degreesToRadians(degrees)));
-    } else if (degrees <= 30) {
-      liftCoefficientCL = minForZeroDegrees + (maxForActualProfileWings * sin(degreesToRadians( 15 - ( degrees - 15))));
-    } else if (degrees <= 45) {
-      liftCoefficientCL = (minForZeroDegrees/2) + (maxForActualProfileWings * sin(degreesToRadians(45 - (degrees - 45))) * 0.8);
-    } else {
-      liftCoefficientCL = (minForZeroDegrees/8) + (maxForActualProfileWings * sin(degreesToRadians(45 - (degrees - 45))) * 0.5);
+    if(degrees < 60){
+      liftCoefficientCL = calculatePolynomialValue(coefficientsCL, degrees);
+    }else{
+      liftCoefficientCL = calculatePolynomialValue(coefficientsCL, 60.0)/ (degrees/20);
     }
+
+
+    // if (degrees <= 15) {
+    //   liftCoefficientCL = minForZeroDegrees + (maxForActualProfileWings * sin(degreesToRadians(degrees)));
+    // } else if (degrees <= 30) {
+    //   liftCoefficientCL = minForZeroDegrees + (maxForActualProfileWings * sin(degreesToRadians( 15 - ( degrees - 15))));
+    // } else if (degrees <= 45) {
+    //   liftCoefficientCL = (minForZeroDegrees/2) + (maxForActualProfileWings * sin(degreesToRadians(45 - (degrees - 45))) * 0.8);
+    // } else {
+    //   liftCoefficientCL = (minForZeroDegrees/8) + (maxForActualProfileWings * sin(degreesToRadians(45 - (degrees - 45))) * 0.5);
+    // }
 
 
     return liftCoefficientCL;
@@ -100,7 +120,7 @@ class Height{
 
     double densityGroundKgPerM3 = 1.125;
     double density13KMNPMKgPerM3 = 0.1935;
-    double rangeDensity = density13KMNPMKgPerM3 - densityGroundKgPerM3;
+    double rangeDensity =  densityGroundKgPerM3 - density13KMNPMKgPerM3;
     double actualDensity =  densityGroundKgPerM3 -  (metresNPM/13000) * rangeDensity;
     print("Actual density ${actualDensity}");
 
