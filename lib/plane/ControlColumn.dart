@@ -7,8 +7,14 @@ class ControlColumn {
     double scaledToAngeleRange = horizontalPosition * 0.9;
 
     if (scaledToAngeleRange >= 90) {
+
+      if((-(scaledToAngeleRange - 90)) > -0.001 ){
+        return 0.0;
+      }
+
       return -(scaledToAngeleRange - 90);
     } else {
+
       return 90 - scaledToAngeleRange;
     }
   }
@@ -18,8 +24,15 @@ class ControlColumn {
     if(scaledToAngeleRange > 90){
       return scaledToAngeleRange - 90;
     }else{
+
+      if(-(90 - scaledToAngeleRange) > -0.001){
+        return 0.0;
+      }
+
       return -(90 - scaledToAngeleRange);
     }
+
+
 
 
   }

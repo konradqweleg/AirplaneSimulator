@@ -119,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Row(
                         children: [
                           AttitudeInidactorWidget(plane.controlColumn.horizontalPosition,plane.controlColumn.verticalPosition),
-                          AttitudeInforValues(plane.controlColumn.horizontalPosition,plane.controlColumn.verticalPosition)
+                          AttitudeInforValues(plane.controlColumn.getHorizontalAngle(),plane.controlColumn.getVerticalAngle())
                         ],
                       )
 

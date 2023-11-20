@@ -10,22 +10,56 @@ class Height{
   double MAX_RATE_OF_CLIMB_IN_METRES_PER_SECOND = 15;
 
   double calculateRateOfClimb(double horizontalSpeedMetersPerSecond, double angleOfAttackDegrees) {
+    print("----------------- ${angleOfAttackDegrees}");
+
+  //  double finalAngleOfAttack = angleOfAttackDegrees;
+    if(angleOfAttackDegrees > 70.0){
+      angleOfAttackDegrees = 70.0;
+    }
+
+    if(angleOfAttackDegrees < -70.00){
+      angleOfAttackDegrees = -70.00;
+    }
+
     double angleInRadians = angleOfAttackDegrees * (3.14159 / 180);
+ //   double angleInRadians = angleOfAttackDegrees * (3.14159 / 180);
+    print("Horz speed ${horizontalSpeedMetersPerSecond}");
+    print("Tangens ${tan(angleInRadians)}");
+    print("Result ${horizontalSpeedMetersPerSecond * tan(angleInRadians)}");
     // Obliczenie prędkości wznoszenia w metrach na sekundę
-    return horizontalSpeedMetersPerSecond * tan(angleInRadians);
+
+
+    if(angleOfAttackDegrees < 0.0){
+    //  print("ROC_1 ${horizontalSpeedMetersPerSecond * -tan(finalAngleOfAttack)} ");
+      return horizontalSpeedMetersPerSecond * tan(angleInRadians);
+    //  return horizontalSpeedMetersPerSecond * -tan(finalAngleOfAttack);
+    }else{
+      return horizontalSpeedMetersPerSecond * tan(angleInRadians);
+     // print("ROC_2 ${horizontalSpeedMetersPerSecond * tan(finalAngleOfAttack)} ");
+     // return horizontalSpeedMetersPerSecond * tan(finalAngleOfAttack);
+    }
+
+
+
+
+
+
   }
 
 
 
   bool isNotV1Speed(Velocity velocity){
-    if(metresNPM < 1.0 && velocity.velocity >= velocity.speedV1MetresPerSecond){
+    if(metresNPM < 1.0 && velocity.velocity <= velocity.speedV1MetresPerSecond){
       return true;
     }
     return false;
   }
 
   void calculateStartHeight(Velocity velocity,ControlColumn controlColumn){
-        if((velocity.velocity < velocity.speedV1MetresPerSecond) && (metresNPM < 1.0)){
+     //   print("Start Height ${velocity.velocity}  vs ${velocity.speedV1MetresPerSecond}");
+     //   print("C column ${controlColumn.horizontalPosition} vs ${100.0}");
+
+        if((velocity.velocity < velocity.speedV1MetresPerSecond)){
           return;
         }else{
           if(controlColumn.horizontalPosition < 100.0){
@@ -47,10 +81,10 @@ class Height{
 
   void calculateHeightInFly(Velocity velocity,ControlColumn controlColumn){
     double horizontalSpeedMetersPerSecond = velocity.velocity;
-    double angleOfAttackDegrees =  ( (100 -controlColumn.horizontalPosition) /100 )*90;
+    double angleOfAttackDegrees =  controlColumn.getHorizontalAngle();// ( (100 -controlColumn.horizontalPosition) /100 )*90;
 
-
-    print("Pozycja y "+controlColumn.horizontalPosition.toString());
+ //   print("KĄT ${angleOfAttackDegrees}");
+ //   print("Pozycja y "+controlColumn.horizontalPosition.toString());
 
 
     double rateOfClimb = calculateRateOfClimb(horizontalSpeedMetersPerSecond, angleOfAttackDegrees) * 0.30;
@@ -114,7 +148,7 @@ class Height{
     //double minSpeedInFly = 72.2;
 
     double cl = calculateCL(controlColumn.getHorizontalAngle());
-    print("CL = ${cl}");
+  //  print("CL = ${cl}");
 
     double wingAreaM2 = 124.6;
 
@@ -122,25 +156,32 @@ class Height{
     double density13KMNPMKgPerM3 = 0.1935;
     double rangeDensity =  densityGroundKgPerM3 - density13KMNPMKgPerM3;
     double actualDensity =  densityGroundKgPerM3 -  (metresNPM/13000) * rangeDensity;
-    print("Actual density ${actualDensity}");
+   // print("Actual density ${actualDensity}");
 
     double liftForce = (1/2) * cl * actualDensity  * velocity.velocity * wingAreaM2;
-    print("Lift force ${liftForce}");
+ //   print("Lift force ${liftForce}");
 
 
 
 
   }
 
+
+  bool first = false;
   void calculateHeight(Velocity velocity,ControlColumn controlColumn){
     print("Kąt poziomy ${controlColumn.getHorizontalAngle()}");
     print("Kąt pionowy ${controlColumn.getVerticalAngle()}");
 
-    if(isNotV1Speed(velocity)){
-      calculateStartHeight(velocity,controlColumn);
-    }else{
+   if(isNotV1Speed(velocity)){
+     calculateStartHeight(velocity,controlColumn);
+   }else{
+     if(first == false){
+       first = true;
+       metresNPM = 1.0;
+     }
+
       calculateHeightInFly(velocity, controlColumn);
-    }
+   }
 
     calculateIfStall(velocity, controlColumn);
 

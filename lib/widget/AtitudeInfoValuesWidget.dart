@@ -8,17 +8,17 @@ class AttitudeInforValues extends StatelessWidget{
 
 
 
-  String calculateHorizontalDegres(double vertical){
-    double finalPositionVertical =0.0;
-    if(vertical > 100.0){
-       finalPositionVertical =- (vertical - 100.0);
-    }else{
-      finalPositionVertical = (vertical);
-      finalPositionVertical = 100 -  finalPositionVertical;
-    }
-
-    return finalPositionVertical.toStringAsFixed(3);
-  }
+  // String calculateHorizontalDegres(double vertical){
+  //   double finalPositionVertical =0.0;
+  //   if(vertical > 100.0){
+  //      finalPositionVertical =- (vertical - 100.0);
+  //   }else{
+  //     finalPositionVertical = (vertical);
+  //     finalPositionVertical = 100 -  finalPositionVertical;
+  //   }
+  //
+  //   return finalPositionVertical.toStringAsFixed(3);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -54,12 +54,12 @@ class AttitudeInforValues extends StatelessWidget{
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("Pionowy"),
-                    Text("${(horizontal -100 ).toStringAsFixed(3)}")
+                    Text("${(horizontal).toStringAsFixed(3)}")
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text("Poziomy"), Text("${calculateHorizontalDegres(vertical)}")],
+                  children: [Text("Poziomy"), Text("${(vertical).toStringAsFixed(3)}")],
                 ),
                 // Container(width: 200.0,child: Text("Pozostało : ${tank.getLevelFuelInLitres()} litrów paliwa")),
                 // Container(width: 200.0,child: Text("Wystarczy na : ${tank.getMaxKMOnActualFuelLevel()} km")),
