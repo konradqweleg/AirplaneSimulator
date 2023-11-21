@@ -1,18 +1,15 @@
+import 'dart:html';
 import 'dart:math';
 
 import 'package:airplane/plane/ControlColumn.dart';
-
-import 'Restrictor.dart';
 import 'Velocity.dart';
-//Sprawdz prędkość
+
 class Height{
   double metresNPM = 0;
   double MAX_RATE_OF_CLIMB_IN_METRES_PER_SECOND = 15;
 
   double calculateRateOfClimb(double horizontalSpeedMetersPerSecond, double angleOfAttackDegrees) {
-    print("----------------- ${angleOfAttackDegrees}");
-
-  //  double finalAngleOfAttack = angleOfAttackDegrees;
+    //When tg >70.0 increase height is too high
     if(angleOfAttackDegrees > 70.0){
       angleOfAttackDegrees = 70.0;
     }
@@ -22,27 +19,7 @@ class Height{
     }
 
     double angleInRadians = angleOfAttackDegrees * (3.14159 / 180);
- //   double angleInRadians = angleOfAttackDegrees * (3.14159 / 180);
-    print("Horz speed ${horizontalSpeedMetersPerSecond}");
-    print("Tangens ${tan(angleInRadians)}");
-    print("Result ${horizontalSpeedMetersPerSecond * tan(angleInRadians)}");
-    // Obliczenie prędkości wznoszenia w metrach na sekundę
-
-
-    if(angleOfAttackDegrees < 0.0){
-    //  print("ROC_1 ${horizontalSpeedMetersPerSecond * -tan(finalAngleOfAttack)} ");
-      return horizontalSpeedMetersPerSecond * tan(angleInRadians);
-    //  return horizontalSpeedMetersPerSecond * -tan(finalAngleOfAttack);
-    }else{
-      return horizontalSpeedMetersPerSecond * tan(angleInRadians);
-     // print("ROC_2 ${horizontalSpeedMetersPerSecond * tan(finalAngleOfAttack)} ");
-     // return horizontalSpeedMetersPerSecond * tan(finalAngleOfAttack);
-    }
-
-
-
-
-
+    return horizontalSpeedMetersPerSecond * tan(angleInRadians);
 
   }
 
@@ -56,9 +33,6 @@ class Height{
   }
 
   void calculateStartHeight(Velocity velocity,ControlColumn controlColumn){
-     //   print("Start Height ${velocity.velocity}  vs ${velocity.speedV1MetresPerSecond}");
-     //   print("C column ${controlColumn.horizontalPosition} vs ${100.0}");
-
         if((velocity.velocity < velocity.speedV1MetresPerSecond)){
           return;
         }else{
@@ -81,15 +55,8 @@ class Height{
 
   void calculateHeightInFly(Velocity velocity,ControlColumn controlColumn){
     double horizontalSpeedMetersPerSecond = velocity.velocity;
-    double angleOfAttackDegrees =  controlColumn.getHorizontalAngle();// ( (100 -controlColumn.horizontalPosition) /100 )*90;
-
- //   print("KĄT ${angleOfAttackDegrees}");
- //   print("Pozycja y "+controlColumn.horizontalPosition.toString());
-
-
+    double angleOfAttackDegrees =  controlColumn.getHorizontalAngle();
     double rateOfClimb = calculateRateOfClimb(horizontalSpeedMetersPerSecond, angleOfAttackDegrees) * 0.30;
-    print("Kąt natarcia $angleOfAttackDegrees");
-    print('Prędkość wznoszenia wynosi: $rateOfClimb metrów na sekundę.');
 
     metresNPM = metresNPM + rateOfClimb;
   }
@@ -97,7 +64,7 @@ class Height{
 
 
   double degreesToRadians(double degrees) {
-    return degrees * (3.14159 / 180); // Zamiana stopni na radiany (π ≈ 3.14159)
+    return degrees * (3.14159 / 180);
   }
 
 
@@ -128,40 +95,23 @@ class Height{
     }
 
 
-    // if (degrees <= 15) {
-    //   liftCoefficientCL = minForZeroDegrees + (maxForActualProfileWings * sin(degreesToRadians(degrees)));
-    // } else if (degrees <= 30) {
-    //   liftCoefficientCL = minForZeroDegrees + (maxForActualProfileWings * sin(degreesToRadians( 15 - ( degrees - 15))));
-    // } else if (degrees <= 45) {
-    //   liftCoefficientCL = (minForZeroDegrees/2) + (maxForActualProfileWings * sin(degreesToRadians(45 - (degrees - 45))) * 0.8);
-    // } else {
-    //   liftCoefficientCL = (minForZeroDegrees/8) + (maxForActualProfileWings * sin(degreesToRadians(45 - (degrees - 45))) * 0.5);
-    // }
-
-
     return liftCoefficientCL;
 
   }
 
   void calculateIfStall(Velocity velocity,ControlColumn controlColumn){
-    //double maxSpeedInMetersPerSecond = 277.77;
-    //double minSpeedInFly = 72.2;
 
     double cl = calculateCL(controlColumn.getHorizontalAngle());
-  //  print("CL = ${cl}");
 
     double wingAreaM2 = 124.6;
-
     double densityGroundKgPerM3 = 1.125;
     double density13KMNPMKgPerM3 = 0.1935;
     double rangeDensity =  densityGroundKgPerM3 - density13KMNPMKgPerM3;
     double actualDensity =  densityGroundKgPerM3 -  (metresNPM/13000) * rangeDensity;
-   // print("Actual density ${actualDensity}");
+
 
     double liftForce = (1/2) * cl * actualDensity  * velocity.velocity * wingAreaM2;
- //   print("Lift force ${liftForce}");
-
-
+    print("Lift force ${liftForce}  ${liftForce < 2200.0 ? 'PRZECIĄGNIECIE':''}");
 
 
   }
@@ -169,17 +119,10 @@ class Height{
 
   bool first = false;
   void calculateHeight(Velocity velocity,ControlColumn controlColumn){
-    print("Kąt poziomy ${controlColumn.getHorizontalAngle()}");
-    print("Kąt pionowy ${controlColumn.getVerticalAngle()}");
 
    if(isNotV1Speed(velocity)){
      calculateStartHeight(velocity,controlColumn);
    }else{
-     if(first == false){
-       first = true;
-       metresNPM = 1.0;
-     }
-
       calculateHeightInFly(velocity, controlColumn);
    }
 
