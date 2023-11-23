@@ -26,14 +26,14 @@ class Height{
 
 
   bool isNotV1Speed(Velocity velocity){
-    if(metresNPM < 1.0 && velocity.velocity <= velocity.speedV1MetresPerSecond){
+    if(metresNPM < 1.0 && velocity.velocityHorizontal <= velocity.speedV1MetresPerSecond){
       return true;
     }
     return false;
   }
 
   void calculateStartHeight(Velocity velocity,ControlColumn controlColumn){
-        if((velocity.velocity < velocity.speedV1MetresPerSecond)){
+        if((velocity.velocityHorizontal < velocity.speedV1MetresPerSecond)){
           return;
         }else{
           if(controlColumn.horizontalPosition < 100.0){
@@ -54,7 +54,7 @@ class Height{
 
 
   void calculateHeightInFly(Velocity velocity,ControlColumn controlColumn){
-    double horizontalSpeedMetersPerSecond = velocity.velocity;
+    double horizontalSpeedMetersPerSecond = velocity.velocityHorizontal;
     double angleOfAttackDegrees =  controlColumn.getHorizontalAngle();
     double rateOfClimb = calculateRateOfClimb(horizontalSpeedMetersPerSecond, angleOfAttackDegrees) * 0.30;
 
@@ -99,7 +99,7 @@ class Height{
 
   }
 
-  void calculateIfStall(Velocity velocity,ControlColumn controlColumn){
+  bool calculateIfStall(Velocity velocity,ControlColumn controlColumn){
 
     double cl = calculateCL(controlColumn.getHorizontalAngle());
 
@@ -110,9 +110,12 @@ class Height{
     double actualDensity =  densityGroundKgPerM3 -  (metresNPM/13000) * rangeDensity;
 
 
-    double liftForce = (1/2) * cl * actualDensity  * velocity.velocity * wingAreaM2;
-    print("Lift force ${liftForce}  ${liftForce < 2200.0 ? 'PRZECIĄGNIECIE':''}");
+    double liftForce = (1/2) * cl * actualDensity  * velocity.velocityHorizontal * wingAreaM2;
 
+    double STALL_THRESHOOLD = 2200.0;
+    print("Lift force ${liftForce}  ${liftForce < STALL_THRESHOOLD ? 'PRZECIĄGNIECIE':''}");
+
+    return liftForce < STALL_THRESHOOLD;
 
   }
 
@@ -120,13 +123,24 @@ class Height{
   bool first = false;
   void calculateHeight(Velocity velocity,ControlColumn controlColumn){
 
+
    if(isNotV1Speed(velocity)){
      calculateStartHeight(velocity,controlColumn);
    }else{
-      calculateHeightInFly(velocity, controlColumn);
+     bool ifStall = calculateIfStall(velocity, controlColumn);
+     if(ifStall){
+        velocity.velocityHorizontal -= 2.0;
+        velocity.velocityVertical += 3.0;
+        metresNPM -= velocity.velocityVertical;
+
+
+     }else {
+        velocity.velocityVertical = 0.0;
+        calculateHeightInFly(velocity, controlColumn);
+     }
    }
 
-    calculateIfStall(velocity, controlColumn);
+
 
 
   }

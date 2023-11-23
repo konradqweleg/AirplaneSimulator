@@ -4,6 +4,8 @@ import 'package:airplane/plane/Plane.dart';
 import 'package:airplane/widget/AtitudeInfoValuesWidget.dart';
 import 'package:airplane/widget/AttitudeIndicatorWidget.dart';
 import 'package:airplane/widget/ControlColumnWidget.dart';
+import 'package:airplane/widget/FlapsInfoWidget.dart';
+import 'package:airplane/widget/FlapsWidget.dart';
 import 'package:airplane/widget/HeightWidget.dart';
 import 'package:airplane/widget/MapWidget.dart';
 import 'package:airplane/widget/RestrictorWidget.dart';
@@ -113,7 +115,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       Row(
                         children: [
-                          VelocityWidget(plane.velocity.velocity)
+                          VelocityWidget(plane.velocity.velocityHorizontal),
+                          FlapsInfoWidget(plane.flaps)
+
                         ],
                       ),
                       Row(
@@ -138,7 +142,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: [
                          ControlColumnWidget(plane.controlColumn)
                         ],
-                      )
+                      ),
+                      FlapsWidget(plane.flaps)
 
                     ],
                   ),

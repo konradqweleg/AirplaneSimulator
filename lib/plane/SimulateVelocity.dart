@@ -115,13 +115,13 @@ class SimulateVelocity{
     double maxVelocityOnPhaseFly = getMaxVelocity(height);
     //print("MAX predkość ${maxVelocityOnPhaseFly} vs aktualba ${ (actualVelocity.velocity)}");
 
-    if(actualVelocity.velocity > maxVelocityOnPhaseFly){
+    if(actualVelocity.velocityHorizontal > maxVelocityOnPhaseFly){
     //  print("PRZEKROCZONO");
       return actualVelocity;
     }else {
-      actualVelocity.velocity = updateVelocity(
+      actualVelocity.velocityHorizontal = updateVelocity(
           maxSpeedOnActualPositionRestrictor, maxSpeedOnPointRestrictor,controlColumn,
-          restrictor.left + restrictor.right, actualVelocity.velocity);
+          restrictor.left + restrictor.right, actualVelocity.velocityHorizontal);
     }
     return actualVelocity;
   }
