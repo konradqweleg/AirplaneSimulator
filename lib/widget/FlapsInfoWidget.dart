@@ -1,3 +1,4 @@
+import 'package:airplane/plane/Warning.dart';
 import 'package:flutter/material.dart';
 
 import '../plane/Flaps.dart';
@@ -16,7 +17,7 @@ class FlapsInfoWidget extends StatelessWidget{
      decoration:  BoxDecoration(
        border: Border.all(
          width: 1,
-         color:  Colors.grey,
+         color: Warning.isBadClapPosition? Colors.red : Colors.grey,
        ),
 
      ),
@@ -41,7 +42,7 @@ class FlapsInfoWidget extends StatelessWidget{
                ),
                Row(
                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                 children: [Text("Status"),Text("OK")],
+                 children: [Text("Status"),Text( Warning.isBadClapPosition? "ZŁA POZYCJA KLAP": "OK")],
                )
                // Container(width: 200.0,child: Text("Pozostało : ${tank.getLevelFuelInLitres()} litrów paliwa")),
                // Container(width: 200.0,child: Text("Wystarczy na : ${tank.getMaxKMOnActualFuelLevel()} km")),

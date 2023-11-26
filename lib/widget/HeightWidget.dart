@@ -1,3 +1,4 @@
+import 'package:airplane/plane/Warning.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +25,7 @@ class HeightWidgetState extends State<HeightWidget>{
       decoration:  BoxDecoration(
         border: Border.all(
           width: 1,
-          color:   Colors.grey,
+          color: Warning.isLowHeight?  Colors.red : Colors.grey,
         ),
 
       ),
@@ -49,7 +50,7 @@ class HeightWidgetState extends State<HeightWidget>{
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text("Status"), Text("OK")],
+                  children: [Text("Status"), Text(Warning.isLowHeight?"NISKA WYSOKOŚĆ" :"OK")],
                 ),
                 // Container(width: 200.0,child: Text("Pozostało : ${tank.getLevelFuelInLitres()} litrów paliwa")),
                 // Container(width: 200.0,child: Text("Wystarczy na : ${tank.getMaxKMOnActualFuelLevel()} km")),

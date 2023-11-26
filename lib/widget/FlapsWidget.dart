@@ -40,17 +40,17 @@ class FlapsState extends State<FlapsWidget>{
 
 
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [Text("KLAPY USTAWIENIE",style: TextStyle(fontWeight: FontWeight.bold,))
 
                   ],
                 ),
 
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         ListTile(
                           title: const Text('0°'),

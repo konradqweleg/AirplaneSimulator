@@ -8,6 +8,7 @@ import 'package:airplane/widget/FlapsInfoWidget.dart';
 import 'package:airplane/widget/FlapsWidget.dart';
 import 'package:airplane/widget/HeightWidget.dart';
 import 'package:airplane/widget/MapWidget.dart';
+import 'package:airplane/widget/MapWidgetFly.dart';
 import 'package:airplane/widget/RestrictorWidget.dart';
 import 'package:airplane/widget/EngineWidget.dart';
 import 'package:airplane/widget/FuelWidget.dart';
@@ -47,30 +48,45 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   Boeing_737_800 plane = Boeing_737_800();
 
+  Widget mapWidget = MapWidget(0.0);
+
   @override
   void initState() {
     Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         plane.process();
+        updateMapView();
         //  print("working");
       });
+    });
+  }
+
+  void updateMapView() {
+    setState(() {
+      if (plane.distance.metres < 3000.0) {
+        mapWidget = MapWidget(plane.distance.metres);
+      } else {
+        mapWidget = MapWidgetFly(plane.map);
+      }
+      ;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Container(
         child: Column(
           children: [
             const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("BOEING 737-800",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20.0),)
+                Text(
+                  "BOEING 737-800",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                )
               ],
             ),
-            
             const Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -79,7 +95,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 Text("Przyrządy")
               ],
             ),
-            
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -87,11 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   margin: EdgeInsets.only(top: 20),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-
-                     MapWidget(plane.distance.metres)
-
-                    ],
+                    children: <Widget>[mapWidget],
                   ),
                 ),
                 Container(
@@ -99,8 +110,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-
-
                       Row(
                         children: [
                           FuelWidget(plane.getTankDevice()),
@@ -117,17 +126,18 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: [
                           VelocityWidget(plane.velocity.velocityHorizontal),
                           FlapsInfoWidget(plane.flaps)
-
                         ],
                       ),
                       Row(
                         children: [
-                          AttitudeInidactorWidget(plane.controlColumn.horizontalPosition,plane.controlColumn.verticalPosition),
-                          AttitudeInforValues(plane.controlColumn.getHorizontalAngle(),plane.controlColumn.getVerticalAngle())
+                          AttitudeInidactorWidget(
+                              plane.controlColumn.horizontalPosition,
+                              plane.controlColumn.verticalPosition),
+                          AttitudeInforValues(
+                              plane.controlColumn.getHorizontalAngle(),
+                              plane.controlColumn.getVerticalAngle())
                         ],
                       )
-
-
                     ],
                   ),
                 ),
@@ -136,23 +146,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-
                       RestrictorWidget(plane.restrictor),
                       Row(
-                        children: [
-                         ControlColumnWidget(plane.controlColumn)
-                        ],
+                        children: [ControlColumnWidget(plane.controlColumn)],
                       ),
                       FlapsWidget(plane.flaps)
-
                     ],
                   ),
                 ),
-
-
               ],
             ),
-
           ],
         ),
       ),

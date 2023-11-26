@@ -2,6 +2,8 @@ import 'dart:html';
 import 'dart:math';
 
 import 'package:airplane/plane/ControlColumn.dart';
+import 'package:airplane/plane/Warning.dart';
+import 'Flaps.dart';
 import 'Velocity.dart';
 
 class Height{
@@ -81,17 +83,31 @@ class Height{
   }
 
 
-  double calculateCL(double degrees){
+  double calculateCL(double degrees,Flaps flaps){
     double liftCoefficientCL = 0.0;
     double maxForActualProfileWings = 1.5;
     double minForZeroDegrees = 0.5;
 
-    List<double> coefficientsCL = [-0.000000668968542,0.000131969308,-0.00834117785,0.164330792,0.458479337];
+
+
+    List<double> actualCoefficientsCL = [-0.000000668968542,0.000131969308,-0.00834117785,0.164330792,0.458479337];
+
+    if(flaps.getCurrentFlapsPosition() == 0){
+      actualCoefficientsCL = [-0.000000668968542,0.000131969308,-0.00834117785,0.164330792,0.458479337];
+    }else if(flaps.getCurrentFlapsPosition() == 15){
+      actualCoefficientsCL = [-0.00000101 , 0.00019105, -0.01122009,  0.19316515 , 0.74044567];
+    }else if(flaps.getCurrentFlapsPosition() == 30){
+      actualCoefficientsCL = [-0.00000131,  0.00023987, -0.0134915,   0.21542229 , 0.9310216];
+    }else{
+      actualCoefficientsCL = [-0.00000146,  0.00025583 ,-0.01324251 , 0.1719971  , 1.34867048];
+    }
+
+
 
     if(degrees < 60){
-      liftCoefficientCL = calculatePolynomialValue(coefficientsCL, degrees);
+      liftCoefficientCL = calculatePolynomialValue(actualCoefficientsCL, degrees);
     }else{
-      liftCoefficientCL = calculatePolynomialValue(coefficientsCL, 60.0)/ (degrees/20);
+      liftCoefficientCL = calculatePolynomialValue(actualCoefficientsCL, 60.0)/ (degrees/20);
     }
 
 
@@ -99,9 +115,12 @@ class Height{
 
   }
 
-  bool calculateIfStall(Velocity velocity,ControlColumn controlColumn){
 
-    double cl = calculateCL(controlColumn.getHorizontalAngle());
+
+
+  bool calculateIfStall(Velocity velocity,ControlColumn controlColumn,Flaps flaps){
+
+    double cl = calculateCL(controlColumn.getHorizontalAngle(),flaps);
 
     double wingAreaM2 = 124.6;
     double densityGroundKgPerM3 = 1.125;
@@ -112,8 +131,15 @@ class Height{
 
     double liftForce = (1/2) * cl * actualDensity  * velocity.velocityHorizontal * wingAreaM2;
 
-    double STALL_THRESHOOLD = 2200.0;
+    double STALL_THRESHOOLD = 3000.0;
     print("Lift force ${liftForce}  ${liftForce < STALL_THRESHOOLD ? 'PRZECIĄGNIECIE':''}");
+    print("Prędkość ${velocity.velocityHorizontal*3.6}");
+
+    if(liftForce < STALL_THRESHOOLD){
+      Warning.isCloseStall = true;
+    }else{
+      Warning.isCloseStall = false;
+    }
 
     return liftForce < STALL_THRESHOOLD;
 
@@ -121,13 +147,24 @@ class Height{
 
 
   bool first = false;
-  void calculateHeight(Velocity velocity,ControlColumn controlColumn){
 
+
+  void calculateWarningHeight(){
+    if(metresNPM < 200.0){
+      Warning.isLowHeight = true;
+    }else{
+      Warning.isLowHeight = false;
+    }
+  }
+
+  void calculateHeight(Velocity velocity,ControlColumn controlColumn,Flaps flaps){
+
+    calculateWarningHeight();
 
    if(isNotV1Speed(velocity)){
      calculateStartHeight(velocity,controlColumn);
    }else{
-     bool ifStall = calculateIfStall(velocity, controlColumn);
+     bool ifStall = calculateIfStall(velocity, controlColumn,flaps);
      if(ifStall){
         velocity.velocityHorizontal -= 2.0;
         velocity.velocityVertical += 3.0;

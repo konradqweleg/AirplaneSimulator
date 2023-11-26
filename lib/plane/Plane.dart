@@ -7,6 +7,7 @@ import 'package:airplane/plane/SimulateVelocity.dart';
 import 'package:airplane/plane/Velocity.dart';
 
 import 'Distance.dart';
+import 'MapPlane.dart';
 import 'Restrictor.dart';
 import 'Tank.dart';
 
@@ -23,6 +24,7 @@ class Boeing_737_800{
   ControlColumn controlColumn = ControlColumn();
   AnaliseSituation analiseSituation = AnaliseSituation();
   Flaps flaps = Flaps();
+  MapPlane map = new MapPlane();
 
   Tank getTankDevice(){
     return tank;
@@ -36,10 +38,11 @@ class Boeing_737_800{
 
 
     double old_velocity = velocity.velocityHorizontal;
-    velocity = simulateVelocity.getActualAcceleration([left,right],restrictor, height,velocity,controlColumn);
+    velocity = simulateVelocity.getActualAcceleration([left,right],restrictor, height,velocity,controlColumn,flaps);
     distance.metres += ((old_velocity + velocity.velocityHorizontal)/2);
-    height.calculateHeight(velocity, controlColumn);
+    height.calculateHeight(velocity, controlColumn,flaps);
     analiseSituation.analise(velocity);
+    map.updatePosition(velocity);
 
 
   }

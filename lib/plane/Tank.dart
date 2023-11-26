@@ -1,3 +1,5 @@
+import 'Warning.dart';
+
 class Tank{
   final double MAX_FUEL_GRAMS = 18090000.0;
   final double MAX_DISTANCE_IN_KM = 3900.0;
@@ -37,6 +39,12 @@ class Tank{
   }
 
   void useFuel(double useFuel){
+    if(__actualFuel < 1000000.0){
+      Warning.isLowLevelFuel = true;
+    }else{
+      Warning.isLowLevelFuel = false;
+    }
+
     __actualFuel = __actualFuel - useFuel;
   }
 

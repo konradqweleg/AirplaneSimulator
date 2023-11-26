@@ -1,6 +1,8 @@
 import 'package:airplane/plane/ControlColumn.dart';
+import 'package:airplane/plane/Warning.dart';
 
 import 'Engine.dart';
+import 'Flaps.dart';
 import 'Height.dart';
 import 'Restrictor.dart';
 import 'Velocity.dart';
@@ -76,7 +78,7 @@ class SimulateVelocity{
     }
   }
 
-  double updateVelocity(double maxVelocityOnActualPositionRestrictor, double maxVelocityOnPointRestrictor,ControlColumn controlColumn, double sumPositionRestrictors,double actualVelocity){
+  double updateVelocity(double maxVelocityOnActualPositionRestrictor, double maxVelocityOnPointRestrictor,ControlColumn controlColumn, double sumPositionRestrictors,double actualVelocity,Flaps flaps){
     log("Aktualna prędkosc ${actualVelocity} przed zmianą");
     //If speed is lower then limit for actual restrictor position speed up
     if(actualVelocity < maxVelocityOnActualPositionRestrictor) {
@@ -84,7 +86,21 @@ class SimulateVelocity{
 
       double factorIncreaseVelocityBaseOnControlColumn = (90 - (100 -  controlColumn.horizontalPosition))/90;
 
-      double newVelocity = actualVelocity + (maxVelocityOnPointRestrictor * (sumPositionRestrictors) * factorIncreaseVelocityBaseOnControlColumn );
+
+      double factorToClapsPosition = 1.0;
+
+      if(flaps.getCurrentFlapsPosition() == 0){
+        factorToClapsPosition = 1.0;
+      }else if(flaps.getCurrentFlapsPosition() == 15){
+        factorToClapsPosition = 0.9;
+      }else if(flaps.getCurrentFlapsPosition() == 30){
+        factorToClapsPosition = 0.65;
+      }else{
+        factorToClapsPosition = 0.45;
+      }
+
+
+      double newVelocity = actualVelocity + ((maxVelocityOnPointRestrictor * (sumPositionRestrictors) * factorIncreaseVelocityBaseOnControlColumn )* factorToClapsPosition);
       log("Powiększona prędkość ${newVelocity}");
       return newVelocity;
     }
@@ -94,8 +110,22 @@ class SimulateVelocity{
       double diffrenceBetweenVelocityAndMaxVelocityOnPositionRestrictors = actualVelocity - maxVelocityOnActualPositionRestrictor;
       log("Różnica predkośći max dla aktualnego poziomu przepustnicy do aktualnej V ${diffrenceBetweenVelocityAndMaxVelocityOnPositionRestrictors}");
 
+
+
+      double factorToClapsPosition = 1.0;
+
+      if(flaps.getCurrentFlapsPosition() == 0){
+        factorToClapsPosition = 1.0;
+      }else if(flaps.getCurrentFlapsPosition() == 15){
+        factorToClapsPosition = 1.1;
+      }else if(flaps.getCurrentFlapsPosition() == 30){
+        factorToClapsPosition = 1.3;
+      }else{
+        factorToClapsPosition = 1.5;
+      }
+
       if (diffrenceBetweenVelocityAndMaxVelocityOnPositionRestrictors > 0) {
-        double newVelocity = actualVelocity - ((diffrenceBetweenVelocityAndMaxVelocityOnPositionRestrictors / 75) + 1.0);
+        double newVelocity = actualVelocity - (((diffrenceBetweenVelocityAndMaxVelocityOnPositionRestrictors / 75) + 1.0) * factorToClapsPosition);
 
         if(newVelocity < 0 ){
           newVelocity = 0.0;
@@ -108,7 +138,19 @@ class SimulateVelocity{
     }
   }
 
-  Velocity getActualAcceleration(List<Engine> engines,Restritor restrictor,Height height, Velocity actualVelocity,ControlColumn controlColumn){
+
+  void analiseWarningClapPosition(Flaps flaps,Restritor restritor,Height height){
+    if(flaps.getCurrentFlapsPosition() != 15 && flaps.getCurrentFlapsPosition() !=30  && height.metresNPM < 0.001 && ((restritor.left+ restritor.right) >0)){
+      Warning.isBadClapPosition = true;
+    }else{
+      Warning.isBadClapPosition = false;
+    }
+
+  }
+
+  Velocity getActualAcceleration(List<Engine> engines,Restritor restrictor,Height height, Velocity actualVelocity,ControlColumn controlColumn,Flaps flaps){
+    analiseWarningClapPosition(flaps, restrictor, height);
+
     double maxSpeedOnActualPositionRestrictor = calculateMaxVelocityOnActualPositionRestrictor(height,restrictor,engines);
     double maxSpeedOnPointRestrictor = getMaxAcceleration(height);
 
@@ -121,7 +163,7 @@ class SimulateVelocity{
     }else {
       actualVelocity.velocityHorizontal = updateVelocity(
           maxSpeedOnActualPositionRestrictor, maxSpeedOnPointRestrictor,controlColumn,
-          restrictor.left + restrictor.right, actualVelocity.velocityHorizontal);
+          restrictor.left + restrictor.right, actualVelocity.velocityHorizontal,flaps);
     }
     return actualVelocity;
   }
