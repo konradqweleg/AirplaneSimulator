@@ -124,7 +124,7 @@ class Height{
 
     double wingAreaM2 = 124.6;
     double densityGroundKgPerM3 = 1.125;
-    double density13KMNPMKgPerM3 = 0.1935;
+    double density13KMNPMKgPerM3 = 0.0;
     double rangeDensity =  densityGroundKgPerM3 - density13KMNPMKgPerM3;
     double actualDensity =  densityGroundKgPerM3 -  (metresNPM/13000) * rangeDensity;
 
@@ -149,8 +149,8 @@ class Height{
   bool first = false;
 
 
-  void calculateWarningHeight(){
-    if(metresNPM < 200.0){
+  void calculateWarningHeight(Velocity velocity){
+    if(metresNPM < 200.0 && velocity.velocityHorizontal > 100.0){
       Warning.isLowHeight = true;
     }else{
       Warning.isLowHeight = false;
@@ -159,7 +159,7 @@ class Height{
 
   void calculateHeight(Velocity velocity,ControlColumn controlColumn,Flaps flaps){
 
-    calculateWarningHeight();
+    calculateWarningHeight(velocity);
 
    if(isNotV1Speed(velocity)){
      calculateStartHeight(velocity,controlColumn);

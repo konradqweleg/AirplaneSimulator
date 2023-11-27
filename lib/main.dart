@@ -4,6 +4,7 @@ import 'package:airplane/plane/Plane.dart';
 import 'package:airplane/widget/AtitudeInfoValuesWidget.dart';
 import 'package:airplane/widget/AttitudeIndicatorWidget.dart';
 import 'package:airplane/widget/ControlColumnWidget.dart';
+import 'package:airplane/widget/DistanceWidgetInfo.dart';
 import 'package:airplane/widget/FlapsInfoWidget.dart';
 import 'package:airplane/widget/FlapsWidget.dart';
 import 'package:airplane/widget/HeightWidget.dart';
@@ -65,8 +66,10 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       if (plane.distance.metres < 3000.0) {
         mapWidget = MapWidget(plane.distance.metres);
-      } else {
+      } else if(plane.distance.metres < 13000.0) {
         mapWidget = MapWidgetFly(plane.map);
+      }else{
+        mapWidget = MapWidget(plane.distance.metres - 13000.0);
       }
       ;
     });
@@ -136,6 +139,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           AttitudeInforValues(
                               plane.controlColumn.getHorizontalAngle(),
                               plane.controlColumn.getVerticalAngle())
+                        ],
+                      ),
+                      Row(
+                        children: [
+                         DistanceInfoWidget( plane.distance.metres)
                         ],
                       )
                     ],

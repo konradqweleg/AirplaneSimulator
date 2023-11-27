@@ -10,7 +10,7 @@ import 'Velocity.dart';
 class SimulateVelocity{
 
   double MAX_SPEED_ON_GROUND_KM_PER_HOUR = 400.0;
-  double MAX_SPEED_ON_FLY_KM_PER_HOUR = 1000.0;
+  double MAX_SPEED_ON_FLY_KM_PER_HOUR = 1250.0;
   double GROUND_HEIGHT_THRESHOLD_IN_METRES = 1.0;
 
   bool IS_LOG_ENABLED = false;
@@ -159,6 +159,7 @@ class SimulateVelocity{
 
     if(actualVelocity.velocityHorizontal > maxVelocityOnPhaseFly){
     //  print("PRZEKROCZONO");
+      actualVelocity.velocityHorizontal - 5.0; // zapobiega niemożliwośći spadku prędkosci przy max predkosci
       return actualVelocity;
     }else {
       actualVelocity.velocityHorizontal = updateVelocity(

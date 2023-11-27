@@ -12,6 +12,38 @@ class OpenPainter extends CustomPainter {
   OpenPainter(this.position);
   double position = 0.0;
 
+
+  void drawText(Canvas canvas,double positionY,String text){
+
+
+    final textStyle = TextStyle(
+      color: Colors.black,
+      fontSize: 20.0,
+    );
+
+    final textSpan = TextSpan(
+      text: text,
+      style: textStyle,
+    );
+
+    final textPainter = TextPainter(
+      text: textSpan,
+      textDirection: TextDirection.ltr,
+    );
+
+    textPainter.layout(
+      minWidth: 0,
+      maxWidth: 50.0,
+    );
+
+    final offset = Offset(
+      75,
+      positionY,
+    );
+
+    textPainter.paint(canvas, offset);
+  }
+
   @override
   void paint(Canvas canvas, Size size) {
     var paint1 = Paint()
@@ -24,9 +56,9 @@ class OpenPainter extends CustomPainter {
     canvas.drawPoints(PointMode.points, points, paint1);
 
     var paintStartStopPoint = Paint()
-      ..color = Colors.black
+      ..color = Colors.brown
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = 30;
+      ..strokeWidth = 4;
 
     var pointsStart = [Offset(100, 50)];
     var pointsStop = [Offset(100, 750)];
@@ -37,7 +69,8 @@ class OpenPainter extends CustomPainter {
 
 
     canvas.drawLine(verticalHorizontPoints[0], verticalHorizontPoints[1], paintStartStopPoint);
-
+    drawText(canvas, 750,"Start");
+    drawText(canvas, 20,"Stop");
   }
 
   @override

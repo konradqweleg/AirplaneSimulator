@@ -5,7 +5,7 @@ class MapPlane{
   double x = 0.0;
   double y = 0.0;
 
-  double endYMetres = 600000;
+  double endYMetres = 10000; //600000
 
   void updatePosition(Velocity velocity){
     x += velocity.velocityHorizontal;
@@ -15,7 +15,7 @@ class MapPlane{
     if(x < 0.001){
       return 0.0;
     }else{
-      return x/endYMetres;
+      return (x -3000)/endYMetres;
     }
   }
 
