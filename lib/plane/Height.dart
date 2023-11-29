@@ -1,4 +1,3 @@
-import 'dart:html';
 import 'dart:math';
 
 import 'package:airplane/plane/ControlColumn.dart';
@@ -38,7 +37,7 @@ class Height{
         if((velocity.velocityHorizontal < velocity.speedV1MetresPerSecond)){
           return;
         }else{
-          if(controlColumn.horizontalPosition < 100.0){
+          if(controlColumn.getHorizontalAngle() > 0.0){
             metresNPM = 1.0;
           }
         }
@@ -60,7 +59,12 @@ class Height{
     double angleOfAttackDegrees =  controlColumn.getHorizontalAngle();
     double rateOfClimb = calculateRateOfClimb(horizontalSpeedMetersPerSecond, angleOfAttackDegrees) * 0.30;
 
+    if((metresNPM + rateOfClimb) <0){
+      metresNPM = 0;
+    }
     metresNPM = metresNPM + rateOfClimb;
+
+
   }
 
 
@@ -164,16 +168,17 @@ class Height{
    if(isNotV1Speed(velocity)){
      calculateStartHeight(velocity,controlColumn);
    }else{
-     bool ifStall = calculateIfStall(velocity, controlColumn,flaps);
-     if(ifStall){
-        velocity.velocityHorizontal -= 2.0;
-        velocity.velocityVertical += 3.0;
-        metresNPM -= velocity.velocityVertical;
 
-
-     }else {
-        velocity.velocityVertical = 0.0;
-        calculateHeightInFly(velocity, controlColumn);
+     if(metresNPM > 0) {
+       bool ifStall = calculateIfStall(velocity, controlColumn, flaps);
+       if (ifStall) {
+         velocity.velocityHorizontal -= 2.0;
+         velocity.velocityVertical += 3.0;
+         metresNPM -= velocity.velocityVertical;
+       } else {
+         velocity.velocityVertical = 0.0;
+         calculateHeightInFly(velocity, controlColumn);
+       }
      }
    }
 

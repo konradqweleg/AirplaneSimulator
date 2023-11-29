@@ -7,12 +7,11 @@ import 'package:airplane/plane/SimulateVelocity.dart';
 import 'package:airplane/plane/Velocity.dart';
 
 import 'Distance.dart';
-import 'MapPlane.dart';
+import 'PositionPlane.dart';
 import 'Restrictor.dart';
 import 'Tank.dart';
 
 class Boeing_737_800{
-  double x = 7.0;
   Tank tank = Tank(500000.0);
   Engine left = Engine();
   Engine right = Engine();
@@ -24,25 +23,26 @@ class Boeing_737_800{
   ControlColumn controlColumn = ControlColumn();
   AnaliseSituation analiseSituation = AnaliseSituation();
   Flaps flaps = Flaps();
-  MapPlane map = new MapPlane();
+  PositionPlane positionPlane = PositionPlane();
 
   Tank getTankDevice(){
     return tank;
   }
+
+
 
   void process(){
     tank.useFuel(left.getFuelInGramConsumptionPerSecond() + right.getFuelInGramConsumptionPerSecond());
     left.setThrustInNewton(restrictor.left);
     right.setThrustInNewton(restrictor.right);
 
-
-
-    double old_velocity = velocity.velocityHorizontal;
     velocity = simulateVelocity.getActualAcceleration([left,right],restrictor, height,velocity,controlColumn,flaps);
-    distance.metres += ((old_velocity + velocity.velocityHorizontal)/2);
     height.calculateHeight(velocity, controlColumn,flaps);
-    analiseSituation.analise(velocity);
-    map.updatePosition(velocity);
+    double oldVelocity = velocity.velocityHorizontal;
+    distance.updateDistance(((oldVelocity + velocity.velocityHorizontal)/2));
+    analiseSituation.analise(velocity,height,positionPlane);
+    positionPlane.updatePosition(distance);
+
 
 
   }

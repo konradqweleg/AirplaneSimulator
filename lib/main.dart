@@ -13,6 +13,7 @@ import 'package:airplane/widget/MapWidgetFly.dart';
 import 'package:airplane/widget/RestrictorWidget.dart';
 import 'package:airplane/widget/EngineWidget.dart';
 import 'package:airplane/widget/FuelWidget.dart';
+import 'package:airplane/widget/SimulationStatusWidget.dart';
 import 'package:airplane/widget/VelocityWidget.dart';
 import 'package:flutter/material.dart';
 
@@ -64,12 +65,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void updateMapView() {
     setState(() {
-      if (plane.distance.metres < 3000.0) {
+      if (plane.distance.metres < plane.positionPlane.endRunway) {
         mapWidget = MapWidget(plane.distance.metres);
-      } else if(plane.distance.metres < 13000.0) {
-        mapWidget = MapWidgetFly(plane.map);
+      } else if(plane.distance.metres < (plane.positionPlane.endRunway + plane.positionPlane.endFlightPosition)) {
+        mapWidget = MapWidgetFly(plane.positionPlane);
       }else{
-        mapWidget = MapWidget(plane.distance.metres - 13000.0);
+        mapWidget = MapWidget(plane.distance.metres - (plane.positionPlane.endFlightPosition + plane.positionPlane.endRunway));
       }
       ;
     });
@@ -79,7 +80,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: Column(
+        child:
+        plane.analiseSituation.isCrashFlight() ?
+        SimulationStatusWidget(plane.analiseSituation):
+        Column(
           children: [
             const Row(
               mainAxisAlignment: MainAxisAlignment.center,

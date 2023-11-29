@@ -4,7 +4,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-import '../plane/MapPlane.dart';
+import '../plane/PositionPlane.dart';
 
 class OpenPainter extends CustomPainter {
 
@@ -84,7 +84,7 @@ class MapWidgetFly extends StatelessWidget{
   MapWidgetFly(this.map, {super.key});
   double position = 750.0;
   double METER_ON_PIXELS = 0.25;
-  MapPlane map;
+  PositionPlane map;
 
 
   @override
@@ -104,7 +104,7 @@ class MapWidgetFly extends StatelessWidget{
       ),
 
       child: CustomPaint(
-        painter: OpenPainter( 750 - (750 * map.getPercentagePath())),
+        painter: OpenPainter( 700 - (700 * map.getPercentagePathInFly())),
       ),
     );
 
