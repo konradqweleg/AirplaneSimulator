@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Container(
         child:
-        plane.analiseSituation.isCrashFlight() ?
+        plane.analiseSituation.isCrashFlight() ||  plane.analiseSituation.isLandingOk ?
         SimulationStatusWidget(plane.analiseSituation):
         Column(
           children: [

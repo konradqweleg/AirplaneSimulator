@@ -24,6 +24,10 @@ class SimulationStatusWidgetState extends State<SimulationStatusWidget>{
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
 
+               widget.analiseSituation.isLandingOk ? Row(
+                 mainAxisAlignment: MainAxisAlignment.center,
+                 children: [ Text("Udane lądowanie ",style: TextStyle(color: Colors.green,fontSize: 80))],
+               ) :
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [ Text("Katastrofa ${widget.analiseSituation.getCrashReason()} ",style: TextStyle(color: Colors.red,fontSize: 80))],

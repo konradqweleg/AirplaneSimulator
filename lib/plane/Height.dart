@@ -122,6 +122,7 @@ class Height{
 
 
 
+  double WARNING_INFO_LEVEL = 500;
   bool calculateIfStall(Velocity velocity,ControlColumn controlColumn,Flaps flaps){
 
     double cl = calculateCL(controlColumn.getHorizontalAngle(),flaps);
@@ -139,13 +140,17 @@ class Height{
     print("Lift force ${liftForce}  ${liftForce < STALL_THRESHOOLD ? 'PRZECIĄGNIECIE':''}");
     print("Prędkość ${velocity.velocityHorizontal*3.6}");
 
-    if(liftForce < STALL_THRESHOOLD){
+    if((liftForce < (STALL_THRESHOOLD + WARNING_INFO_LEVEL)) && (controlColumn.getHorizontalAngle() >= 0)){
       Warning.isCloseStall = true;
     }else{
       Warning.isCloseStall = false;
     }
 
-    return liftForce < STALL_THRESHOOLD;
+    if(controlColumn.getHorizontalAngle() >= 0) {
+      return liftForce < STALL_THRESHOOLD;
+    }else{
+      return false;
+    }
 
   }
 
@@ -179,6 +184,8 @@ class Height{
          velocity.velocityVertical = 0.0;
          calculateHeightInFly(velocity, controlColumn);
        }
+     }else{
+       calculateStartHeight(velocity,controlColumn);
      }
    }
 
