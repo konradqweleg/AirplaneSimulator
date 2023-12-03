@@ -65,12 +65,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void updateMapView() {
     setState(() {
-      if (plane.distance.metres < plane.positionPlane.endRunway) {
-        mapWidget = MapWidget(plane.distance.metres);
-      } else if(plane.distance.metres < (plane.positionPlane.endRunway + plane.positionPlane.endFlightPosition)) {
+      if (plane.distance.getMetresFromStartingRunWay() < plane.positionPlane.endRunway) {
+        mapWidget = MapWidget(plane.distance.getMetresFromStartingRunWay());
+      } else if(plane.distance.getMetresFromStartingRunWay() < (plane.positionPlane.endRunway + plane.positionPlane.endFlightPosition)) {
         mapWidget = MapWidgetFly(plane.positionPlane);
       }else{
-        mapWidget = MapWidget(plane.distance.metres - (plane.positionPlane.endFlightPosition + plane.positionPlane.endRunway));
+        mapWidget = MapWidget(plane.distance.getMetresFromStartingRunWay() - (plane.positionPlane.endFlightPosition + plane.positionPlane.endRunway));
       }
       ;
     });
@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Container(
         child:
-        plane.analiseSituation.isCrashFlight() ||  plane.analiseSituation.isLandingOk ?
+        plane.analiseSituation.isCrashFlight() ||  plane.analiseSituation.getIsLandingOk() ?
         SimulationStatusWidget(plane.analiseSituation):
         Column(
           children: [
@@ -138,8 +138,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       Row(
                         children: [
                           AttitudeInidactorWidget(
-                              plane.controlColumn.horizontalPosition,
-                              plane.controlColumn.verticalPosition),
+                              plane.controlColumn.getRawHorizontalControlColumnPosition(),
+                              plane.controlColumn.getRawVerticalControlColumnPosition()),
                           AttitudeInforValues(
                               plane.controlColumn.getHorizontalAngle(),
                               plane.controlColumn.getVerticalAngle())
@@ -147,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       Row(
                         children: [
-                         DistanceInfoWidget( plane.distance.metres)
+                         DistanceInfoWidget( plane.distance.getMetresFromStartingRunWay())
                         ],
                       )
                     ],

@@ -1,6 +1,6 @@
 enum FlapsPosition {
-  retracted, // złożone
-  takeoff,   // startowe
-  landing,   // do lądowania
-  extended   // wysunięte
+  retracted, // Retracted
+  takeoff,   // Takeoff
+  landing,   // Landing
+  extended   // Extended
 }

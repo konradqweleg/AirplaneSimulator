@@ -1,14 +1,12 @@
+import 'package:airplane/recorder/FlightDataRecorder.dart';
+
 class Engine {
 
-  double THRUST_NEWTON = 121000.0;
-  double GRAM_FUEL_ON_NEWTON_PER_SECONDE = 0.01063;
+  static const double THRUST_NEWTON = 121000.0;
+  static const double GRAM_FUEL_ON_NEWTON_PER_SECONDE = 0.01063;
+  static const double KILO_PREFIX = 1000;
 
   double _actualThrust = 0.0;
-
-
-  Engine(){
-
-  }
 
   void setThrustInNewton(double thrust){
     _actualThrust = thrust;
@@ -23,7 +21,7 @@ class Engine {
   }
 
   double getThrustInKNewton(){
-    return _actualThrust / 1000;
+    return _actualThrust / KILO_PREFIX;
   }
 
 }

@@ -1,8 +1,11 @@
 class Distance{
-  double metres = 0.0;
+  double _metresFromStartingPath = 0.0;
 
+  double getMetresFromStartingRunWay(){
+    return _metresFromStartingPath;
+  }
 
   void updateDistance(double addMetres){
-    metres += addMetres;
+    _metresFromStartingPath += addMetres;
   }
 }

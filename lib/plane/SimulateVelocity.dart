@@ -36,7 +36,7 @@ class SimulateVelocity{
 
 
     double maxAccelerationMetresPerSecond = 0.0;
-    if(height.metresNPM < GROUND_HEIGHT_THRESHOLD_IN_METRES){
+    if(height.getHeightPlaneAboveTheGroundInMetres() < GROUND_HEIGHT_THRESHOLD_IN_METRES){
       maxAccelerationMetresPerSecond = changeKMPerHourToMetresOnSeconds(MAX_SPEED_ON_GROUND_KM_PER_HOUR);
      // return startMaxV;
     }else{
@@ -55,7 +55,7 @@ class SimulateVelocity{
   double getMaxAcceleration(Height height){
     double startMaxV = 0.000017057; //przyspieszenie maksymalne
     double flyMaxV = 0.000042647;
-    if(height.metresNPM < GROUND_HEIGHT_THRESHOLD_IN_METRES){
+    if(height.getHeightPlaneAboveTheGroundInMetres() < GROUND_HEIGHT_THRESHOLD_IN_METRES){
        return startMaxV;
     }else{
        return flyMaxV;
@@ -71,7 +71,7 @@ class SimulateVelocity{
   }
 
   double getMaxVelocity(Height height){
-    if(height.metresNPM < GROUND_HEIGHT_THRESHOLD_IN_METRES){
+    if(height.getHeightPlaneAboveTheGroundInMetres() < GROUND_HEIGHT_THRESHOLD_IN_METRES){
       return changeKMPerHourToMetresOnSeconds(MAX_SPEED_ON_GROUND_KM_PER_HOUR);
     }else{
       return changeKMPerHourToMetresOnSeconds(MAX_SPEED_ON_FLY_KM_PER_HOUR);
@@ -84,7 +84,7 @@ class SimulateVelocity{
     if(actualVelocity < maxVelocityOnActualPositionRestrictor) {
       log("Wzrost prekośći  o ${(maxVelocityOnPointRestrictor * (sumPositionRestrictors) )}");
 
-      double factorIncreaseVelocityBaseOnControlColumn = (90 - (100 -  controlColumn.horizontalPosition))/90;
+      double factorIncreaseVelocityBaseOnControlColumn = (90 - (100 -  controlColumn.getRawHorizontalControlColumnPosition()))/90;
 
 
       double factorToClapsPosition = 1.0;
@@ -136,11 +136,12 @@ class SimulateVelocity{
       }
 
     }
+
   }
 
 
   void analiseWarningClapPosition(Flaps flaps,Restritor restritor,Height height){
-    if(flaps.getCurrentFlapsPosition() != 15 && flaps.getCurrentFlapsPosition() !=30  && height.metresNPM < 0.001 && ((restritor.left+ restritor.right) >0)){
+    if(flaps.getCurrentFlapsPosition() != 15 && flaps.getCurrentFlapsPosition() !=30  && height.getHeightPlaneAboveTheGroundInMetres() < 0.001 && ((restritor.left+ restritor.right) >0)){
       Warning.isBadClapPosition = true;
     }else{
       Warning.isBadClapPosition = false;

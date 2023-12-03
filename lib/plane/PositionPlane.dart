@@ -11,7 +11,7 @@ class PositionPlane{
   double endYMetres = 10000; //600000
 
   void updatePosition(Distance distance){
-    position = distance.metres;
+    position = distance.getMetresFromStartingRunWay();
   }
 
   double getPercentagePathInFly(){

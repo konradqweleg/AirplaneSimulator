@@ -46,7 +46,7 @@ class HeightWidgetState extends State<HeightWidget>{
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text("m n.p.m"), Text("${widget.height.metresNPM.toStringAsFixed(3)} m")],
+                  children: [Text("m n.p.m"), Text("${widget.height.getHeightPlaneAboveTheGroundInMetres().toStringAsFixed(3)} m")],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

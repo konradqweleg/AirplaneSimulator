@@ -1,4 +1,5 @@
-import 'package:airplane/plane/AnaliseSituation.dart';
+import 'package:airplane/recorder/FlightDataRecorder.dart';
+import 'package:airplane/simulation/AnaliseSituation.dart';
 import 'package:airplane/plane/ControlColumn.dart';
 import 'package:airplane/plane/Engine.dart';
 import 'package:airplane/plane/Flaps.dart';
@@ -25,6 +26,11 @@ class Boeing_737_800{
   Flaps flaps = Flaps();
   PositionPlane positionPlane = PositionPlane();
 
+
+  Boeing_737_800(){
+    FlightDataRecorder.deleteAllDatas();
+  }
+
   Tank getTankDevice(){
     return tank;
   }
@@ -40,8 +46,11 @@ class Boeing_737_800{
     height.calculateHeight(velocity, controlColumn,flaps);
     double oldVelocity = velocity.velocityHorizontal;
     distance.updateDistance(((oldVelocity + velocity.velocityHorizontal)/2));
-    analiseSituation.analise(velocity,height,positionPlane);
+    analiseSituation.analiseActualPlaneSituation(velocity,height,positionPlane);
     positionPlane.updatePosition(distance);
+
+
+    FlightDataRecorder.saveLeftEngineStatus(left.getThrustInKNewton());
 
 
 

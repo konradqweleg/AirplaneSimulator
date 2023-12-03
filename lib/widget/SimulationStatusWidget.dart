@@ -1,4 +1,4 @@
-import 'package:airplane/plane/AnaliseSituation.dart';
+import 'package:airplane/simulation/AnaliseSituation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +24,7 @@ class SimulationStatusWidgetState extends State<SimulationStatusWidget>{
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
 
-               widget.analiseSituation.isLandingOk ? Row(
+               widget.analiseSituation.getIsLandingOk() ? Row(
                  mainAxisAlignment: MainAxisAlignment.center,
                  children: [ Text("Udane lądowanie ",style: TextStyle(color: Colors.green,fontSize: 80))],
                ) :

@@ -60,7 +60,7 @@ class FlapsState extends State<FlapsWidget>{
                             onChanged: (value) {
                               setState(() {
                                 selectedOption = value!;
-                                widget.flaps.setFlapsAngle(FlapsPosition.retracted);
+                                widget.flaps.setFlapsPosition(FlapsPosition.retracted);
                               });
                             },
                           ),
@@ -73,7 +73,7 @@ class FlapsState extends State<FlapsWidget>{
                             onChanged: (value) {
                               setState(() {
                                 selectedOption = value!;
-                                widget.flaps.setFlapsAngle(FlapsPosition.takeoff);
+                                widget.flaps.setFlapsPosition(FlapsPosition.takeoff);
                               });
                             },
                           ),
@@ -86,7 +86,7 @@ class FlapsState extends State<FlapsWidget>{
                             onChanged: (value) {
                               setState(() {
                                 selectedOption = value!;
-                                widget.flaps.setFlapsAngle(FlapsPosition.landing);
+                                widget.flaps.setFlapsPosition(FlapsPosition.landing);
                               });
                             },
                           ),
@@ -99,7 +99,7 @@ class FlapsState extends State<FlapsWidget>{
                             onChanged: (value) {
                               setState(() {
                                 selectedOption = value!;
-                                widget.flaps.setFlapsAngle(FlapsPosition.extended);
+                                widget.flaps.setFlapsPosition(FlapsPosition.extended);
                               });
                             },
                           ),

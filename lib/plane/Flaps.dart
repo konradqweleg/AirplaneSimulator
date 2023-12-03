@@ -3,31 +3,29 @@
 import 'FlapsPosition.dart';
 
 class Flaps{
-  double positionFlaps = 0.0;
 
   Map<FlapsPosition, int> flapAngles = {
-    FlapsPosition.retracted: 0,   // Klapa złożona, kąt równy 0 stopni
-    FlapsPosition.takeoff: 15,    // Klapa startowa, przykładowy kąt 15 stopni
-    FlapsPosition.landing: 30,    // Klapa do lądowania, przykładowy kąt 30 stopni
-    FlapsPosition.extended: 45    // Klapa wysunięta, przykładowy kąt 45 stopni
+    FlapsPosition.retracted: 0,   // Retracted flap, angle equal to 0 degrees
+    FlapsPosition.takeoff: 15,    // Takeoff flap, example angle of 15 degrees
+    FlapsPosition.landing: 30,    // Landing flap, example angle of 30 degrees
+    FlapsPosition.extended: 45    // Extended flap, example angle of 45 degrees
   };
 
-
-  FlapsPosition currentFlaps = FlapsPosition.retracted;
-
+  FlapsPosition _currentFlapsPosition = FlapsPosition.retracted;
 
   int getCurrentFlapsPosition(){
-    int angle = flapAngles[currentFlaps] ?? 0;
+    int angle = flapAngles[_currentFlapsPosition] ?? 0;
     return angle;
   }
 
-  void setFlapsAngle(FlapsPosition newFlapPosition){
-    currentFlaps = newFlapPosition;
+  FlapsPosition getFlapsPosition(){
+    return _currentFlapsPosition;
+  }
+
+  void setFlapsPosition(FlapsPosition newFlapPosition){
+    _currentFlapsPosition = newFlapPosition;
   }
 
 
-
-
-  // int angle = flapAngles[currentFlaps] ?? 0;
 
 }
