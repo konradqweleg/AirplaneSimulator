@@ -85,7 +85,7 @@ class Height {
   }
 
   bool _isPlaneHasV1Speed(Velocity velocity) {
-    return velocity.getVelocityHorizontal() < velocity.getSpeedV1InMetresPerSeconds();
+    return velocity.getVelocityHorizontal() > velocity.getSpeedV1InMetresPerSeconds();
   }
 
   bool _isAngleAscent(ControlColumn controlColumn) {
