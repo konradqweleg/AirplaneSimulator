@@ -16,7 +16,7 @@ class DistanceInfoWidget extends StatelessWidget{
       decoration:  BoxDecoration(
         border: Border.all(
           width: 1,
-          color: Warning.isBadClapPosition? Colors.red : Colors.grey,
+          color: Warning.isBadClapPosition() ? Colors.red : Colors.grey,
         ),
 
       ),

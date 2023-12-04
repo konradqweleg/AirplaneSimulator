@@ -13,10 +13,10 @@ import 'Restrictor.dart';
 import 'Tank.dart';
 
 class Boeing_737_800{
-  Tank tank = Tank(500000.0);
+  final Tank _tank = Tank(500000.0);
   Engine left = Engine();
   Engine right = Engine();
-  Restritor restrictor = Restritor();
+  Restrictor restrictor = Restrictor();
   Height height = Height();
   Velocity velocity = Velocity();
   Distance distance = Distance();
@@ -32,20 +32,20 @@ class Boeing_737_800{
   }
 
   Tank getTankDevice(){
-    return tank;
+    return _tank;
   }
 
 
 
   void process(){
-    tank.useFuel(left.getFuelInGramConsumptionPerSecond() + right.getFuelInGramConsumptionPerSecond());
-    left.setThrustInNewton(restrictor.left);
-    right.setThrustInNewton(restrictor.right);
+    _tank.useFuel(left.getFuelInGramConsumptionPerSecond() + right.getFuelInGramConsumptionPerSecond());
+    left.setThrustInNewton(restrictor.getLeftPositionRestrictor());
+    right.setThrustInNewton(restrictor.getRightPositionRestrictor());
 
     velocity = simulateVelocity.getActualAcceleration([left,right],restrictor, height,velocity,controlColumn,flaps);
     height.calculateHeight(velocity, controlColumn,flaps);
-    double oldVelocity = velocity.velocityHorizontal;
-    distance.updateDistance(((oldVelocity + velocity.velocityHorizontal)/2));
+    double oldVelocity = velocity.getVelocityHorizontal();
+    distance.updateDistance(((oldVelocity + velocity.getVelocityHorizontal())/2));
     analiseSituation.analiseActualPlaneSituation(velocity,height,positionPlane);
     positionPlane.updatePosition(distance);
 

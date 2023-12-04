@@ -13,8 +13,8 @@ class Height {
   static const double ONE_METRES = 1.0;
   static const double ZERO_METRES = 0.0;
   static const double FACTOR_RATE_OF_CLIMB = 0.3; //decreasing rate of climb
-
-
+  double _DECREASE_HORIZONTAL_VELOCITY_IN_METRES_PER_SECONDS_IF_STALL = 2.0;
+  double _INCREASE_VERTICAL_VELOCITY_IN_METRES_PER_SECONDS_IF_STALL = 3.0;
   static const List<double> _coefficientClForClapRetractedPosition_0 = [
     -0.000000668968542,
     0.000131969308,
@@ -23,7 +23,7 @@ class Height {
     0.458479337
   ];
 
-  static const List<double>  _coefficientClForClapTakeOffPosition_15 = [
+  static const List<double> _coefficientClForClapTakeOffPosition_15 = [
     -0.00000101,
     0.00019105,
     -0.01122009,
@@ -31,7 +31,7 @@ class Height {
     0.74044567
   ];
 
-  static const List<double>  _coefficientClForClapTakeOffPosition_30 = [
+  static const List<double> _coefficientClForClapTakeOffPosition_30 = [
     -0.00000131,
     0.00023987,
     -0.0134915,
@@ -39,18 +39,13 @@ class Height {
     0.9310216
   ];
 
-  static const List<double> _coefficientClForClapExtendedPosition_45   =  [
+  static const List<double> _coefficientClForClapExtendedPosition_45 = [
     -0.00000146,
     0.00025583,
     -0.01324251,
     0.1719971,
     1.34867048
   ];
-
-
-
-
-
 
   double getHeightPlaneAboveTheGroundInMetres() {
     return _metresPlaneAboveTheGround;
@@ -69,36 +64,40 @@ class Height {
     return angleOfAttackDegrees;
   }
 
-  double calculateRateOfClimb(double horizontalSpeedMetersPerSecond, double angleOfAttackDegrees) {
-
-    angleOfAttackDegrees = _calculateRealAngleForAttackTrimToMax70(angleOfAttackDegrees);
+  double calculateRateOfClimb(
+      double horizontalSpeedMetersPerSecond, double angleOfAttackDegrees) {
+    angleOfAttackDegrees =
+        _calculateRealAngleForAttackTrimToMax70(angleOfAttackDegrees);
     double angleInRadians = angleOfAttackDegrees * (3.14159 / 180);
 
-    double scaleRateOfClimb = (horizontalSpeedMetersPerSecond * tan(angleInRadians)) * FACTOR_RATE_OF_CLIMB;
+    double scaleRateOfClimb =
+        (horizontalSpeedMetersPerSecond * tan(angleInRadians)) *
+            FACTOR_RATE_OF_CLIMB;
     return scaleRateOfClimb;
   }
 
   bool _isNotV1Speed(Velocity velocity) {
     if ((_metresPlaneAboveTheGround < ONE_METRES) &&
-        (velocity.velocityHorizontal <= velocity.speedV1MetresPerSecond)) {
+        (velocity.getVelocityHorizontal() <= velocity.getSpeedV1InMetresPerSeconds())) {
       return true;
     }
     return false;
   }
 
   bool _isPlaneHasV1Speed(Velocity velocity) {
-    return velocity.velocityHorizontal < velocity.speedV1MetresPerSecond;
+    return velocity.getVelocityHorizontal() < velocity.getSpeedV1InMetresPerSeconds();
   }
 
   bool _isAngleAscent(ControlColumn controlColumn) {
     return controlColumn.getHorizontalAngle() > ZERO_METRES;
   }
 
-  void _startFlight(){
+  void _startFlight() {
     _metresPlaneAboveTheGround = ONE_METRES;
   }
 
-  void _calculateIfPlaneCanStartingFly(Velocity velocity, ControlColumn controlColumn) {
+  void _calculateIfPlaneCanStartingFly(
+      Velocity velocity, ControlColumn controlColumn) {
     if (_isPlaneHasV1Speed(velocity) && _isAngleAscent(controlColumn)) {
       _startFlight();
     }
@@ -111,20 +110,24 @@ class Height {
     return false;
   }
 
-
-  void _ifCalculationHeightOnAirOnLowerThenZeroMetresSetZeroMetres(double rateOfClimb){//czy to potrzebne w ogóle ?
+  void _ifCalculationHeightOnAirOnLowerThenZeroMetresSetZeroMetres(
+      double rateOfClimb) {
+    //czy to potrzebne w ogóle ?
     if ((_metresPlaneAboveTheGround + rateOfClimb) < 0) {
       _metresPlaneAboveTheGround = 0;
     }
   }
 
-  void calculateHeightInAir(Velocity velocity, ControlColumn controlColumn) {
-    double horizontalSpeedMetersPerSecond = velocity.velocityHorizontal;
+  void _calculateHeightInAir(Velocity velocity, ControlColumn controlColumn) {
+    print("Wysokość ${_metresPlaneAboveTheGround}");
+    double horizontalSpeedMetersPerSecond = velocity.getVelocityHorizontal();
     double angleOfAttackDegrees = controlColumn.getHorizontalAngle();
-    double rateOfClimb = calculateRateOfClimb(horizontalSpeedMetersPerSecond, angleOfAttackDegrees);
+    double rateOfClimb = calculateRateOfClimb(
+        horizontalSpeedMetersPerSecond, angleOfAttackDegrees);
 
     _ifCalculationHeightOnAirOnLowerThenZeroMetresSetZeroMetres(rateOfClimb);
     _metresPlaneAboveTheGround = _metresPlaneAboveTheGround + rateOfClimb;
+    velocity.setVelocityVertical(0.0);
   }
 
   double _degreesToRadians(double degrees) {
@@ -143,10 +146,9 @@ class Height {
     return result;
   }
 
-
-
-  List<double> _getCoefficientClForClapPosition(Flaps flaps){
-    List<double> actualCoefficientsCL = _coefficientClForClapRetractedPosition_0;
+  List<double> _getCoefficientClForClapPosition(Flaps flaps) {
+    List<double> actualCoefficientsCL =
+        _coefficientClForClapRetractedPosition_0;
 
     if (flaps.getFlapsPosition() == FlapsPosition.retracted) {
       actualCoefficientsCL = _coefficientClForClapRetractedPosition_0;
@@ -162,7 +164,8 @@ class Height {
   }
 
   //Calculates the lift coefficient based on the angle of attack and flap position
-  double _calculateCLBasedOnDegreesAttackAndFlapsPosition(double degrees, Flaps flaps) {
+  double _calculateCLBasedOnDegreesAttackAndFlapsPosition(
+      double degrees, Flaps flaps) {
     double liftCoefficientCL = 0.0;
 
     List<double> actualCoefficientsCL = _getCoefficientClForClapPosition(flaps);
@@ -172,7 +175,8 @@ class Height {
           _calculatePolynomialValue(actualCoefficientsCL, degrees);
     } else {
       liftCoefficientCL =
-          _calculatePolynomialValue(actualCoefficientsCL, 60.0) / (degrees / 20);
+          _calculatePolynomialValue(actualCoefficientsCL, 60.0) /
+              (degrees / 20);
     }
 
     return liftCoefficientCL;
@@ -180,9 +184,10 @@ class Height {
 
   double WARNING_INFO_LEVEL = 500;
 
-  bool calculateIfStall(
+  bool _calculateIfStall(
       Velocity velocity, ControlColumn controlColumn, Flaps flaps) {
-    double cl = _calculateCLBasedOnDegreesAttackAndFlapsPosition(controlColumn.getHorizontalAngle(), flaps);
+    double cl = _calculateCLBasedOnDegreesAttackAndFlapsPosition(
+        controlColumn.getHorizontalAngle(), flaps);
 
     double wingAreaM2 = 124.6;
     double densityGroundKgPerM3 = 1.125;
@@ -192,18 +197,15 @@ class Height {
         (_metresPlaneAboveTheGround / 13000) * rangeDensity;
 
     double liftForce =
-        (1 / 2) * cl * actualDensity * velocity.velocityHorizontal * wingAreaM2;
+        (1 / 2) * cl * actualDensity * velocity.getVelocityHorizontal() * wingAreaM2;
 
     double STALL_THRESHOOLD = 3000.0;
-    print(
-        "Lift force ${liftForce}  ${liftForce < STALL_THRESHOOLD ? 'PRZECIĄGNIECIE' : ''}");
-    print("Prędkość ${velocity.velocityHorizontal * 3.6}");
 
     if ((liftForce < (STALL_THRESHOOLD + WARNING_INFO_LEVEL)) &&
         (controlColumn.getHorizontalAngle() >= 0)) {
-      Warning.isCloseStall = true;
+      Warning.setCloseStallError();
     } else {
-      Warning.isCloseStall = false;
+      Warning.clearCloseStallError();
     }
 
     if (controlColumn.getHorizontalAngle() >= 0) {
@@ -213,43 +215,49 @@ class Height {
     }
   }
 
+  void _calculateInfluenceStallOnFlying(Velocity velocity) {
+
+    velocity.setVelocityHorizontal( velocity.getVelocityHorizontal() - _DECREASE_HORIZONTAL_VELOCITY_IN_METRES_PER_SECONDS_IF_STALL );
+    velocity.setVelocityVertical(velocity.getVelocityVertical() + _INCREASE_VERTICAL_VELOCITY_IN_METRES_PER_SECONDS_IF_STALL);
+    _metresPlaneAboveTheGround -= velocity.getVelocityVertical();
+  }
+
   bool first = false;
 
-  void calculateWarningHeight(Velocity velocity) {
+  void _calculateWarningHeight(Velocity velocity) {
     if (_metresPlaneAboveTheGround < 200.0 &&
-        velocity.velocityHorizontal > 100.0) {
-      Warning.isLowHeight = true;
+        velocity.getVelocityHorizontal() > 100.0) {
+      Warning.setLowHeightError();
     } else {
-      Warning.isLowHeight = false;
+      Warning.clearLowHeightError();
+    }
+  }
+
+  void _correctHeightWhenIsMinus() {
+    if (_metresPlaneAboveTheGround < 0) {
+      _metresPlaneAboveTheGround = 0;
     }
   }
 
   void calculateHeight(
       Velocity velocity, ControlColumn controlColumn, Flaps flaps) {
-    print("Wysokość ${_metresPlaneAboveTheGround}");
-    calculateWarningHeight(velocity);
+    _calculateWarningHeight(velocity);
 
     if (_isNotV1Speed(velocity)) {
       _calculateIfPlaneCanStartingFly(velocity, controlColumn);
     } else {
-      if (_metresPlaneAboveTheGround > 0) {
-        bool ifStall = calculateIfStall(velocity, controlColumn, flaps);
-
+      if (_metresPlaneAboveTheGround > ZERO_METRES) {
+        bool ifStall = _calculateIfStall(velocity, controlColumn, flaps);
         if (ifStall) {
-          velocity.velocityHorizontal -= 2.0;
-          velocity.velocityVertical += 3.0;
-          _metresPlaneAboveTheGround -= velocity.velocityVertical;
+          _calculateInfluenceStallOnFlying(velocity);
         } else {
-          velocity.velocityVertical = 0.0;
-          calculateHeightInAir(velocity, controlColumn);
+          _calculateHeightInAir(velocity, controlColumn);
         }
       } else {
         _calculateIfPlaneCanStartingFly(velocity, controlColumn);
       }
 
-      if (_metresPlaneAboveTheGround < 0) {
-        _metresPlaneAboveTheGround = 0;
-      }
+      _correctHeightWhenIsMinus();
     }
   }
 }

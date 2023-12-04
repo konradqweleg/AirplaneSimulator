@@ -8,8 +8,11 @@ class AnaliseSituation {
   bool _isCrash = false;
   bool _isLandingOk = false;
 
+  static const double _NEARLY_ZERO_VALUE = 0.001;
+  static const double _END_RUN_WAY_OFFSET = 500; //Used to distinguish between runway excursions and off-airport accidents
+
   bool _isNotSafetySpeedVertical(Velocity velocity) {
-    return velocity.velocityVertical >
+    return velocity.getVelocityVertical() >
         _MAX_SAFETY_VELOCITY_VERTICAL_METRES_PER_SECONDS;
   }
 
@@ -35,15 +38,15 @@ class AnaliseSituation {
 
   bool _isOutsideRunWayOnGround(Height height, PositionPlane positionPlane) {
     if ((positionPlane.position > positionPlane.endRunway) &&
-        (height.getHeightPlaneAboveTheGroundInMetres() < 0.001) &&
-        (positionPlane.position < (positionPlane.endRunway + 500))) {
+        (height.getHeightPlaneAboveTheGroundInMetres() < _NEARLY_ZERO_VALUE) &&
+        (positionPlane.position < (positionPlane.endRunway + _END_RUN_WAY_OFFSET))) {
       //Staring
       return true;
     } else if ((positionPlane.position >
             (positionPlane.endRunway +
                 positionPlane.endFlightPosition +
                 positionPlane.endRunway)) &&
-        (height.getHeightPlaneAboveTheGroundInMetres() < 0.001)) {
+        (height.getHeightPlaneAboveTheGroundInMetres() < _NEARLY_ZERO_VALUE)) {
       //Landing
       return true;
     }
@@ -55,8 +58,8 @@ class AnaliseSituation {
       Velocity velocity, Height height, PositionPlane positionPlane) {
     if ((positionPlane.position >
             (positionPlane.endRunway + positionPlane.endFlightPosition)) &&
-        (height.getHeightPlaneAboveTheGroundInMetres() < 0.001) &&
-        (velocity.velocityHorizontal < 0.001)) {
+        (height.getHeightPlaneAboveTheGroundInMetres() < _NEARLY_ZERO_VALUE) &&
+        (velocity.getVelocityHorizontal() < _NEARLY_ZERO_VALUE)) {
       return true;
     }
     return false;

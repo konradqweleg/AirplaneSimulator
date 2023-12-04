@@ -3,11 +3,11 @@ import 'dart:io';
 
 class FlightDataRecorder{
 
-  static String basePathForStatusFiles = "C:\\Users\\Konrad\\StudioProjects\\AirplaneSimulator\\data";
-  static String engineLeftNameFile = "engineLeft";
+  static const String _basePathForStatusFiles = "C:\\Users\\Konrad\\StudioProjects\\AirplaneSimulator\\data";
+  static const String _engineLeftNameFile = "engineLeft";
 
   static void deleteAllDatas(){
-    _deleteFilesInDirectory(basePathForStatusFiles);
+    _deleteFilesInDirectory(_basePathForStatusFiles);
   }
 
   static void _deleteFilesInDirectory(String directoryPath) {
@@ -24,12 +24,12 @@ class FlightDataRecorder{
   static void _appendTextToCSVFile(String filePath, String nameFile, String textToAppend) {
     File file = File("$filePath\\$nameFile");
     RandomAccessFile rf = file.openSync(mode: FileMode.append);
-    rf.writeStringSync(textToAppend+",");
+    rf.writeStringSync("$textToAppend,");
     rf.closeSync();
   }
 
   static void saveLeftEngineStatus(double value){
-    _appendTextToCSVFile(basePathForStatusFiles, engineLeftNameFile,value.toString());
+    _appendTextToCSVFile(_basePathForStatusFiles, _engineLeftNameFile,value.toString());
   }
 
 }

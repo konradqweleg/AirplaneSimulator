@@ -131,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       Row(
                         children: [
-                          VelocityWidget(plane.velocity.velocityHorizontal),
+                          VelocityWidget(plane.velocity.getVelocityHorizontal()),
                           FlapsInfoWidget(plane.flaps)
                         ],
                       ),

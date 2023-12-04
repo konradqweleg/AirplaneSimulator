@@ -16,7 +16,7 @@ class FuelWidget extends StatelessWidget{
       decoration:  BoxDecoration(
           border: Border.all(
             width: 1,
-            color:  (Warning.isLowLevelFuel)? Colors.red:  Colors.grey,
+            color:  (Warning.isLowLevelFuel())? Colors.red:  Colors.grey,
           ),
 
       ),
@@ -45,7 +45,7 @@ class FuelWidget extends StatelessWidget{
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text("Status"),Text((Warning.isLowLevelFuel)? "NISKI POZIOM PALIWA":"OK")],
+                children: [Text("Status"),Text((Warning.isLowLevelFuel())? "NISKI POZIOM PALIWA":"OK")],
               )
               // Container(width: 200.0,child: Text("Pozostało : ${tank.getLevelFuelInLitres()} litrów paliwa")),
               // Container(width: 200.0,child: Text("Wystarczy na : ${tank.getMaxKMOnActualFuelLevel()} km")),

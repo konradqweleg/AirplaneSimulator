@@ -25,7 +25,7 @@ class HeightWidgetState extends State<HeightWidget>{
       decoration:  BoxDecoration(
         border: Border.all(
           width: 1,
-          color: Warning.isLowHeight?  Colors.red : Colors.grey,
+          color: Warning.isCloseStall()?  Colors.red : Colors.grey,
         ),
 
       ),
@@ -50,7 +50,7 @@ class HeightWidgetState extends State<HeightWidget>{
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text("Status"), Text(Warning.isLowHeight?"NISKA WYSOKOŚĆ" :"OK")],
+                  children: [Text("Status"), Text(Warning.isCloseStall()?"NISKA WYSOKOŚĆ" :"OK")],
                 ),
                 // Container(width: 200.0,child: Text("Pozostało : ${tank.getLevelFuelInLitres()} litrów paliwa")),
                 // Container(width: 200.0,child: Text("Wystarczy na : ${tank.getMaxKMOnActualFuelLevel()} km")),

@@ -15,7 +15,7 @@ class VelocityWidget extends StatelessWidget{
        decoration: BoxDecoration(
          border: Border.all(
            width: 1,
-           color: Warning.isCloseStall? Colors.red: Colors.grey,
+           color: Warning.isCloseStall()? Colors.red: Colors.grey,
          ),
 
        ),
@@ -45,7 +45,7 @@ class VelocityWidget extends StatelessWidget{
                  ),
                  Row(
                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                   children: [Text("Status"), Text(Warning.isCloseStall? "PRZECIĄGNIECIE": "OK")],
+                   children: [Text("Status"), Text(Warning.isCloseStall()? "PRZECIĄGNIECIE": "OK")],
                  ),
                  // Container(width: 200.0,child: Text("Pozostało : ${tank.getLevelFuelInLitres()} litrów paliwa")),
                  // Container(width: 200.0,child: Text("Wystarczy na : ${tank.getMaxKMOnActualFuelLevel()} km")),

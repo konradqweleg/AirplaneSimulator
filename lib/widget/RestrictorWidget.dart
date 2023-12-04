@@ -8,7 +8,7 @@ class RestrictorWidget extends StatefulWidget {
     return RestrictorWidgetState();
   }
 
-  Restritor restrictor;
+  Restrictor restrictor;
   RestrictorWidget(this.restrictor);
 }
 
@@ -52,11 +52,11 @@ class RestrictorWidgetState extends State<RestrictorWidget> {
                 RotatedBox(
                   quarterTurns: 3,
                   child: Slider(
-                    value: widget.restrictor.left,
+                    value: widget.restrictor.getLeftPositionRestrictor(),
                     max: 121000.0,
                     onChanged: (newValue) {
                       setState(() {
-                        widget.restrictor.left = newValue;
+                        widget.restrictor.setLeftPositionRestrictor(newValue);
 
                       });
                     },
@@ -65,14 +65,13 @@ class RestrictorWidgetState extends State<RestrictorWidget> {
                 RotatedBox(
                   quarterTurns: 3,
                   child: Slider(
-                    value: widget.restrictor.both,
+                    value: widget.restrictor.getBothRestrictorPosition(),
                     max: 121000.0,
                     onChanged: (newValue) {
                       setState(() {
-                        widget.restrictor.left = newValue;
-                        widget.restrictor.right = newValue;
-                        widget.restrictor.both = newValue;
-
+                        widget.restrictor.setLeftPositionRestrictor(newValue);
+                        widget.restrictor.setRightPositionRestrictor(newValue);
+                        widget.restrictor.setBothRestrictorPosition(newValue);
                       });
                     },
                   ),
@@ -80,12 +79,11 @@ class RestrictorWidgetState extends State<RestrictorWidget> {
                 RotatedBox(
                   quarterTurns: 3,
                   child: Slider(
-                    value: widget.restrictor.right,
+                    value: widget.restrictor.getRightPositionRestrictor(),
                     max: 121000.0,
                     onChanged: (newValue) {
                       setState(() {
-                        widget.restrictor.right = newValue;
-                        widget.restrictor.right = newValue;
+                        widget.restrictor.setRightPositionRestrictor(newValue);
 
                       });
                     },
