@@ -8,8 +8,8 @@ class RestrictorWidget extends StatefulWidget {
     return RestrictorWidgetState();
   }
 
-  Restrictor restrictor;
-  RestrictorWidget(this.restrictor);
+  Restrictor _restrictor;
+  RestrictorWidget(this._restrictor, {super.key});
 }
 
 class RestrictorWidgetState extends State<RestrictorWidget> {
@@ -19,7 +19,7 @@ class RestrictorWidgetState extends State<RestrictorWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(5.0),
+      margin: const EdgeInsets.all(5.0),
       decoration:  BoxDecoration(
         border: Border.all(
           width: 1,
@@ -29,7 +29,7 @@ class RestrictorWidgetState extends State<RestrictorWidget> {
       ),
       child: Column(
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [Text("PRZEPUSTNICA",style: TextStyle(fontWeight: FontWeight.bold))
 
@@ -38,12 +38,12 @@ class RestrictorWidgetState extends State<RestrictorWidget> {
           Container(
             height: 40,
             width: 200,
-            child: Row(
+            child: const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [Text("L"), Text("O"), Text("P")],
             ),
           ),
-          Container(
+          SizedBox(
             height: 250,
             width: 240,
             child: Row(
@@ -52,11 +52,11 @@ class RestrictorWidgetState extends State<RestrictorWidget> {
                 RotatedBox(
                   quarterTurns: 3,
                   child: Slider(
-                    value: widget.restrictor.getLeftPositionRestrictor(),
+                    value: widget._restrictor.getLeftPositionRestrictor(),
                     max: 121000.0,
                     onChanged: (newValue) {
                       setState(() {
-                        widget.restrictor.setLeftPositionRestrictor(newValue);
+                        widget._restrictor.setLeftPositionRestrictor(newValue);
 
                       });
                     },
@@ -65,13 +65,13 @@ class RestrictorWidgetState extends State<RestrictorWidget> {
                 RotatedBox(
                   quarterTurns: 3,
                   child: Slider(
-                    value: widget.restrictor.getBothRestrictorPosition(),
+                    value: widget._restrictor.getBothRestrictorPosition(),
                     max: 121000.0,
                     onChanged: (newValue) {
                       setState(() {
-                        widget.restrictor.setLeftPositionRestrictor(newValue);
-                        widget.restrictor.setRightPositionRestrictor(newValue);
-                        widget.restrictor.setBothRestrictorPosition(newValue);
+                        widget._restrictor.setLeftPositionRestrictor(newValue);
+                        widget._restrictor.setRightPositionRestrictor(newValue);
+                        widget._restrictor.setBothRestrictorPosition(newValue);
                       });
                     },
                   ),
@@ -79,11 +79,11 @@ class RestrictorWidgetState extends State<RestrictorWidget> {
                 RotatedBox(
                   quarterTurns: 3,
                   child: Slider(
-                    value: widget.restrictor.getRightPositionRestrictor(),
+                    value: widget._restrictor.getRightPositionRestrictor(),
                     max: 121000.0,
                     onChanged: (newValue) {
                       setState(() {
-                        widget.restrictor.setRightPositionRestrictor(newValue);
+                        widget._restrictor.setRightPositionRestrictor(newValue);
 
                       });
                     },

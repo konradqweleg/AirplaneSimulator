@@ -5,16 +5,16 @@ import '../plane/Engine.dart';
 
 class EngineWidget extends StatelessWidget{
 
-  EngineWidget(this.engine,this.title, {super.key});
-  Engine engine;
-  String title;
+  EngineWidget(this._engine,this._title, {super.key});
+  Engine _engine;
+  String _title;
 
   @override
   Widget build(BuildContext context) {
     return  Container(
       height: 150.0,
       width: 250.0,
-      margin: EdgeInsets.all(5.0),
+      margin: const EdgeInsets.all(5.0),
       decoration:  BoxDecoration(
         border: Border.all(
           width: 1,
@@ -22,10 +22,10 @@ class EngineWidget extends StatelessWidget{
         ),
 
       ),
-      padding: EdgeInsets.all(5.0),
+      padding: const EdgeInsets.all(5.0),
       child: Scaffold(
           body: Container(
-            margin: EdgeInsets.all(10.0),
+            margin: const EdgeInsets.all(10.0),
 
 
             child: Column(
@@ -33,21 +33,18 @@ class EngineWidget extends StatelessWidget{
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text("SILNIK ${title}",style: TextStyle(fontWeight: FontWeight.bold))
+                  children: [Text("SILNIK ${_title}",style: const TextStyle(fontWeight: FontWeight.bold))
 
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text("Moc"), Text("${engine.getThrustInKNewton().toStringAsFixed(3)} KN")],
+                  children: [Text("Moc"), Text("${_engine.getThrustInKNewton().toStringAsFixed(3)} KN")],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text("Status"), Text(engine.getThrustInKNewton() > 0 ? "PRACUJE":"BIEG JAŁOWY")],
+                  children: [Text("Status"), Text(_engine.getThrustInKNewton() > 0 ? "PRACUJE":"BIEG JAŁOWY")],
                 ),
-                // Container(width: 200.0,child: Text("Pozostało : ${tank.getLevelFuelInLitres()} litrów paliwa")),
-                // Container(width: 200.0,child: Text("Wystarczy na : ${tank.getMaxKMOnActualFuelLevel()} km")),
-                // Container(width: 200.0,child: Text("BŁĄD"))
               ],
             ),
           )

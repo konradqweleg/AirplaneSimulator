@@ -9,14 +9,14 @@ import '../plane/PositionPlane.dart';
 class OpenPainter extends CustomPainter {
 
 
-  OpenPainter(this.position);
-  double position = 0.0;
+  OpenPainter(this._position);
+  double _position = 0.0;
 
 
   void drawText(Canvas canvas,double positionY,String text){
 
 
-    final textStyle = TextStyle(
+    const textStyle = TextStyle(
       color: Colors.black,
       fontSize: 20.0,
     );
@@ -51,7 +51,7 @@ class OpenPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 30;
 
-    var points = [Offset(100, position)];
+    var points = [Offset(100, _position)];
 
     canvas.drawPoints(PointMode.points, points, paint1);
 
@@ -97,7 +97,7 @@ class MapWidgetFly extends StatelessWidget{
             width: 1,
             color:Colors.grey,
           ),
-        image: DecorationImage(
+        image: const DecorationImage(
           image: AssetImage('assets/mapfly.png'),
           fit: BoxFit.cover,
         ),

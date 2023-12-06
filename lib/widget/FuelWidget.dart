@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import '../plane/Tank.dart';
 
 class FuelWidget extends StatelessWidget{
-  Tank tank;
-  FuelWidget(this.tank, {super.key});
+  Tank _tank;
+  FuelWidget(this._tank, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,16 +20,16 @@ class FuelWidget extends StatelessWidget{
           ),
 
       ),
-      padding: EdgeInsets.all(5.0),
+      padding: const EdgeInsets.all(5.0),
       child: Scaffold(
         body: Container(
-          margin: EdgeInsets.all(10.0),
+          margin: const EdgeInsets.all(10.0),
 
 
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [Text("PALIWO",style: TextStyle(fontWeight: FontWeight.bold))
 
@@ -37,19 +37,16 @@ class FuelWidget extends StatelessWidget{
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text("Pozosotało"), Text("${tank.getFuelInKg().toStringAsFixed(3)} L")],
+                children: [Text("Pozosotało"), Text("${_tank.getFuelInKg().toStringAsFixed(3)} L")],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text("Wystarczy na"),Text("${tank.getMaxKMOnActualFuelLevel().toStringAsFixed(3)} km")],
+                children: [Text("Wystarczy na"),Text("${_tank.getMaxKMOnActualFuelLevel().toStringAsFixed(3)} km")],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [Text("Status"),Text((Warning.isLowLevelFuel())? "NISKI POZIOM PALIWA":"OK")],
               )
-              // Container(width: 200.0,child: Text("Pozostało : ${tank.getLevelFuelInLitres()} litrów paliwa")),
-              // Container(width: 200.0,child: Text("Wystarczy na : ${tank.getMaxKMOnActualFuelLevel()} km")),
-              // Container(width: 200.0,child: Text("BŁĄD"))
             ],
           ),
         )

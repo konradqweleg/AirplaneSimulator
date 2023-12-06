@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import '../plane/Height.dart';
 
 class SimulationStatusWidget extends StatefulWidget{
-  SimulationStatusWidget(this.analiseSituation);
-  AnaliseSituation analiseSituation;
+  SimulationStatusWidget(this._analiseSituation);
+  AnaliseSituation _analiseSituation;
 
   @override
   State<StatefulWidget> createState() {
@@ -24,18 +24,15 @@ class SimulationStatusWidgetState extends State<SimulationStatusWidget>{
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
 
-               widget.analiseSituation.getIsLandingOk() ? Row(
+               widget._analiseSituation.getIsLandingOk() ? const Row(
                  mainAxisAlignment: MainAxisAlignment.center,
                  children: [ Text("Udane lądowanie ",style: TextStyle(color: Colors.green,fontSize: 80))],
                ) :
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [ Text("Katastrofa ${widget.analiseSituation.getCrashReason()} ",style: TextStyle(color: Colors.red,fontSize: 80))],
+                  children: [ Text("Katastrofa ${widget._analiseSituation.getCrashReason()} ",style: TextStyle(color: Colors.red,fontSize: 80))],
                 ),
 
-                // Container(width: 200.0,child: Text("Pozostało : ${tank.getLevelFuelInLitres()} litrów paliwa")),
-                // Container(width: 200.0,child: Text("Wystarczy na : ${tank.getMaxKMOnActualFuelLevel()} km")),
-                // Container(width: 200.0,child: Text("BŁĄD"))
               ],
             ),
 

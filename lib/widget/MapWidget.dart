@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 
 class OpenPainter extends CustomPainter {
 
-  double position = 750;
-  OpenPainter(this.position);
+  double _position = 750;
+  OpenPainter(this._position);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -16,7 +16,7 @@ class OpenPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 30;
 
-    var points = [Offset(100, position)];
+    var points = [Offset(100, _position)];
 
     canvas.drawPoints(PointMode.points, points, paint1);
   }
@@ -29,13 +29,9 @@ class OpenPainter extends CustomPainter {
 
 
 class MapWidget extends StatelessWidget{
-  MapWidget(this.position, {super.key});
-  double position = 750.0;
-
-  double START_PASS_POSITION = 750.0;
-  double END_PASS_POSITION = 0.0;
-  double PASS_LENGTH_IN_METER = 3000.0;
-  double METER_ON_PIXELS = 0.25;
+  MapWidget(this._position, {super.key});
+  double _position = 750.0;
+  double _METER_ON_PIXELS = 0.25;
 
 
 
@@ -52,7 +48,7 @@ class MapWidget extends StatelessWidget{
       ),
 
       child: CustomPaint(
-        painter: OpenPainter( (3000 - position) * METER_ON_PIXELS),
+        painter: OpenPainter( (3000 - _position) * _METER_ON_PIXELS),
       ),
     );
 

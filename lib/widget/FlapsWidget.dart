@@ -6,8 +6,8 @@ import '../plane/Flaps.dart';
 class FlapsWidget extends StatefulWidget{
 
 
-  FlapsWidget(this.flaps ,{super.key});
-  Flaps flaps;
+  FlapsWidget(this._flaps ,{super.key});
+  Flaps _flaps;
 
 
   @override
@@ -19,7 +19,7 @@ class FlapsWidget extends StatefulWidget{
 
 class FlapsState extends State<FlapsWidget>{
 
-  int selectedOption = 1;
+  int _selectedOption = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -33,16 +33,16 @@ class FlapsState extends State<FlapsWidget>{
         ),
 
       ),
-      padding: EdgeInsets.all(5.0),
+      padding: const EdgeInsets.all(5.0),
       child: Scaffold(
           body: Container(
-            margin: EdgeInsets.all(10.0),
+            margin: const EdgeInsets.all(10.0),
 
 
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [Text("KLAPY USTAWIENIE",style: TextStyle(fontWeight: FontWeight.bold,))
 
@@ -56,11 +56,11 @@ class FlapsState extends State<FlapsWidget>{
                           title: const Text('0°'),
                           leading: Radio(
                             value: 1,
-                            groupValue: selectedOption,
+                            groupValue: _selectedOption,
                             onChanged: (value) {
                               setState(() {
-                                selectedOption = value!;
-                                widget.flaps.setFlapsPosition(FlapsPosition.retracted);
+                                _selectedOption = value!;
+                                widget._flaps.setFlapsPosition(FlapsPosition.retracted);
                               });
                             },
                           ),
@@ -69,11 +69,11 @@ class FlapsState extends State<FlapsWidget>{
                           title: const Text('15°'),
                           leading: Radio(
                             value: 2,
-                            groupValue: selectedOption,
+                            groupValue: _selectedOption,
                             onChanged: (value) {
                               setState(() {
-                                selectedOption = value!;
-                                widget.flaps.setFlapsPosition(FlapsPosition.takeoff);
+                                _selectedOption = value!;
+                                widget._flaps.setFlapsPosition(FlapsPosition.takeoff);
                               });
                             },
                           ),
@@ -82,11 +82,11 @@ class FlapsState extends State<FlapsWidget>{
                           title: const Text('30°'),
                           leading: Radio(
                             value: 3,
-                            groupValue: selectedOption,
+                            groupValue: _selectedOption,
                             onChanged: (value) {
                               setState(() {
-                                selectedOption = value!;
-                                widget.flaps.setFlapsPosition(FlapsPosition.landing);
+                                _selectedOption = value!;
+                                widget._flaps.setFlapsPosition(FlapsPosition.landing);
                               });
                             },
                           ),
@@ -95,11 +95,11 @@ class FlapsState extends State<FlapsWidget>{
                           title: const Text('45°'),
                           leading: Radio(
                             value: 4,
-                            groupValue: selectedOption,
+                            groupValue: _selectedOption,
                             onChanged: (value) {
                               setState(() {
-                                selectedOption = value!;
-                                widget.flaps.setFlapsPosition(FlapsPosition.extended);
+                                _selectedOption = value!;
+                                widget._flaps.setFlapsPosition(FlapsPosition.extended);
                               });
                             },
                           ),
@@ -107,10 +107,6 @@ class FlapsState extends State<FlapsWidget>{
                       ],
                     ),
 
-
-                // Container(width: 200.0,child: Text("Pozostało : ${tank.getLevelFuelInLitres()} litrów paliwa")),
-                // Container(width: 200.0,child: Text("Wystarczy na : ${tank.getMaxKMOnActualFuelLevel()} km")),
-                // Container(width: 200.0,child: Text("BŁĄD"))
               ],
             ),
           )

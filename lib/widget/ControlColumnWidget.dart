@@ -10,8 +10,8 @@ class ControlColumnWidget extends StatefulWidget {
     return ControlColumnWidgetState();
   }
 
-  ControlColumn controlColumn;
-  ControlColumnWidget(this.controlColumn, {super.key});
+  ControlColumn _controlColumn;
+  ControlColumnWidget(this._controlColumn, {super.key});
 }
 
 class ControlColumnWidgetState extends State<ControlColumnWidget> {
@@ -21,7 +21,7 @@ class ControlColumnWidgetState extends State<ControlColumnWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(5.0),
+      margin: const EdgeInsets.all(5.0),
       decoration:  BoxDecoration(
         border: Border.all(
           width: 1,
@@ -31,13 +31,13 @@ class ControlColumnWidgetState extends State<ControlColumnWidget> {
       ),
       child: Column(
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [Text("WOLANT",style: TextStyle(fontWeight: FontWeight.bold))
 
             ],
           ),
-          Container(
+          const SizedBox(
             height: 40,
             width: 240,
             child: Row(
@@ -45,7 +45,7 @@ class ControlColumnWidgetState extends State<ControlColumnWidget> {
               children: [Text("PION"), Text("POZIOM")],
             ),
           ),
-          Container(
+          SizedBox(
             height: 250,
             width: 240,
             child: Row(
@@ -54,21 +54,21 @@ class ControlColumnWidgetState extends State<ControlColumnWidget> {
                 RotatedBox(
                   quarterTurns: 3,
                   child: Slider(
-                    value: widget.controlColumn.getRawHorizontalControlColumnPosition(),
+                    value: widget._controlColumn.getRawHorizontalControlColumnPosition(),
                     max: 200.0,
                     onChanged: (newValue) {
                       setState(() {
-                        widget.controlColumn.setRawHorizontalControlColumnPosition(newValue);
+                        widget._controlColumn.setRawHorizontalControlColumnPosition(newValue);
                       });
                     },
                   ),
                 ),
                 Slider(
-                  value: widget.controlColumn.getRawVerticalControlColumnPosition(),
+                  value: widget._controlColumn.getRawVerticalControlColumnPosition(),
                   max: 200.0,
                   onChanged: (newValue) {
                     setState(() {
-                      widget.controlColumn.setRawVerticalControlColumnPosition(newValue);
+                      widget._controlColumn.setRawVerticalControlColumnPosition(newValue);
                     });
                   },
                 )

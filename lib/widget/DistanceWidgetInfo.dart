@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 class DistanceInfoWidget extends StatelessWidget{
 
 
-  DistanceInfoWidget(this.distanceMetres ,{super.key});
-  double distanceMetres = 0.0;
+  DistanceInfoWidget(this._distanceMetres ,{super.key});
+  double _distanceMetres = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -20,16 +20,14 @@ class DistanceInfoWidget extends StatelessWidget{
         ),
 
       ),
-      padding: EdgeInsets.all(5.0),
+      padding: const EdgeInsets.all(5.0),
       child: Scaffold(
           body: Container(
-            margin: EdgeInsets.all(10.0),
-
-
+            margin: const EdgeInsets.all(10.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [Text("Odległośc od startu",style: TextStyle(fontWeight: FontWeight.bold))
 
@@ -37,15 +35,12 @@ class DistanceInfoWidget extends StatelessWidget{
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text("Odległość"), Text("${distanceMetres.toStringAsFixed(3)} m")],
+                  children: [const Text("Odległość"), Text("${_distanceMetres.toStringAsFixed(3)} m")],
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [Text("Status"),Text( "OK")],
                 )
-                // Container(width: 200.0,child: Text("Pozostało : ${tank.getLevelFuelInLitres()} litrów paliwa")),
-                // Container(width: 200.0,child: Text("Wystarczy na : ${tank.getMaxKMOnActualFuelLevel()} km")),
-                // Container(width: 200.0,child: Text("BŁĄD"))
               ],
             ),
           )

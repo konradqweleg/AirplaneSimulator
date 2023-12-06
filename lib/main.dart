@@ -140,7 +140,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           AttitudeInidactorWidget(
                               plane.controlColumn.getRawHorizontalControlColumnPosition(),
                               plane.controlColumn.getRawVerticalControlColumnPosition()),
-                          AttitudeInforValues(
+                          AttitudeInfoValues(
                               plane.controlColumn.getHorizontalAngle(),
                               plane.controlColumn.getVerticalAngle())
                         ],
