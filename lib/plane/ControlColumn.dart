@@ -2,6 +2,8 @@ class ControlColumn {
   double _horizontalRawPosition = 100.0;
   double _verticalRawPosition = 100.0;
 
+
+
   static const  double MAX_ANGLE_DEGREES = 90.0;
   static const  double SCALE_FACTOR_RAW_POSITION_TO_DEGREES = 0.9;
   static const  double MINUS_THRESHOLD = -0.001;
@@ -19,6 +21,7 @@ class ControlColumn {
   }
 
   void setRawHorizontalControlColumnPosition(double newPosition){
+
     _horizontalRawPosition = newPosition;
   }
 

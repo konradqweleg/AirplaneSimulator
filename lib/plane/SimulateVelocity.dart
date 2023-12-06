@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:airplane/plane/ControlColumn.dart';
+import 'package:airplane/plane/Inclination.dart';
 import 'package:airplane/plane/Warning.dart';
 
 import 'Engine.dart';
@@ -9,7 +12,7 @@ import 'Velocity.dart';
 
 class SimulateVelocity {
   static const double _MAX_SPEED_ON_GROUND_KM_PER_HOUR = 400.0;
-  static const double _MAX_SPEED_ON_FLY_KM_PER_HOUR = 1250.0;
+  static const double _MAX_SPEED_ON_FLY_KM_PER_HOUR = 1250.0;//1250
   static const double _GROUND_HEIGHT_THRESHOLD_IN_METRES = 1.0;
 
   static const bool _IS_LOG_ENABLED = false;
@@ -52,6 +55,26 @@ class SimulateVelocity {
     return maxAccelerationPerOnePointInRestrictor;
   }
 
+  double _evaluatePolynomial(List<double> coefficients, double x) {
+    double result = 0;
+    for (int i = 0; i < coefficients.length; i++) {
+      result += coefficients[i] * pow(x, i);
+    }
+    return result;
+  }
+
+  double _getFactorMultiplyForVelocityViaControlColumn(Inclination inclination){
+    double horizontalAngle = inclination.getHorizontalInclinationAngle();
+
+    List<double> coefficients = [  1.00377426,-0.00661536715,-0.0000136571710]; // x^2 x c
+
+
+    double result = _evaluatePolynomial(coefficients, horizontalAngle);
+
+
+    return result;
+  }
+
   double _getMaxAcceleration(Height height) {
     double startMaxV = 0.000017057; //przyspieszenie maksymalne
     double flyMaxV = 0.000042647;
@@ -63,15 +86,11 @@ class SimulateVelocity {
     }
   }
 
-  double _calculateMaxVelocityOnActualPositionRestrictor(
-      Height height, Restrictor restrictor, List<Engine> engines) {
-    double maxVOnActualRestrictorPosition =
-        (_getMaxAccelerationOnOnePointInRestrictor(
-                height, restrictor, engines) *
-            (restrictor.getSumPositionRestrictor()));
-    _log(
-        "Max V dla aktualnej pozycji przepustnicy ${maxVOnActualRestrictorPosition} ");
-    return maxVOnActualRestrictorPosition;
+  double _calculateMaxVelocityOnActualPositionRestrictor(Height height, Restrictor restrictor, List<Engine> engines,Inclination inclination) {
+     double maxVOnActualRestrictorPosition = (_getMaxAccelerationOnOnePointInRestrictor(height, restrictor, engines) * (restrictor.getSumPositionRestrictor()));
+     double coefficientOfMaximumSpeedRelativeToTheAngleOfAttack = _getFactorMultiplyForVelocityViaControlColumn(inclination);
+     double finalMaxVelocityOnPointRestrictor = maxVOnActualRestrictorPosition * coefficientOfMaximumSpeedRelativeToTheAngleOfAttack;
+    return finalMaxVelocityOnPointRestrictor;
   }
 
   double _getMaxVelocity(Height height) {
@@ -110,7 +129,7 @@ class SimulateVelocity {
   double _updateVelocity(
       double maxVelocityOnActualPositionRestrictor,
       double maxVelocityOnPointRestrictor,
-      ControlColumn controlColumn,
+      Inclination inclination,
       double sumPositionRestrictors,
       double actualVelocity,
       Flaps flaps) {
@@ -120,8 +139,9 @@ class SimulateVelocity {
       _log(
           "Wzrost prekośći  o ${(maxVelocityOnPointRestrictor * (sumPositionRestrictors))}");
 
+
       double factorIncreaseVelocityBaseOnControlColumn =
-          (90 - (100 - controlColumn.getRawHorizontalControlColumnPosition())) /
+          (90 - (100 - inclination.getRawHorizontalInclinationAngle())) /
               90;
 
       double factorToClapsPosition = _calculateInfluenceClapsOnVelocity(flaps);
@@ -174,13 +194,13 @@ class SimulateVelocity {
       Restrictor restrictor,
       Height height,
       Velocity actualVelocity,
-      ControlColumn controlColumn,
+      Inclination inclination,
       Flaps flaps) {
     _analiseWarningClapPosition(flaps, restrictor, height);
 
     double maxSpeedOnActualPositionRestrictor =
         _calculateMaxVelocityOnActualPositionRestrictor(
-            height, restrictor, engines);
+            height, restrictor, engines,inclination);
     double maxSpeedOnPointRestrictor = _getMaxAcceleration(height);
 
     double maxVelocityOnPhaseFly = _getMaxVelocity(height);
@@ -190,7 +210,7 @@ class SimulateVelocity {
         _updateVelocity(
           maxSpeedOnActualPositionRestrictor,
           maxSpeedOnPointRestrictor,
-          controlColumn,
+          inclination,
           restrictor.getSumPositionRestrictor(),
           actualVelocity.getVelocityHorizontal(),
           flaps

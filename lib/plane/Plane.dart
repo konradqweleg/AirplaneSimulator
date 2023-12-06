@@ -8,6 +8,7 @@ import 'package:airplane/plane/SimulateVelocity.dart';
 import 'package:airplane/plane/Velocity.dart';
 
 import 'Distance.dart';
+import 'Inclination.dart';
 import 'PositionPlane.dart';
 import 'Restrictor.dart';
 import 'Tank.dart';
@@ -25,6 +26,7 @@ class Boeing_737_800{
   AnaliseSituation analiseSituation = AnaliseSituation();
   Flaps flaps = Flaps();
   PositionPlane positionPlane = PositionPlane();
+  Inclination inclination = Inclination();
 
 
   Boeing_737_800(){
@@ -42,19 +44,26 @@ class Boeing_737_800{
     left.setThrustInNewton(restrictor.getLeftPositionRestrictor());
     right.setThrustInNewton(restrictor.getRightPositionRestrictor());
 
-    velocity = simulateVelocity.getActualAcceleration([left,right],restrictor, height,velocity,controlColumn,flaps);
-    height.calculateHeight(velocity, controlColumn,flaps);
+    velocity = simulateVelocity.getActualAcceleration([left,right],restrictor, height,velocity,inclination,flaps);
+    height.calculateHeight(velocity, inclination,flaps);
     double oldVelocity = velocity.getVelocityHorizontal();
     distance.updateDistance(((oldVelocity + velocity.getVelocityHorizontal())/2));
     analiseSituation.analiseActualPlaneSituation(velocity,height,positionPlane);
     positionPlane.updatePosition(distance);
+    inclination.simulate(controlColumn,height,velocity);
 
 
     FlightDataRecorder.saveLeftEngineStatus(left.getThrustInKNewton());
 
 
 
+
+
+
   }
+
+
+
 
 
 }

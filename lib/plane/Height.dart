@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:airplane/plane/ControlColumn.dart';
 import 'package:airplane/plane/FlapsPosition.dart';
+import 'package:airplane/plane/Inclination.dart';
 import 'package:airplane/plane/Warning.dart';
 import 'Flaps.dart';
 import 'Velocity.dart';
@@ -88,8 +89,8 @@ class Height {
     return velocity.getVelocityHorizontal() > velocity.getSpeedV1InMetresPerSeconds();
   }
 
-  bool _isAngleAscent(ControlColumn controlColumn) {
-    return controlColumn.getHorizontalAngle() > ZERO_METRES;
+  bool _isAngleAscent(Inclination inclination) {
+    return inclination.getHorizontalInclinationAngle() > ZERO_METRES;
   }
 
   void _startFlight() {
@@ -97,8 +98,8 @@ class Height {
   }
 
   void _calculateIfPlaneCanStartingFly(
-      Velocity velocity, ControlColumn controlColumn) {
-    if (_isPlaneHasV1Speed(velocity) && _isAngleAscent(controlColumn)) {
+      Velocity velocity, Inclination inclination) {
+    if (_isPlaneHasV1Speed(velocity) && _isAngleAscent(inclination)) {
       _startFlight();
     }
   }
@@ -118,10 +119,10 @@ class Height {
     }
   }
 
-  void _calculateHeightInAir(Velocity velocity, ControlColumn controlColumn) {
-    print("Wysokość ${_metresPlaneAboveTheGround}");
+  void _calculateHeightInAir(Velocity velocity, Inclination inclination) {
+
     double horizontalSpeedMetersPerSecond = velocity.getVelocityHorizontal();
-    double angleOfAttackDegrees = controlColumn.getHorizontalAngle();
+    double angleOfAttackDegrees = inclination.getHorizontalInclinationAngle();
     double rateOfClimb = calculateRateOfClimb(
         horizontalSpeedMetersPerSecond, angleOfAttackDegrees);
 
@@ -185,9 +186,9 @@ class Height {
   double WARNING_INFO_LEVEL = 500;
 
   bool _calculateIfStall(
-      Velocity velocity, ControlColumn controlColumn, Flaps flaps) {
+      Velocity velocity, Inclination inclination, Flaps flaps) {
     double cl = _calculateCLBasedOnDegreesAttackAndFlapsPosition(
-        controlColumn.getHorizontalAngle(), flaps);
+        inclination.getHorizontalInclinationAngle(), flaps);
 
     double wingAreaM2 = 124.6;
     double densityGroundKgPerM3 = 1.125;
@@ -202,13 +203,13 @@ class Height {
     double STALL_THRESHOOLD = 3000.0;
 
     if ((liftForce < (STALL_THRESHOOLD + WARNING_INFO_LEVEL)) &&
-        (controlColumn.getHorizontalAngle() >= 0)) {
+        (inclination.getHorizontalInclinationAngle() >= 0)) {
       Warning.setCloseStallError();
     } else {
       Warning.clearCloseStallError();
     }
 
-    if (controlColumn.getHorizontalAngle() >= 0) {
+    if (inclination.getHorizontalInclinationAngle() >= 0) {
       return liftForce < STALL_THRESHOOLD;
     } else {
       return false;
@@ -240,7 +241,7 @@ class Height {
   }
 
   void calculateHeight(
-      Velocity velocity, ControlColumn controlColumn, Flaps flaps) {
+      Velocity velocity, Inclination controlColumn, Flaps flaps) {
     _calculateWarningHeight(velocity);
 
     if (_isNotV1Speed(velocity)) {
