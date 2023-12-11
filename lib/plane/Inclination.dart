@@ -12,7 +12,7 @@ class Inclination{
 
   void simulate(ControlColumn controlColumn,Height height,Velocity velocity){
 
-    if((height.getHeightPlaneAboveTheGroundInMetres() > NEARLY_ZERO_METRES) || velocity.getVelocityHorizontal() > NEARLY_ZERO_SPEED) {
+    if((height.getHeightPlaneAboveTheGroundInMetres() > NEARLY_ZERO_METRES) || velocity.getVelocityHorizontal() > Velocity.getSpeedV1InMetresPerSeconds()) {
       if ((controlColumn.getHorizontalAngle() > _horizontalAngle)) {
         if (_horizontalAngle + controlColumn.getHorizontalAngle() > 200) {
           _horizontalAngle = 200;

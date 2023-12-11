@@ -11,7 +11,7 @@ class Velocity{
   double _minSpeedInFly = 72.2;
 
 
-  double getSpeedV1InMetresPerSeconds(){
+  static double getSpeedV1InMetresPerSeconds(){
     return _speedV1MetresPerSecond;
   }
 

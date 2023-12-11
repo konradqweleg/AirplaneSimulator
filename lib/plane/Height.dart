@@ -79,14 +79,14 @@ class Height {
 
   bool _isNotV1Speed(Velocity velocity) {
     if ((_metresPlaneAboveTheGround < ONE_METRES) &&
-        (velocity.getVelocityHorizontal() <= velocity.getSpeedV1InMetresPerSeconds())) {
+        (velocity.getVelocityHorizontal() <= Velocity.getSpeedV1InMetresPerSeconds())) {
       return true;
     }
     return false;
   }
 
   bool _isPlaneHasV1Speed(Velocity velocity) {
-    return velocity.getVelocityHorizontal() > velocity.getSpeedV1InMetresPerSeconds();
+    return velocity.getVelocityHorizontal() > Velocity.getSpeedV1InMetresPerSeconds();
   }
 
   bool _isAngleAscent(Inclination inclination) {
@@ -183,7 +183,7 @@ class Height {
     return liftCoefficientCL;
   }
 
-  double WARNING_INFO_LEVEL = 500;
+  double WARNING_INFO_LEVEL = 1000;
 
   bool _calculateIfStall(
       Velocity velocity, Inclination inclination, Flaps flaps) {
@@ -200,7 +200,8 @@ class Height {
     double liftForce =
         (1 / 2) * cl * actualDensity * velocity.getVelocityHorizontal() * wingAreaM2;
 
-    double STALL_THRESHOOLD = 3000.0;
+    double STALL_THRESHOOLD = 5000.0;
+    print("CL ${liftForce}");
 
     if ((liftForce < (STALL_THRESHOOLD + WARNING_INFO_LEVEL)) &&
         (inclination.getHorizontalInclinationAngle() >= 0)) {
