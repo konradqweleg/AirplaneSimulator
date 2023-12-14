@@ -3,7 +3,7 @@ import 'dart:io';
 
 class FlightDataRecorder{
 
-  static const String _basePathForStatusFiles = "C:\\MyChat\\airplane\\data";
+  static const String _basePathForStatusFiles = "C:\\Users\\Konrad\\StudioProjects\\AirplaneSimulator\\data";
   static const String _engineLeftNameFile = "engineLeft";
 
   static void deleteAllDatas(){

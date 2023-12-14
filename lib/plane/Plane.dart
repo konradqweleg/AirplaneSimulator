@@ -48,7 +48,7 @@ class Boeing_737_800{
     height.calculateHeight(velocity, inclination,flaps);
     double oldVelocity = velocity.getVelocityHorizontal();
     distance.updateDistance(((oldVelocity + velocity.getVelocityHorizontal())/2));
-    analiseSituation.analiseActualPlaneSituation(velocity,height,positionPlane);
+    analiseSituation.analiseActualPlaneSituation(velocity,height,positionPlane,flaps);
     positionPlane.updatePosition(distance);
     inclination.simulate(controlColumn,height,velocity);
 

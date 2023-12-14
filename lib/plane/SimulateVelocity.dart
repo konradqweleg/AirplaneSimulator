@@ -103,7 +103,7 @@ class SimulateVelocity {
     }
   }
 
-  double _calculateInfluenceClapsOnVelocity(Flaps flaps) {
+  double _calculateInfluenceClapsOnVelocitySpeedUp(Flaps flaps) {
     double factorToClapsPosition = 1.0;
 
     if (flaps.getCurrentFlapsPosition() == 0) {
@@ -119,11 +119,53 @@ class SimulateVelocity {
     return factorToClapsPosition;
   }
 
+
+  double _calculateInfluenceClapsOnVelocitySlowDown(Flaps flaps) {
+    double factorToClapsPosition = 1.0;
+
+    if (flaps.getCurrentFlapsPosition() == 0) {
+      factorToClapsPosition = 0.46;
+    } else if (flaps.getCurrentFlapsPosition() == 15) {
+      factorToClapsPosition = 0.65;
+    } else if (flaps.getCurrentFlapsPosition() == 30) {
+      factorToClapsPosition = 0.90;
+    } else {
+      factorToClapsPosition = 1.00;
+    }
+
+    return factorToClapsPosition;
+  }
   double _ifVelocityLowerThenZeroSetVelocityToZero(double rawVelocity) {
     if (rawVelocity < 0) {
       rawVelocity = 0.0;
     }
     return rawVelocity;
+  }
+
+
+  double _multiplierForAirResistanceSpeedUp(double velocity,Height height){
+    List<double> coefficientsAirResistanceSpeed = [ 1.02976031,-0.0017596086 ,0.0000916993369]; // x^2 x c
+    double resultSpeedFactor = _evaluatePolynomial(coefficientsAirResistanceSpeed, velocity);
+
+
+    List<double> coefficientsAirResistanceSHeight = [3.03507166,-0.000358166086,0.00000001482671];
+    double resultHeightFactor = _evaluatePolynomial(coefficientsAirResistanceSHeight, height.getHeightPlaneAboveTheGroundInMetres());
+
+    double mixedFactorHeightAndSpeed = (0.5*resultSpeedFactor) + (0.5*resultHeightFactor);
+    return mixedFactorHeightAndSpeed;
+  }
+
+  double _multiplierForAirResistanceSlowDown(double velocity,Height height){
+    List<double> coefficientsAirResistanceSpeed = [ 1.02976031,-0.0017596086 ,0.0000916993369]; // x^2 x c
+    double resultSpeedFactor = _evaluatePolynomial(coefficientsAirResistanceSpeed, velocity);
+
+
+    List<double> coefficientsAirResistanceSHeight = [3.03507166,-0.000358166086,0.00000001482671];
+    double resultHeightFactor = _evaluatePolynomial(coefficientsAirResistanceSHeight, height.getHeightPlaneAboveTheGroundInMetres());
+
+    double mixedFactorHeightAndSpeed = (0.5*resultSpeedFactor) + (0.5*resultHeightFactor);
+
+    return 1 + (mixedFactorHeightAndSpeed/10);
   }
 
   double _updateVelocity(
@@ -132,10 +174,14 @@ class SimulateVelocity {
       Inclination inclination,
       double sumPositionRestrictors,
       double actualVelocity,
-      Flaps flaps) {
+      Flaps flaps,Height height) {
     _log("Aktualna prędkosc ${actualVelocity} przed zmianą");
+
+
+
     //If speed is lower then limit for actual restrictor position speed up
     if (actualVelocity < maxVelocityOnActualPositionRestrictor) {
+      double factorResistanceBasedOnSpeedAndHeight =  _multiplierForAirResistanceSpeedUp(actualVelocity,height);
       _log(
           "Wzrost prekośći  o ${(maxVelocityOnPointRestrictor * (sumPositionRestrictors))}");
 
@@ -144,31 +190,43 @@ class SimulateVelocity {
           (90 - (100 - inclination.getRawHorizontalInclinationAngle())) /
               90;
 
-      double factorToClapsPosition = _calculateInfluenceClapsOnVelocity(flaps);
+      double factorToClapsPosition = _calculateInfluenceClapsOnVelocitySpeedUp(flaps);
 
       double newVelocity = actualVelocity +
-          ((maxVelocityOnPointRestrictor *
+          ( ((maxVelocityOnPointRestrictor *
                   (sumPositionRestrictors) *
                   factorIncreaseVelocityBaseOnControlColumn) *
-              factorToClapsPosition);
+              factorToClapsPosition)/factorResistanceBasedOnSpeedAndHeight);
+
+
+      print("Zmiana + ${( ((maxVelocityOnPointRestrictor *
+          (sumPositionRestrictors) *
+          factorIncreaseVelocityBaseOnControlColumn) *
+          factorToClapsPosition)/factorResistanceBasedOnSpeedAndHeight)}");
       _log("Powiększona prędkość ${newVelocity}");
       return newVelocity;
     } else {
       //If speed is more then max for actual restrictor position slow down
-
+      double factorResistanceBasedOnSpeedAndHeight =  _multiplierForAirResistanceSlowDown(actualVelocity,height);
       double diffrenceBetweenVelocityAndMaxVelocityOnPositionRestrictors =
           actualVelocity - maxVelocityOnActualPositionRestrictor;
       _log(
           "Różnica predkośći max dla aktualnego poziomu przepustnicy do aktualnej V ${diffrenceBetweenVelocityAndMaxVelocityOnPositionRestrictors}");
 
-      double factorToClapsPosition = _calculateInfluenceClapsOnVelocity(flaps);
+      double factorToClapsPosition = _calculateInfluenceClapsOnVelocitySlowDown(flaps);
 
       if (diffrenceBetweenVelocityAndMaxVelocityOnPositionRestrictors > 0) {
         double newVelocity = actualVelocity -
-            (((diffrenceBetweenVelocityAndMaxVelocityOnPositionRestrictors /
+            ((((diffrenceBetweenVelocityAndMaxVelocityOnPositionRestrictors /
                         75) +
                     1.0) *
-                factorToClapsPosition);
+                factorToClapsPosition)*(factorResistanceBasedOnSpeedAndHeight));
+
+        print("Zmiana - ${ ((((diffrenceBetweenVelocityAndMaxVelocityOnPositionRestrictors /
+            75) +
+            1.0) *
+            factorToClapsPosition)*(factorResistanceBasedOnSpeedAndHeight))}");
+
         newVelocity = _ifVelocityLowerThenZeroSetVelocityToZero(newVelocity);
         return newVelocity;
       } else {
@@ -213,7 +271,7 @@ class SimulateVelocity {
           inclination,
           restrictor.getSumPositionRestrictor(),
           actualVelocity.getVelocityHorizontal(),
-          flaps
+          flaps,height
         )
     );
 
