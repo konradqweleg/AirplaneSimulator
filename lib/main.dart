@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:airplane/plane/Plane.dart';
 import 'package:airplane/widget/AtitudeInfoValuesWidget.dart';
 import 'package:airplane/widget/AttitudeIndicatorWidget.dart';
+import 'package:airplane/widget/BrakesWidget.dart';
 import 'package:airplane/widget/ControlColumnWidget.dart';
 import 'package:airplane/widget/DistanceWidgetInfo.dart';
 import 'package:airplane/widget/FlapsInfoWidget.dart';
@@ -14,6 +15,7 @@ import 'package:airplane/widget/RestrictorWidget.dart';
 import 'package:airplane/widget/EngineWidget.dart';
 import 'package:airplane/widget/FuelWidget.dart';
 import 'package:airplane/widget/SimulationStatusWidget.dart';
+import 'package:airplane/widget/ThrustReversersWidget.dart';
 import 'package:airplane/widget/VelocityWidget.dart';
 import 'package:flutter/material.dart';
 
@@ -158,14 +160,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      RestrictorWidget(plane.restrictor),
                       Row(
-                        children: [ControlColumnWidget(plane.controlColumn)],
+                          children:[ RestrictorWidget(plane.restrictor),BrakesWidget(plane.brakes)]
+                      )
+                     ,
+                      Row(
+                        children: [ControlColumnWidget(plane.controlColumn),ThrustReversersWidget(plane.thrustReversers)],
                       ),
                       FlapsWidget(plane.flaps)
                     ],
                   ),
                 ),
+                
               ],
             ),
           ],

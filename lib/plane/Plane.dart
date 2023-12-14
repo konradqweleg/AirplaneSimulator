@@ -7,11 +7,13 @@ import 'package:airplane/plane/Height.dart';
 import 'package:airplane/plane/SimulateVelocity.dart';
 import 'package:airplane/plane/Velocity.dart';
 
+import 'Brakes.dart';
 import 'Distance.dart';
 import 'Inclination.dart';
 import 'PositionPlane.dart';
 import 'Restrictor.dart';
 import 'Tank.dart';
+import 'ThrustReversers.dart';
 
 class Boeing_737_800{
   final Tank _tank = Tank(500000.0);
@@ -27,7 +29,8 @@ class Boeing_737_800{
   Flaps flaps = Flaps();
   PositionPlane positionPlane = PositionPlane();
   Inclination inclination = Inclination();
-
+  Brakes brakes = Brakes();
+  ThrustReversers thrustReversers = ThrustReversers();
 
   Boeing_737_800(){
     FlightDataRecorder.deleteAllDatas();
