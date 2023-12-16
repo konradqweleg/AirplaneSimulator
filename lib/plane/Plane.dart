@@ -8,6 +8,7 @@ import 'package:airplane/plane/SimulateVelocity.dart';
 import 'package:airplane/plane/Velocity.dart';
 
 import 'Brakes.dart';
+import 'Chassis.dart';
 import 'Distance.dart';
 import 'Inclination.dart';
 import 'PositionPlane.dart';
@@ -31,6 +32,7 @@ class Boeing_737_800{
   Inclination inclination = Inclination();
   Brakes brakes = Brakes();
   ThrustReversers thrustReversers = ThrustReversers();
+  Chassis chassis = Chassis();
 
   Boeing_737_800(){
     FlightDataRecorder.deleteAllDatas();

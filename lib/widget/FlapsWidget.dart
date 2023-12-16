@@ -24,7 +24,7 @@ class FlapsState extends State<FlapsWidget>{
   @override
   Widget build(BuildContext context) {
     return  Container(
-      height: 250,
+      height: 310,
       width: 240,
       decoration:  BoxDecoration(
         border: Border.all(
@@ -33,14 +33,14 @@ class FlapsState extends State<FlapsWidget>{
         ),
 
       ),
-      padding: const EdgeInsets.all(5.0),
+
       child: Scaffold(
           body: Container(
-            margin: const EdgeInsets.all(10.0),
 
+            margin: const EdgeInsets.all(15.0),
 
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,

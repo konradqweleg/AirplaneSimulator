@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class AttitudeInfoValues extends StatelessWidget {
   double _horizontal = 0.0;
   double _vertical = 0.0;
+  String _label = " ";
 
-  AttitudeInfoValues(this._vertical, this._horizontal, {super.key});
+  AttitudeInfoValues(this._vertical, this._horizontal,this._label, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +26,11 @@ class AttitudeInfoValues extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Row(
+             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("SZTUCZNY HORYZONT",
-                    style: TextStyle(fontWeight: FontWeight.bold))
+                Text("SZTUCZNY HORYZONT "+_label,
+                    style: const TextStyle(fontWeight: FontWeight.bold))
               ],
             ),
             Row(

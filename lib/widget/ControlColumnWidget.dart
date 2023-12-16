@@ -21,7 +21,7 @@ class ControlColumnWidgetState extends State<ControlColumnWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(10.0),
+
       decoration:  BoxDecoration(
         border: Border.all(
           width: 1,

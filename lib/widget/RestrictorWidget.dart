@@ -19,7 +19,7 @@ class RestrictorWidgetState extends State<RestrictorWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(5.0),
+
       decoration:  BoxDecoration(
         border: Border.all(
           width: 1,

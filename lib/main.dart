@@ -3,11 +3,16 @@ import 'dart:async';
 import 'package:airplane/plane/Plane.dart';
 import 'package:airplane/widget/AtitudeInfoValuesWidget.dart';
 import 'package:airplane/widget/AttitudeIndicatorWidget.dart';
+import 'package:airplane/widget/AutoPilotWidget.dart';
+import 'package:airplane/widget/BrakesInfoWidget.dart';
 import 'package:airplane/widget/BrakesWidget.dart';
+import 'package:airplane/widget/ChassisInfoWidget.dart';
+import 'package:airplane/widget/ChassisWidget.dart';
 import 'package:airplane/widget/ControlColumnWidget.dart';
 import 'package:airplane/widget/DistanceWidgetInfo.dart';
 import 'package:airplane/widget/FlapsInfoWidget.dart';
 import 'package:airplane/widget/FlapsWidget.dart';
+import 'package:airplane/widget/GyrocompassWidget.dart';
 import 'package:airplane/widget/HeightWidget.dart';
 import 'package:airplane/widget/MapWidget.dart';
 import 'package:airplane/widget/MapWidgetFly.dart';
@@ -15,6 +20,7 @@ import 'package:airplane/widget/RestrictorWidget.dart';
 import 'package:airplane/widget/EngineWidget.dart';
 import 'package:airplane/widget/FuelWidget.dart';
 import 'package:airplane/widget/SimulationStatusWidget.dart';
+import 'package:airplane/widget/ThrustReversersInfoWidget.dart';
 import 'package:airplane/widget/ThrustReversersWidget.dart';
 import 'package:airplane/widget/VelocityWidget.dart';
 import 'package:flutter/material.dart';
@@ -122,19 +128,22 @@ class _MyHomePageState extends State<MyHomePage> {
                       Row(
                         children: [
                           FuelWidget(plane.getTankDevice()),
-                          HeightWidget(plane.height)
+                          HeightWidget(plane.height),
+                          BrakesInfoWidget(plane.brakes)
                         ],
                       ),
                       Row(
                         children: [
                           EngineWidget(plane.left, "LEWY"),
-                          EngineWidget(plane.right, "PRAWY")
+                          EngineWidget(plane.right, "PRAWY"),
+                          ThrustReversersInfoWidget(plane.thrustReversers)
                         ],
                       ),
                       Row(
                         children: [
                           VelocityWidget(plane.velocity.getVelocityHorizontal()),
-                          FlapsInfoWidget(plane.flaps)
+                          FlapsInfoWidget(plane.flaps),
+                          ChassisInfoWidget(plane.chassis)
                         ],
                       ),
                       Row(
@@ -144,14 +153,33 @@ class _MyHomePageState extends State<MyHomePage> {
                               plane.inclination.getRawVerticalInclinationAngle()),
                           AttitudeInfoValues(
                               plane.inclination.getHorizontalInclinationAngle(),
-                              plane.inclination.getVerticalInclinationAngle())
+                              plane.inclination.getVerticalInclinationAngle(),"L"),
+                          DistanceInfoWidget( plane.distance.getMetresFromStartingRunWay())
                         ],
                       ),
                       Row(
                         children: [
-                         DistanceInfoWidget( plane.distance.getMetresFromStartingRunWay())
+                          AttitudeInidactorWidget(
+                              plane.inclination.getRawHorizontalInclinationAngle(),
+                              plane.inclination.getRawVerticalInclinationAngle()),
+                          AttitudeInfoValues(
+                              plane.inclination.getHorizontalInclinationAngle(),
+                              plane.inclination.getVerticalInclinationAngle(),"S"),
+                          GyrocompassWidget()
                         ],
-                      )
+                      ),
+                      Row(
+                        children: [
+                          AttitudeInidactorWidget(
+                              plane.inclination.getRawHorizontalInclinationAngle(),
+                              plane.inclination.getRawVerticalInclinationAngle()),
+                          AttitudeInfoValues(
+                              plane.inclination.getHorizontalInclinationAngle(),
+                              plane.inclination.getVerticalInclinationAngle(),"P"),
+                          AutoPilotWidget()
+                        ],
+                      ),
+
                     ],
                   ),
                 ),
@@ -161,13 +189,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Row(
-                          children:[ RestrictorWidget(plane.restrictor),BrakesWidget(plane.brakes)]
+                          children:[ RestrictorWidget(plane.restrictor),ControlColumnWidget(plane.controlColumn)]
                       )
                      ,
                       Row(
-                        children: [ControlColumnWidget(plane.controlColumn),ThrustReversersWidget(plane.thrustReversers)],
+                        children: [BrakesWidget(plane.brakes),ThrustReversersWidget(plane.thrustReversers)],
                       ),
-                      FlapsWidget(plane.flaps)
+                      Row(
+                        children: [
+                          FlapsWidget(plane.flaps),ChassisWidget(plane.chassis)
+                        ],
+                      )
                     ],
                   ),
                 ),
