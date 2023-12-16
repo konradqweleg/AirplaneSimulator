@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:airplane/plane/ControlColumn.dart';
 import 'package:airplane/plane/Inclination.dart';
+import 'package:airplane/plane/ThrustReversers.dart';
 import 'package:airplane/plane/Warning.dart';
 
+import 'Brakes.dart';
 import 'Engine.dart';
 import 'Flaps.dart';
 import 'Height.dart';
@@ -17,6 +19,7 @@ class SimulateVelocity {
 
   static const bool _IS_LOG_ENABLED = false;
   static const double _FACTOR_METRES_HOUR_PER_SECONDS = 3.6;
+  static const double _NEARLY_ZERO_METRES = 0.001;
 
   void _log(String text) {
     if (_IS_LOG_ENABLED) {
@@ -168,16 +171,75 @@ class SimulateVelocity {
     return 1 + (mixedFactorHeightAndSpeed/10);
   }
 
+
+  double _calculateInfluenceOnVelocityWhenIfBrakesEnabledDuringSpeedUp(double velocityToAdded,Brakes brakes,Height height){
+    double NEARLY_ZERO_METRES = 0.001;
+    double INFLUENCE_ENABLED_BREAKS_ON_VELOCITY_IN_PERCENTAGE = 0.45;
+    if(brakes.isBrakesEnabled() && (height.getHeightPlaneAboveTheGroundInMetres() < NEARLY_ZERO_METRES)){
+      return velocityToAdded * INFLUENCE_ENABLED_BREAKS_ON_VELOCITY_IN_PERCENTAGE;
+    }else{
+      return velocityToAdded;
+    }
+  }
+
+  double _calculateInfluenceOnVelocityWhenIfBrakesEnabledDuringSlowDown(double velocityToAdded,Brakes brakes,Height height){
+
+    double INFLUENCE_ENABLED_BREAKS_ON_VELOCITY_IN_PERCENTAGE = 1.3;
+    if(brakes.isBrakesEnabled() && (height.getHeightPlaneAboveTheGroundInMetres() < _NEARLY_ZERO_METRES)){
+      return velocityToAdded * INFLUENCE_ENABLED_BREAKS_ON_VELOCITY_IN_PERCENTAGE;
+    }else{
+      return velocityToAdded;
+    }
+  }
+
+
+  void _setWarningWhenNoExpectedEnabledBrakes(double sumPositionRestrictor, Height height,Brakes brakes){
+    if( (sumPositionRestrictor > 0) && (height.getHeightPlaneAboveTheGroundInMetres() < _NEARLY_ZERO_METRES) && (brakes.isBrakesEnabled())) {
+      Warning.setBrakeNoExpectedEnabled();
+    }else{
+      Warning.clearBrakeNoExpectedEnabled();
+    }
+  }
+
+  void _setWarningWhenNoExpectedEnabledThrustReversers(double sumPositionRestrictor,ThrustReversers thrustReversers){
+    if( (sumPositionRestrictor > 0)  && (thrustReversers.isThrustReversersEnabled())) {
+      Warning.setThrustReversersNoExpectedEnabled();
+    }else{
+      Warning.clearThrustReversersNoExpectedEnabled();
+    }
+  }
+
+
+  double _calculateInfluenceOnVelocityWhenIfThrustReversedEnabledDuringSlowDownOnGround(double velocityToAdded,ThrustReversers thrustReversers,Height height){
+    double NEARLY_ZERO_METRES = 0.001;
+    double INFLUENCE_ENABLED_BREAKS_ON_VELOCITY_IN_PERCENTAGE = 1.4;
+    if(thrustReversers.isThrustReversersEnabled() && (height.getHeightPlaneAboveTheGroundInMetres() < NEARLY_ZERO_METRES)){
+      return velocityToAdded * INFLUENCE_ENABLED_BREAKS_ON_VELOCITY_IN_PERCENTAGE;
+    }else{
+      return velocityToAdded;
+    }
+  }
+
+  double _calculateInfluenceOnVelocityWhenIfThrustReversedEnabledDuringSpeedUpOnGround(double velocityToAdded,ThrustReversers thrustReversers,Height height){
+    double NEARLY_ZERO_METRES = 0.001;
+    if(thrustReversers.isThrustReversersEnabled() && (height.getHeightPlaneAboveTheGroundInMetres() < NEARLY_ZERO_METRES)){
+      return -(velocityToAdded );
+    }else{
+      return velocityToAdded;
+    }
+  }
+
   double _updateVelocity(
       double maxVelocityOnActualPositionRestrictor,
       double maxVelocityOnPointRestrictor,
       Inclination inclination,
       double sumPositionRestrictors,
       double actualVelocity,
-      Flaps flaps,Height height) {
+      Flaps flaps,Height height,Brakes brakes,ThrustReversers thrustReversers) {
     _log("Aktualna prędkosc ${actualVelocity} przed zmianą");
 
-
+    _setWarningWhenNoExpectedEnabledBrakes(sumPositionRestrictors,height,brakes);
+    _setWarningWhenNoExpectedEnabledThrustReversers(sumPositionRestrictors,thrustReversers);
 
     //If speed is lower then limit for actual restrictor position speed up
     if (actualVelocity < maxVelocityOnActualPositionRestrictor) {
@@ -192,11 +254,17 @@ class SimulateVelocity {
 
       double factorToClapsPosition = _calculateInfluenceClapsOnVelocitySpeedUp(flaps);
 
-      double newVelocity = actualVelocity +
-          ( ((maxVelocityOnPointRestrictor *
-                  (sumPositionRestrictors) *
-                  factorIncreaseVelocityBaseOnControlColumn) *
-              factorToClapsPosition)/factorResistanceBasedOnSpeedAndHeight);
+      double velocityToAdded =   ( ((maxVelocityOnPointRestrictor *
+          (sumPositionRestrictors) *
+          factorIncreaseVelocityBaseOnControlColumn) *
+          factorToClapsPosition)/factorResistanceBasedOnSpeedAndHeight);
+
+      velocityToAdded = _calculateInfluenceOnVelocityWhenIfBrakesEnabledDuringSpeedUp(velocityToAdded,brakes,height);
+      velocityToAdded = _calculateInfluenceOnVelocityWhenIfThrustReversedEnabledDuringSpeedUpOnGround(velocityToAdded,thrustReversers,height);
+      double newVelocity = actualVelocity + velocityToAdded;
+
+
+
 
 
       print("Zmiana + ${( ((maxVelocityOnPointRestrictor *
@@ -204,6 +272,7 @@ class SimulateVelocity {
           factorIncreaseVelocityBaseOnControlColumn) *
           factorToClapsPosition)/factorResistanceBasedOnSpeedAndHeight)}");
       _log("Powiększona prędkość ${newVelocity}");
+      newVelocity = _ifVelocityLowerThenZeroSetVelocityToZero(newVelocity);
       return newVelocity;
     } else {
       //If speed is more then max for actual restrictor position slow down
@@ -216,11 +285,18 @@ class SimulateVelocity {
       double factorToClapsPosition = _calculateInfluenceClapsOnVelocitySlowDown(flaps);
 
       if (diffrenceBetweenVelocityAndMaxVelocityOnPositionRestrictors > 0) {
-        double newVelocity = actualVelocity -
-            ((((diffrenceBetweenVelocityAndMaxVelocityOnPositionRestrictors /
-                        75) +
-                    1.0) *
-                factorToClapsPosition)*(factorResistanceBasedOnSpeedAndHeight));
+
+
+
+        double velocityToMinus =   ((((diffrenceBetweenVelocityAndMaxVelocityOnPositionRestrictors /
+            75) +
+            1.0) *
+            factorToClapsPosition)*(factorResistanceBasedOnSpeedAndHeight));
+
+        velocityToMinus = _calculateInfluenceOnVelocityWhenIfBrakesEnabledDuringSlowDown(velocityToMinus,brakes,height);
+        velocityToMinus = _calculateInfluenceOnVelocityWhenIfThrustReversedEnabledDuringSlowDownOnGround(velocityToMinus,thrustReversers,height);
+        double newVelocity = actualVelocity - velocityToMinus;
+
 
         print("Zmiana - ${ ((((diffrenceBetweenVelocityAndMaxVelocityOnPositionRestrictors /
             75) +
@@ -228,6 +304,7 @@ class SimulateVelocity {
             factorToClapsPosition)*(factorResistanceBasedOnSpeedAndHeight))}");
 
         newVelocity = _ifVelocityLowerThenZeroSetVelocityToZero(newVelocity);
+
         return newVelocity;
       } else {
         return actualVelocity;
@@ -253,7 +330,7 @@ class SimulateVelocity {
       Height height,
       Velocity actualVelocity,
       Inclination inclination,
-      Flaps flaps) {
+      Flaps flaps,Brakes brakes,ThrustReversers thrustReversers) {
     _analiseWarningClapPosition(flaps, restrictor, height);
 
     double maxSpeedOnActualPositionRestrictor =
@@ -271,7 +348,7 @@ class SimulateVelocity {
           inclination,
           restrictor.getSumPositionRestrictor(),
           actualVelocity.getVelocityHorizontal(),
-          flaps,height
+          flaps,height,brakes,thrustReversers
         )
     );
 

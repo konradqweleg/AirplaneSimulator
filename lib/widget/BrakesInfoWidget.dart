@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import '../plane/Brakes.dart';
+import '../plane/Warning.dart';
 
 class BrakesInfoWidget extends StatelessWidget {
   BrakesInfoWidget(this._brakes, {super.key});
@@ -16,7 +17,7 @@ class BrakesInfoWidget extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(
           width: 1,
-          color:  Colors.grey,
+          color:  Warning.isBrakeNoExpectedEnabled() ? Colors.red : Colors.grey,
         ),
       ),
       padding: const EdgeInsets.all(5.0),
@@ -35,15 +36,15 @@ class BrakesInfoWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Włączone"),
+                    Text("Status"),
                     Text("${_brakes.isBrakesEnabled()?  "Włączone" : "Wyłączone"}°")
                   ],
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Status"),
-                    Text("OK")
+                     Text(Warning.isBrakeNoExpectedEnabled() ? "\u26A0":""),
+                    Text(Warning.isBrakeNoExpectedEnabled() ? "Hamulce włączone, ciąg też" : "OK")
                   ],
                 )
               ],

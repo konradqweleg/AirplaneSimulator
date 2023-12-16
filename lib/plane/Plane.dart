@@ -49,7 +49,7 @@ class Boeing_737_800{
     left.setThrustInNewton(restrictor.getLeftPositionRestrictor());
     right.setThrustInNewton(restrictor.getRightPositionRestrictor());
 
-    velocity = simulateVelocity.getActualAcceleration([left,right],restrictor, height,velocity,inclination,flaps);
+    velocity = simulateVelocity.getActualAcceleration([left,right],restrictor, height,velocity,inclination,flaps,brakes,thrustReversers);
     height.calculateHeight(velocity, inclination,flaps);
     double oldVelocity = velocity.getVelocityHorizontal();
     distance.updateDistance(((oldVelocity + velocity.getVelocityHorizontal())/2));

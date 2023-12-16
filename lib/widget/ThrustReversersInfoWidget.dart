@@ -2,6 +2,8 @@
 import 'package:airplane/plane/ThrustReversers.dart';
 import 'package:flutter/material.dart';
 
+import '../plane/Warning.dart';
+
 
 
 class ThrustReversersInfoWidget extends StatelessWidget {
@@ -17,7 +19,7 @@ class ThrustReversersInfoWidget extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(
           width: 1,
-          color:  Colors.grey,
+          color: Warning.isThrustReversersNoExpectedEnabled() ? Colors.red :  Colors.grey,
         ),
       ),
       padding: const EdgeInsets.all(5.0),
@@ -40,11 +42,11 @@ class ThrustReversersInfoWidget extends StatelessWidget {
                     Text("${_thrustReversers.isThrustReversersEnabled()?  "Włączone" : "Wyłączone"}°")
                   ],
                 ),
-                const Row(
+                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Status"),
-                    Text("OK")
+                    Text(Warning.isThrustReversersNoExpectedEnabled() ? "\u26A0":""),
+                    Text(Warning.isThrustReversersNoExpectedEnabled() ? "Odwraczacze włączone, ciag też" : "OK",style: const TextStyle(fontSize: 10),)
                   ],
                 )
               ],

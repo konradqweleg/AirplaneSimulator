@@ -3,6 +3,35 @@ class Warning{
   static bool _isLowLevelFuel = false;
   static bool _isLowHeight = false;
   static bool _isCloseStall = false;
+  static bool _isBrakeNoExpectedEnable = false;
+  static bool _isThrustReverserNoExpectedEnable = false;
+
+
+  static void setThrustReversersNoExpectedEnabled(){
+    _isThrustReverserNoExpectedEnable = true;
+  }
+
+  static void clearThrustReversersNoExpectedEnabled(){
+    _isThrustReverserNoExpectedEnable = false;
+  }
+
+  static bool isThrustReversersNoExpectedEnabled(){
+    return _isThrustReverserNoExpectedEnable;
+  }
+
+
+  static void setBrakeNoExpectedEnabled(){
+    _isBrakeNoExpectedEnable = true;
+  }
+
+  static void clearBrakeNoExpectedEnabled(){
+    _isBrakeNoExpectedEnable = false;
+  }
+
+  static bool isBrakeNoExpectedEnabled(){
+    return _isBrakeNoExpectedEnable;
+  }
+
 
   static void setBadClapError(){
     _isBadClapPosition = true;
