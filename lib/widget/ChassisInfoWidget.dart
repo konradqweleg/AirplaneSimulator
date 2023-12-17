@@ -1,5 +1,6 @@
 
 import 'package:airplane/plane/Chassis.dart';
+import 'package:airplane/plane/Warning.dart';
 import 'package:flutter/material.dart';
 
 
@@ -17,7 +18,7 @@ class ChassisInfoWidget extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(
           width: 1,
-          color:  Colors.grey,
+          color:  Warning.isUnnecessarilyExtendedChassisEnabled() ? Colors.red : Colors.grey,
         ),
       ),
       padding: const EdgeInsets.all(5.0),
@@ -36,15 +37,15 @@ class ChassisInfoWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Włączone"),
-                    Text("${_chassis.isEjectedChassis()?  "Schowane" : "Wysunięte"}°")
+                    Text("Status"),
+                    Text("${_chassis.isEjectedChassis()?  "Schowane" : "Wysunięte"}")
                   ],
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Status"),
-                    Text("OK")
+                    const Text(""),
+                    Text( Warning.isUnnecessarilyExtendedChassisEnabled()? "\u26A0 Podwozie wysunięte na dużej wysokośći" : "\u2713",style: const TextStyle(fontSize: 10),)
                   ],
                 )
               ],

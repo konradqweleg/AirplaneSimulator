@@ -43,7 +43,7 @@ class EngineWidget extends StatelessWidget{
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text("Status"), Text(_engine.getThrustInKNewton() > 0 ? "PRACUJE":"BIEG JAŁOWY")],
+                  children: [Text(""), Text(_engine.getThrustInKNewton() > 0 ? "\u2713":"BIEG JAŁOWY")],
                 ),
               ],
             ),

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import '../plane/Chassis.dart';
+import '../plane/Height.dart';
 
 class ChassisWidget extends StatefulWidget{
 
-  ChassisWidget(this._chassis ,{super.key});
+  ChassisWidget(this._chassis,this._height ,{super.key});
   Chassis _chassis;
+  Height _height;
 
 
   @override
@@ -17,6 +19,7 @@ class ChassisWidget extends StatefulWidget{
 class BrakesState extends State<ChassisWidget>{
 
   int _selectedOption = 1;
+  final double NEARLY_ZERO_METRES = 0.001;
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +58,10 @@ class BrakesState extends State<ChassisWidget>{
                       leading: Radio(
                         value: 1,
                         groupValue: _selectedOption,
-                        onChanged: (value) {
+                        onChanged: widget._height.getHeightPlaneAboveTheGroundInMetres() < NEARLY_ZERO_METRES ? null : (int? value) {
                           setState(() {
                             _selectedOption = value!;
-                            widget._chassis.hideChassis();
+                            widget._chassis.ejectChassis();
                           });
                         },
                       ),
@@ -68,10 +71,10 @@ class BrakesState extends State<ChassisWidget>{
                       leading: Radio(
                         value: 2,
                         groupValue: _selectedOption,
-                        onChanged: (value) {
+                        onChanged:widget._height.getHeightPlaneAboveTheGroundInMetres() < NEARLY_ZERO_METRES ? null : (int? value) {
                           setState(() {
                             _selectedOption = value!;
-                            widget._chassis.ejectChassis();
+                            widget._chassis.hideChassis();
                           });
                         },
                       ),

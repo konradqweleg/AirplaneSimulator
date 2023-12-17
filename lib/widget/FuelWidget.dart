@@ -45,7 +45,7 @@ class FuelWidget extends StatelessWidget{
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text("Status"),Text((Warning.isLowLevelFuel())? "NISKI POZIOM PALIWA":"OK")],
+                children: [Text(""),Text((Warning.isLowLevelFuel())? "\u26A0 Niski poziom paliwa":"\u2713")],
               )
             ],
           ),

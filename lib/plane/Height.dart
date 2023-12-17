@@ -226,14 +226,14 @@ class Height {
 
   bool first = false;
 
-  void _calculateWarningHeight(Velocity velocity) {
-    if (_metresPlaneAboveTheGround < 200.0 &&
-        velocity.getVelocityHorizontal() > 100.0) {
-      Warning.setLowHeightError();
-    } else {
-      Warning.clearLowHeightError();
-    }
-  }
+  // void _calculateWarningHeight(Velocity velocity) {
+  //   if (_metresPlaneAboveTheGround < 200.0 &&
+  //       velocity.getVelocityHorizontal() > 100.0) {
+  //     Warning.setLowHeightError();
+  //   } else {
+  //     Warning.clearLowHeightError();
+  //   }
+  // }
 
   void _correctHeightWhenIsMinus() {
     if (_metresPlaneAboveTheGround < 0) {
@@ -243,7 +243,7 @@ class Height {
 
   void calculateHeight(
       Velocity velocity, Inclination controlColumn, Flaps flaps) {
-    _calculateWarningHeight(velocity);
+  //  _calculateWarningHeight(velocity);
 
     if (_isNotV1Speed(velocity)) {
       _calculateIfPlaneCanStartingFly(velocity, controlColumn);

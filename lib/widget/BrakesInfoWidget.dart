@@ -44,7 +44,7 @@ class BrakesInfoWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                      Text(Warning.isBrakeNoExpectedEnabled() ? "\u26A0":""),
-                    Text(Warning.isBrakeNoExpectedEnabled() ? "Hamulce włączone, ciąg też" : "OK")
+                    Text(Warning.isBrakeNoExpectedEnabled() ? "Hamulce włączone, ciąg też" : "\u2713")
                   ],
                 )
               ],

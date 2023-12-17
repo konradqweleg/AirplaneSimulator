@@ -1,6 +1,6 @@
 class Chassis{
 
-  bool _isEnable = false;
+  bool _isEnable = true;
 
   void ejectChassis(){
     _isEnable = true;

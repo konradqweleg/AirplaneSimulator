@@ -42,8 +42,8 @@ class FlapsInfoWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Status"),
-                Text(Warning.isBadClapPosition() ? "ZŁA POZYCJA KLAP" : "OK")
+                Text(""),
+                Text(Warning.isBadClapPosition() ? "\u26A0 zła pozycja klap" : "\u2713")
               ],
             )
           ],

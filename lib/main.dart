@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:airplane/plane/Plane.dart';
+import 'package:airplane/plane/PositionPlane.dart';
 import 'package:airplane/widget/AtitudeInfoValuesWidget.dart';
 import 'package:airplane/widget/AttitudeIndicatorWidget.dart';
 import 'package:airplane/widget/AutoPilotWidget.dart';
@@ -73,12 +74,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void updateMapView() {
     setState(() {
-      if (plane.distance.getMetresFromStartingRunWay() < plane.positionPlane.endRunway) {
+      if (plane.distance.getMetresFromStartingRunWay() < PositionPlane.endRunway) {
         mapWidget = MapWidget(plane.distance.getMetresFromStartingRunWay());
-      } else if(plane.distance.getMetresFromStartingRunWay() < (plane.positionPlane.endRunway + plane.positionPlane.endFlightPosition)) {
+      } else if(plane.distance.getMetresFromStartingRunWay() < (PositionPlane.endRunway +PositionPlane.endFlightPosition)) {
         mapWidget = MapWidgetFly(plane.positionPlane);
       }else{
-        mapWidget = MapWidget(plane.distance.getMetresFromStartingRunWay() - (plane.positionPlane.endFlightPosition + plane.positionPlane.endRunway));
+        mapWidget = MapWidget(plane.distance.getMetresFromStartingRunWay() - (PositionPlane.endFlightPosition + PositionPlane.endRunway));
       }
       ;
     });
@@ -193,11 +194,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       )
                      ,
                       Row(
-                        children: [BrakesWidget(plane.brakes),ThrustReversersWidget(plane.thrustReversers)],
+                        children: [BrakesWidget(plane.brakes),ThrustReversersWidget(plane.thrustReversers,plane.height)],
                       ),
                       Row(
                         children: [
-                          FlapsWidget(plane.flaps),ChassisWidget(plane.chassis)
+                          FlapsWidget(plane.flaps),ChassisWidget(plane.chassis,plane.height)
                         ],
                       )
                     ],

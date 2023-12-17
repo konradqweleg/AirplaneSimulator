@@ -1,3 +1,4 @@
+import 'package:airplane/plane/Warning.dart';
 import 'package:airplane/recorder/FlightDataRecorder.dart';
 import 'package:airplane/simulation/AnaliseSituation.dart';
 import 'package:airplane/plane/ControlColumn.dart';
@@ -43,6 +44,11 @@ class Boeing_737_800{
   }
 
 
+  void _analiseWarning(){
+    Warning.analiseWarningUnnecessarilyExtendedChassis(height,chassis);
+    Warning.analiseWarningSpeedAboveThreshold(velocity.getVelocityHorizontal());
+    Warning.analiseWarningLowHeight(height, distance);
+  }
 
   void process(){
     _tank.useFuel(left.getFuelInGramConsumptionPerSecond() + right.getFuelInGramConsumptionPerSecond());
@@ -62,7 +68,7 @@ class Boeing_737_800{
 
 
 
-
+    _analiseWarning();
 
 
   }

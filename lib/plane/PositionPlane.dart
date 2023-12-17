@@ -6,9 +6,17 @@ class PositionPlane{
   double y = 0.0;
 
   double startAirportPosition = 0;
-  double endRunway = 3000;
-  double endFlightPosition = 497000;
+  static double endRunway = 3000;
+  static double endFlightPosition = 497000;
   double endYMetres = 500000; //600000
+
+  static double getEndRunwayDistanceInMetres(){
+    return endRunway;
+  }
+
+  static double getEndDistanceInMetres(){
+    return endFlightPosition;
+  }
 
   void updatePosition(Distance distance){
     position = distance.getMetresFromStartingRunWay();

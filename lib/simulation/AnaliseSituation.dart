@@ -19,16 +19,16 @@ class AnaliseSituation {
   }
 
   bool _isCorrectHeight(Height height, PositionPlane positionPlane) {
-    if (positionPlane.position < positionPlane.endRunway) {
+    if (positionPlane.position < PositionPlane.endRunway) {
       return true;
-    } else if (positionPlane.position > positionPlane.endRunway &&
+    } else if (positionPlane.position > PositionPlane.endRunway &&
         (positionPlane.position <
-            (positionPlane.endRunway + positionPlane.endFlightPosition))) {
+            (PositionPlane.endRunway + PositionPlane.endFlightPosition))) {
       if (height.getHeightPlaneAboveTheGroundInMetres() < 0.001) {
         return false;
       }
     } else if (positionPlane.position >
-        (positionPlane.endRunway + positionPlane.endFlightPosition)) {
+        (PositionPlane.endRunway + PositionPlane.endFlightPosition)) {
       return true;
     }
     return true;
@@ -39,15 +39,15 @@ class AnaliseSituation {
   }
 
   bool _isOutsideRunWayOnGround(Height height, PositionPlane positionPlane) {
-    if ((positionPlane.position > positionPlane.endRunway) &&
+    if ((positionPlane.position > PositionPlane.endRunway) &&
         (height.getHeightPlaneAboveTheGroundInMetres() < _NEARLY_ZERO_VALUE) &&
-        (positionPlane.position < (positionPlane.endRunway + _END_RUN_WAY_OFFSET))) {
+        (positionPlane.position < (PositionPlane.endRunway + _END_RUN_WAY_OFFSET))) {
       //Staring
       return true;
     } else if ((positionPlane.position >
-            (positionPlane.endRunway +
-                positionPlane.endFlightPosition +
-                positionPlane.endRunway)) &&
+            (PositionPlane.endRunway +
+                PositionPlane.endFlightPosition +
+                PositionPlane.endRunway)) &&
         (height.getHeightPlaneAboveTheGroundInMetres() < _NEARLY_ZERO_VALUE)) {
       //Landing
       return true;
@@ -59,7 +59,7 @@ class AnaliseSituation {
   bool _isLandingCorrectly(
       Velocity velocity, Height height, PositionPlane positionPlane) {
     if ((positionPlane.position >
-            (positionPlane.endRunway + positionPlane.endFlightPosition)) &&
+            (PositionPlane.endRunway + PositionPlane.endFlightPosition)) &&
         (height.getHeightPlaneAboveTheGroundInMetres() < _NEARLY_ZERO_VALUE) &&
         (velocity.getVelocityHorizontal() < _NEARLY_ZERO_VALUE)) {
       return true;

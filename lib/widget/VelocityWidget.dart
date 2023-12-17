@@ -15,7 +15,7 @@ class VelocityWidget extends StatelessWidget{
        decoration: BoxDecoration(
          border: Border.all(
            width: 1,
-           color: Warning.isCloseStall()? Colors.red: Colors.grey,
+           color: Warning.isCloseStall() || Warning.isSpeedAboveThreshold() ? Colors.red: Colors.grey,
          ),
 
        ),
@@ -45,8 +45,17 @@ class VelocityWidget extends StatelessWidget{
                  ),
                  Row(
                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                   children: [const Text("Status"), Text(Warning.isCloseStall()? "PRZECIĄGNIECIE": "OK")],
+                   children: [
+                     Text(Warning.isSpeedAboveThreshold()? "\u26A0 Prędkość ponad 1000km/h":""),
+                    
+                   ],
                  ),
+                 Row(
+                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                   children: [
+                     Text(Warning.isCloseStall()? "\u26A0 Przeciągnięcie": "")
+                   ],
+                 )
 
                ],
              ),

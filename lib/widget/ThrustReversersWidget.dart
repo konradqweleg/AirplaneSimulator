@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import '../plane/Brakes.dart';
+import '../plane/Height.dart';
 import '../plane/ThrustReversers.dart';
 
 class ThrustReversersWidget extends StatefulWidget{
 
-  ThrustReversersWidget(this._thrustReversers ,{super.key});
+  ThrustReversersWidget(this._thrustReversers,this._height ,{super.key});
   ThrustReversers _thrustReversers;
+  Height _height;
 
 
   @override
@@ -55,7 +56,7 @@ class ThrustReversersState extends State<ThrustReversersWidget>{
                       leading: Radio(
                         value: 1,
                         groupValue: _selectedOption,
-                        onChanged: (value) {
+                        onChanged:  (widget._height.getHeightPlaneAboveTheGroundInMetres() > 0.001) ? null :  (int? value) {
                           setState(() {
                             _selectedOption = value!;
                             widget._thrustReversers.disableThrustReversers();
@@ -68,7 +69,7 @@ class ThrustReversersState extends State<ThrustReversersWidget>{
                       leading: Radio(
                         value: 2,
                         groupValue: _selectedOption,
-                        onChanged: (value) {
+                        onChanged: (widget._height.getHeightPlaneAboveTheGroundInMetres() > 0.001) ? null :   (int? value) {
                           setState(() {
                             _selectedOption = value!;
                             widget._thrustReversers.enableThrustReversers();

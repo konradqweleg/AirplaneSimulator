@@ -46,7 +46,7 @@ class ThrustReversersInfoWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(Warning.isThrustReversersNoExpectedEnabled() ? "\u26A0":""),
-                    Text(Warning.isThrustReversersNoExpectedEnabled() ? "Odwraczacze włączone, ciag też" : "OK",style: const TextStyle(fontSize: 10),)
+                    Text(Warning.isThrustReversersNoExpectedEnabled() ? "Odwraczacze włączone, ciag też" : "\u2713",style: const TextStyle(fontSize: 12),)
                   ],
                 )
               ],

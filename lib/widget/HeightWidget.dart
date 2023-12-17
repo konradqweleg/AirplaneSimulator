@@ -25,7 +25,7 @@ class HeightWidgetState extends State<HeightWidget> {
       decoration: BoxDecoration(
         border: Border.all(
           width: 1,
-          color: Warning.isCloseStall() ? Colors.red : Colors.grey,
+          color: Warning.isLowHeight() ? Colors.red : Colors.grey,
         ),
       ),
       padding: const EdgeInsets.all(5.0),
@@ -53,7 +53,7 @@ class HeightWidgetState extends State<HeightWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Status"),
-                Text(Warning.isCloseStall() ? "NISKA WYSOKOŚĆ" : "OK")
+                Text(Warning.isLowHeight() ? "\u26A0 Niska Wysokość" : "\u2713")
               ],
             ),
           ],
