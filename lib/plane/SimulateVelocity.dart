@@ -87,7 +87,7 @@ class SimulateVelocity {
   }
 
   double _calculateMaxVelocityOnActualPositionRestrictor(Height height, Restrictor restrictor, List<Engine> engines,Inclination inclination) {
-     double maxVOnActualRestrictorPosition = (_getMaxAccelerationOnOnePointInRestrictor(height, restrictor, engines) * (restrictor.getSumPositionRestrictor()));
+     double maxVOnActualRestrictorPosition = (_getMaxAccelerationOnOnePointInRestrictor(height, restrictor, engines) * (engines[0].getThrustInNewton() + engines[1].getThrustInNewton()));
      double coefficientOfMaximumSpeedRelativeToTheAngleOfAttack = _getFactorMultiplyForVelocityViaControlColumn(inclination);
      double finalMaxVelocityOnPointRestrictor = maxVOnActualRestrictorPosition * coefficientOfMaximumSpeedRelativeToTheAngleOfAttack;
     return finalMaxVelocityOnPointRestrictor;
@@ -232,8 +232,10 @@ class SimulateVelocity {
       Inclination inclination,
       double sumPositionRestrictors,
       double actualVelocity,
-      Flaps flaps,Height height,Brakes brakes,ThrustReversers thrustReversers) {
+      Flaps flaps,Height height,Brakes brakes,ThrustReversers thrustReversers,List<Engine> engine) {
     _log("Aktualna prędkosc ${actualVelocity} przed zmianą");
+
+    sumPositionRestrictors =  engine[0].getThrustInNewton() + engine[1].getThrustInNewton();
 
     _setWarningWhenNoExpectedEnabledBrakes(sumPositionRestrictors,height,brakes);
     _setWarningWhenNoExpectedEnabledThrustReversers(sumPositionRestrictors,thrustReversers);
@@ -345,7 +347,7 @@ class SimulateVelocity {
           inclination,
           restrictor.getSumPositionRestrictor(),
           actualVelocity.getVelocityHorizontal(),
-          flaps,height,brakes,thrustReversers
+          flaps,height,brakes,thrustReversers,engines
         )
     );
 

@@ -38,7 +38,7 @@ class GyrocompassWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("Status"),
-                    Text("OK")
+                    Text("\u2713")
                   ],
                 )
               ],

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../plane/Engine.dart';
+import '../plane/Warning.dart';
 
 class EngineWidget extends StatelessWidget{
 
@@ -42,9 +43,16 @@ class EngineWidget extends StatelessWidget{
                   children: [Text("Moc"), Text("${_engine.getThrustInKNewton().toStringAsFixed(3)} KN")],
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text(""), Text(_engine.getThrustInKNewton() > 0 ? "\u2713":"BIEG JAŁOWY")],
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [ Text(_engine.getThrustInKNewton() > 0 ? "\u2713":"BIEG JAŁOWY")],
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text((Warning.isLeftEngineFailure() && _title=="LEWY")? "\u26A0 AWARIA" :"" ),
+                    Text((Warning.isRightEngineFailure() && _title=="PRAWY")? "\u26A0 AWARIA" :"" )
+                  ],
+                )
               ],
             ),
           )

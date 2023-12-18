@@ -51,9 +51,9 @@ class VelocityWidget extends StatelessWidget{
                    ],
                  ),
                  Row(
-                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                   mainAxisAlignment: MainAxisAlignment.end,
                    children: [
-                     Text(Warning.isCloseStall()? "\u26A0 Przeciągnięcie": "")
+                     Text(Warning.isCloseStall()? "\u26A0 Przeciągnięcie": "\u2713")
                    ],
                  )
 

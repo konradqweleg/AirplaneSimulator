@@ -16,7 +16,7 @@ class DistanceInfoWidget extends StatelessWidget{
       decoration:  BoxDecoration(
         border: Border.all(
           width: 1,
-          color: Warning.isBadClapPosition() ? Colors.red : Colors.grey,
+          color: Colors.grey,
         ),
 
       ),
@@ -39,7 +39,7 @@ class DistanceInfoWidget extends StatelessWidget{
                 ),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text("Status"),Text( "OK")],
+                  children: [Text(""),Text( "\u2713")],
                 )
               ],
             ),

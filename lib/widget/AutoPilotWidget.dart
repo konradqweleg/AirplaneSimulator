@@ -30,15 +30,15 @@ class AutoPilotWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Włączony?"),
+                    Text("Włączony"),
                     Text("NIE")
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Status"),
-                    Text("OK")
+                    Text(""),
+                    Text("\u2713")
                   ],
                 )
               ],

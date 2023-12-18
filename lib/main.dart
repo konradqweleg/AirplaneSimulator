@@ -150,33 +150,33 @@ class _MyHomePageState extends State<MyHomePage> {
                       Row(
                         children: [
                           AttitudeInidactorWidget(
-                              plane.inclination.getRawHorizontalInclinationAngle(),
-                              plane.inclination.getRawVerticalInclinationAngle()),
+                              plane.inclinationPilot.getRawHorizontalInclinationAngle(),
+                              plane.inclinationPilot.getRawVerticalInclinationAngle()),
                           AttitudeInfoValues(
-                              plane.inclination.getHorizontalInclinationAngle(),
-                              plane.inclination.getVerticalInclinationAngle(),"L"),
+                              plane.inclinationPilot.getHorizontalInclinationAngle(),
+                              plane.inclinationPilot.getVerticalInclinationAngle(),"L"),
                           DistanceInfoWidget( plane.distance.getMetresFromStartingRunWay())
                         ],
                       ),
                       Row(
                         children: [
                           AttitudeInidactorWidget(
-                              plane.inclination.getRawHorizontalInclinationAngle(),
-                              plane.inclination.getRawVerticalInclinationAngle()),
+                              plane.inclinationReference.getRawHorizontalInclinationAngle(),
+                              plane.inclinationReference.getRawVerticalInclinationAngle()),
                           AttitudeInfoValues(
-                              plane.inclination.getHorizontalInclinationAngle(),
-                              plane.inclination.getVerticalInclinationAngle(),"S"),
+                              plane.inclinationReference.getHorizontalInclinationAngle(),
+                              plane.inclinationReference.getVerticalInclinationAngle(),"S"),
                           GyrocompassWidget()
                         ],
                       ),
                       Row(
                         children: [
                           AttitudeInidactorWidget(
-                              plane.inclination.getRawHorizontalInclinationAngle(),
-                              plane.inclination.getRawVerticalInclinationAngle()),
+                              plane.inclinationSecondPilot.getRawHorizontalInclinationAngle(),
+                              plane.inclinationSecondPilot.getRawVerticalInclinationAngle()),
                           AttitudeInfoValues(
-                              plane.inclination.getHorizontalInclinationAngle(),
-                              plane.inclination.getVerticalInclinationAngle(),"P"),
+                              plane.inclinationSecondPilot.getHorizontalInclinationAngle(),
+                              plane.inclinationSecondPilot.getVerticalInclinationAngle(),"P"),
                           AutoPilotWidget()
                         ],
                       ),

@@ -18,9 +18,9 @@ import 'Tank.dart';
 import 'ThrustReversers.dart';
 
 class Boeing_737_800{
-  final Tank _tank = Tank(500000.0);
-  Engine left = Engine();
-  Engine right = Engine();
+  final Tank _tank = Tank(4500000.0);
+  Engine left = Engine("Lewy");
+  Engine right = Engine("Prawy");
   Restrictor restrictor = Restrictor();
   Height height = Height();
   Velocity velocity = Velocity();
@@ -30,7 +30,10 @@ class Boeing_737_800{
   AnaliseSituation analiseSituation = AnaliseSituation();
   Flaps flaps = Flaps();
   PositionPlane positionPlane = PositionPlane();
-  Inclination inclination = Inclination();
+  Inclination inclinationPilot = Inclination();
+  Inclination inclinationSecondPilot = Inclination();
+  Inclination inclinationReference = Inclination();
+  Inclination inclinationReality = Inclination();
   Brakes brakes = Brakes();
   ThrustReversers thrustReversers = ThrustReversers();
   Chassis chassis = Chassis();
@@ -48,6 +51,7 @@ class Boeing_737_800{
     Warning.analiseWarningUnnecessarilyExtendedChassis(height,chassis);
     Warning.analiseWarningSpeedAboveThreshold(velocity.getVelocityHorizontal());
     Warning.analiseWarningLowHeight(height, distance);
+    Warning.analiseWarningIsDifferentIndicators(inclinationReality, inclinationSecondPilot, inclinationReference);
   }
 
   void process(){
@@ -55,14 +59,18 @@ class Boeing_737_800{
     left.setThrustInNewton(restrictor.getLeftPositionRestrictor());
     right.setThrustInNewton(restrictor.getRightPositionRestrictor());
 
-    velocity = simulateVelocity.getActualAcceleration([left,right],restrictor, height,velocity,inclination,flaps,brakes,thrustReversers);
-    height.calculateHeight(velocity, inclination,flaps);
+    velocity = simulateVelocity.getActualAcceleration([left,right],restrictor, height,velocity,inclinationReality,flaps,brakes,thrustReversers);
+    height.calculateHeight(velocity, inclinationReality,flaps);
     double oldVelocity = velocity.getVelocityHorizontal();
     distance.updateDistance(((oldVelocity + velocity.getVelocityHorizontal())/2));
     analiseSituation.analiseActualPlaneSituation(velocity,height,positionPlane,flaps);
     positionPlane.updatePosition(distance);
-    inclination.simulate(controlColumn,height,velocity);
 
+    inclinationReality.simulate(controlColumn,height,velocity);
+
+    inclinationSecondPilot.simulateWithPossibilityFailure(0.000001,controlColumn,height,velocity);
+    inclinationReference.simulateWithPossibilityFailure(0.000001,controlColumn, height, velocity);
+    inclinationPilot.simulateWithPossibilityFailure(0.000001,controlColumn, height, velocity);
 
     FlightDataRecorder.saveLeftEngineStatus(left.getThrustInKNewton());
 

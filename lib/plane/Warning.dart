@@ -1,5 +1,6 @@
 import 'package:airplane/plane/Chassis.dart';
 import 'package:airplane/plane/Distance.dart';
+import 'package:airplane/plane/Inclination.dart';
 import 'package:airplane/plane/PositionPlane.dart';
 
 import 'Height.dart';
@@ -13,6 +14,62 @@ class Warning{
   static bool _isThrustReverserNoExpectedEnable = false;
   static bool _isUnnecessarilyExtendedChassis = false;
   static bool _isSpeedAboveThreshold = false;
+  static bool _isDifferentIndicators = false;
+
+  static bool _leftEngineFailure = false;
+  static bool _rightEngineFailure = false;
+
+
+  static void setLeftEngineFailureError(){
+    _leftEngineFailure = true;
+  }
+
+  static void clearLeftEngineFailureError(){
+    _leftEngineFailure = false;
+  }
+
+  static bool isLeftEngineFailure(){
+    return _leftEngineFailure;
+  }
+
+
+  static void setRightEngineFailureError(){
+    _rightEngineFailure = true;
+  }
+
+  static void clearRightEngineFailureError(){
+    _rightEngineFailure = false;
+  }
+
+  static bool isRightEngineFailure(){
+    return _rightEngineFailure;
+  }
+
+
+  static void clearIsDifferentIndicators(){
+    _isDifferentIndicators = false;
+  }
+  static void setIsDifferentIndicators(){
+    _isDifferentIndicators = true;
+  }
+
+  static bool isDifferentIndicators(){
+    return _isDifferentIndicators;
+  }
+
+  static void analiseWarningIsDifferentIndicators(Inclination firstPilot, Inclination secondPilot,Inclination reference){
+    if (firstPilot.getHorizontalInclinationAngle() == secondPilot.getHorizontalInclinationAngle()
+        && secondPilot.getHorizontalInclinationAngle() == reference.getHorizontalInclinationAngle()) {
+
+      clearIsDifferentIndicators();
+
+    } else {
+      setIsDifferentIndicators();
+    }
+
+  }
+
+
 
   static void analiseWarningSpeedAboveThreshold(double speedInKmh){
     const double SPEED_THRESHOLD_KMH = 1000;

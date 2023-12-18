@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:airplane/plane/ControlColumn.dart';
 import 'package:airplane/plane/Height.dart';
 import 'package:airplane/plane/Velocity.dart';
@@ -8,9 +10,32 @@ class Inclination{
   static const double NEARLY_ZERO_METRES = 0.001;
   static const double MAX_CHANGE_RAW_ANGLE_PER_SECONDS = 1.0;
   static const double NEARLY_ZERO_SPEED = 0.001;
+  double offsetWhenFailure = 0;
+
+  void simulateWithPossibilityFailure(double failureChancePercentage,ControlColumn controlColumn,Height height,Velocity velocity) {//from  0.000001% to 100% on each second
+    Random random = Random();
+    double randomNumber = random.nextDouble() * 100000000;
+
+    double threshold = 100000000 * failureChancePercentage;
+
+    if (randomNumber < threshold) {
+      offsetWhenFailure = random.nextDouble() * 4 - 2; //from -2 to 2
+      print("błąd ${offsetWhenFailure}");
+    } else {
+
+    }
+
+    simulate(controlColumn, height, velocity);
+  }
+
+
+
 
 
   void simulate(ControlColumn controlColumn,Height height,Velocity velocity){
+
+    _horizontalAngle += offsetWhenFailure;
+    _verticalAngle += offsetWhenFailure;
 
     if((height.getHeightPlaneAboveTheGroundInMetres() > NEARLY_ZERO_METRES) || velocity.getVelocityHorizontal() > Velocity.getSpeedV1InMetresPerSeconds()) {
       if ((controlColumn.getHorizontalAngle() > _horizontalAngle)) {
@@ -18,7 +43,7 @@ class Inclination{
           _horizontalAngle = 200;
         } else {
           _horizontalAngle =
-              _horizontalAngle + MAX_CHANGE_RAW_ANGLE_PER_SECONDS;
+              _horizontalAngle + MAX_CHANGE_RAW_ANGLE_PER_SECONDS + offsetWhenFailure;
         }
       }
 
@@ -27,7 +52,7 @@ class Inclination{
           _horizontalAngle = 0;
         } else {
           _horizontalAngle =
-              _horizontalAngle - MAX_CHANGE_RAW_ANGLE_PER_SECONDS;
+              _horizontalAngle - MAX_CHANGE_RAW_ANGLE_PER_SECONDS + offsetWhenFailure;
         }
       }
 

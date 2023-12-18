@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../plane/Warning.dart';
+
 class AttitudeInfoValues extends StatelessWidget {
   double _horizontal = 0.0;
   double _vertical = 0.0;
@@ -47,6 +49,12 @@ class AttitudeInfoValues extends StatelessWidget {
                 Text("${(_vertical).toStringAsFixed(3)}")
               ],
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(Warning.isDifferentIndicators() ? "\u26A0 Róźne wskazania" : "" )
+              ],
+            )
           ],
         ),
       )),
