@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:airplane/plane/Warning.dart';
+import 'package:airplane/warning/Warning.dart';
 import 'package:airplane/recorder/FlightDataRecorder.dart';
 
 class Engine {
@@ -24,7 +24,8 @@ class Engine {
 
 
   double getThrustFilteredByError(double actualThrust){
-    double failureChancePercentage = 0.000001;
+     double failureChancePercentage = 0.000001;
+    // double failureChancePercentage = 0.001;
     Random random = Random();
     double randomNumber = random.nextDouble() * 100000000;
 

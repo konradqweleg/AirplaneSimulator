@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:airplane/plane/ControlColumn.dart';
 import 'package:airplane/plane/FlapsPosition.dart';
 import 'package:airplane/plane/Inclination.dart';
-import 'package:airplane/plane/Warning.dart';
+import 'package:airplane/warning/Warning.dart';
 import 'Flaps.dart';
 import 'Velocity.dart';
 

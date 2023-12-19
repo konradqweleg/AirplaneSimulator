@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 import '../plane/Brakes.dart';
-import '../plane/Warning.dart';
+import '../warning/Warning.dart';
 
 class BrakesInfoWidget extends StatelessWidget {
   BrakesInfoWidget(this._brakes, {super.key});

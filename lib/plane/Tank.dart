@@ -1,4 +1,4 @@
-import 'Warning.dart';
+import '../warning/Warning.dart';
 
 class Tank{
   final double _MAX_FUEL_GRAMS = 18090000.0;
@@ -45,7 +45,13 @@ class Tank{
       Warning.clearErrorLowLevelFuel();
     }
 
-    __actualFuel = __actualFuel - useFuel;
+    if(__actualFuel - useFuel < 0){
+      __actualFuel = 0;
+    }else{
+      __actualFuel = __actualFuel - useFuel;
+    }
+
+
   }
 
 }

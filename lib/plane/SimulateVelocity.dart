@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:airplane/plane/Inclination.dart';
 import 'package:airplane/plane/ThrustReversers.dart';
-import 'package:airplane/plane/Warning.dart';
+import 'package:airplane/warning/Warning.dart';
 import 'Brakes.dart';
 import 'Engine.dart';
 import 'Flaps.dart';

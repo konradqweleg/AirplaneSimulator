@@ -1,4 +1,4 @@
-import 'package:airplane/plane/Warning.dart';
+import 'package:airplane/warning/Warning.dart';
 import 'package:flutter/material.dart';
 
 class VelocityWidget extends StatelessWidget{

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../plane/Engine.dart';
-import '../plane/Warning.dart';
+import '../warning/Warning.dart';
 
 class EngineWidget extends StatelessWidget{
 
@@ -19,7 +19,7 @@ class EngineWidget extends StatelessWidget{
       decoration:  BoxDecoration(
         border: Border.all(
           width: 1,
-          color:   Colors.grey,
+          color: ((Warning.isLeftEngineFailure() && _title=="LEWY") || (Warning.isRightEngineFailure() && _title=="PRAWY"))? Colors.red : Colors.grey,
         ),
 
       ),

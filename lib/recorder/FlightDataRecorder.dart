@@ -5,6 +5,7 @@ class FlightDataRecorder{
 
   static const String _basePathForStatusFiles = "C:\\Users\\Konrad\\StudioProjects\\AirplaneSimulator\\data";
   static const String _engineLeftNameFile = "engineLeft";
+  static const String _engineRightNameFile = "engineRight";
 
   static void deleteAllDatas(){
     _deleteFilesInDirectory(_basePathForStatusFiles);
@@ -30,6 +31,10 @@ class FlightDataRecorder{
 
   static void saveLeftEngineStatus(double value){
     _appendTextToCSVFile(_basePathForStatusFiles, _engineLeftNameFile,value.toString());
+  }
+
+  static void saveRightEngineStatus(double value){
+    _appendTextToCSVFile(_basePathForStatusFiles, _engineRightNameFile,value.toString());
   }
 
 }

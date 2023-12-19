@@ -1,4 +1,4 @@
-import 'package:airplane/plane/Warning.dart';
+import 'package:airplane/warning/Warning.dart';
 import 'package:airplane/recorder/FlightDataRecorder.dart';
 import 'package:airplane/simulation/AnaliseSituation.dart';
 import 'package:airplane/plane/ControlColumn.dart';
@@ -18,7 +18,7 @@ import 'Tank.dart';
 import 'ThrustReversers.dart';
 
 class Boeing_737_800{
-  final Tank _tank = Tank(4500000.0);
+  final Tank _tank = Tank(4900000.0);
   Engine left = Engine("Lewy");
   Engine right = Engine("Prawy");
   Restrictor restrictor = Restrictor();
@@ -73,6 +73,7 @@ class Boeing_737_800{
     inclinationPilot.simulateWithPossibilityFailure(0.000001,controlColumn, height, velocity);
 
     FlightDataRecorder.saveLeftEngineStatus(left.getThrustInKNewton());
+    FlightDataRecorder.saveRightEngineStatus(right.getThrustInNewton());
 
 
 

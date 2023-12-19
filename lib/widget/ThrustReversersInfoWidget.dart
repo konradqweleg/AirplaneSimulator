@@ -2,7 +2,7 @@
 import 'package:airplane/plane/ThrustReversers.dart';
 import 'package:flutter/material.dart';
 
-import '../plane/Warning.dart';
+import '../warning/Warning.dart';
 
 
 

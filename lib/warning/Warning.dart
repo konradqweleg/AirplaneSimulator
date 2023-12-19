@@ -3,7 +3,7 @@ import 'package:airplane/plane/Distance.dart';
 import 'package:airplane/plane/Inclination.dart';
 import 'package:airplane/plane/PositionPlane.dart';
 
-import 'Height.dart';
+import '../plane/Height.dart';
 
 class Warning{
   static bool _isBadClapPosition = false;

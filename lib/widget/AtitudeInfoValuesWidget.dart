@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../plane/Warning.dart';
+import '../warning/Warning.dart';
 
 class AttitudeInfoValues extends StatelessWidget {
   double _horizontal = 0.0;
