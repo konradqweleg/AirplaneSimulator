@@ -43,11 +43,13 @@ class FlightDataRecorder{
   }
 
   static void saveBrakesStatus(bool value){
-    _appendTextToCSVFile(_basePathForStatusFiles, _brakesFileName,value.toString());
+    int valuesAsInt = value ? 1 : 0;
+    _appendTextToCSVFile(_basePathForStatusFiles, _brakesFileName,valuesAsInt.toString());
   }
 
   static void saveChassisStatus(bool value){
-    _appendTextToCSVFile(_basePathForStatusFiles, _chassisFileName,value.toString());
+    int valuesAsInt = value ? 1 : 0;
+    _appendTextToCSVFile(_basePathForStatusFiles, _chassisFileName,valuesAsInt.toString());
   }
 
   static void saveControlColumnVerticalStatus(double value){
