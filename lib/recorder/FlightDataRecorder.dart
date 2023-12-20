@@ -6,6 +6,11 @@ class FlightDataRecorder{
   static const String _basePathForStatusFiles = "C:\\Users\\Konrad\\StudioProjects\\AirplaneSimulator\\data";
   static const String _engineLeftNameFile = "engineLeft";
   static const String _engineRightNameFile = "engineRight";
+  static const String _brakesFileName = "brakes";
+  static const String _chassisFileName = "chassis";
+  static const String _controlColumnVerticalFileName = "controlColumnVertical";
+  static const String _controlColumnHorizontalFileName = "controlColumnHorizontal";
+  static const String _flapsFileName = "flaps";
 
   static void deleteAllDatas(){
     _deleteFilesInDirectory(_basePathForStatusFiles);
@@ -35,6 +40,26 @@ class FlightDataRecorder{
 
   static void saveRightEngineStatus(double value){
     _appendTextToCSVFile(_basePathForStatusFiles, _engineRightNameFile,value.toString());
+  }
+
+  static void saveBrakesStatus(bool value){
+    _appendTextToCSVFile(_basePathForStatusFiles, _brakesFileName,value.toString());
+  }
+
+  static void saveChassisStatus(bool value){
+    _appendTextToCSVFile(_basePathForStatusFiles, _chassisFileName,value.toString());
+  }
+
+  static void saveControlColumnVerticalStatus(double value){
+    _appendTextToCSVFile(_basePathForStatusFiles, _controlColumnVerticalFileName,value.toString());
+  }
+
+  static void saveControlColumnHorizontalStatus(double value){
+    _appendTextToCSVFile(_basePathForStatusFiles, _controlColumnHorizontalFileName,value.toString());
+  }
+
+  static void saveFlapsStatus(int value){
+    _appendTextToCSVFile(_basePathForStatusFiles, _flapsFileName,value.toString());
   }
 
 }

@@ -74,6 +74,11 @@ class Boeing_737_800{
 
     FlightDataRecorder.saveLeftEngineStatus(left.getThrustInKNewton());
     FlightDataRecorder.saveRightEngineStatus(right.getThrustInNewton());
+    FlightDataRecorder.saveBrakesStatus(brakes.isBrakesEnabled());
+    FlightDataRecorder.saveChassisStatus(chassis.isEjectedChassis());
+    FlightDataRecorder.saveControlColumnHorizontalStatus(controlColumn.getHorizontalAngle());
+    FlightDataRecorder.saveControlColumnVerticalStatus(controlColumn.getVerticalAngle());
+    FlightDataRecorder.saveFlapsStatus(flaps.getCurrentFlapsPosition());
 
 
 
