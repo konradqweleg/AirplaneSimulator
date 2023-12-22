@@ -79,7 +79,30 @@ class Boeing_737_800{
     FlightDataRecorder.saveControlColumnHorizontalStatus(controlColumn.getHorizontalAngle());
     FlightDataRecorder.saveControlColumnVerticalStatus(controlColumn.getVerticalAngle());
     FlightDataRecorder.saveFlapsStatus(flaps.getCurrentFlapsPosition());
-
+    FlightDataRecorder.saveHeightStatus(height.getHeightPlaneAboveTheGroundInMetres());
+    FlightDataRecorder.saveInclinationHorizontalPilot(inclinationPilot.getHorizontalInclinationAngle());
+    FlightDataRecorder.saveInclinationVerticalPilot(inclinationPilot.getVerticalInclinationAngle());
+    FlightDataRecorder.saveInclinationHorizontalSecondPilot(inclinationSecondPilot.getHorizontalInclinationAngle());
+    FlightDataRecorder.saveInclinationVerticalSecondPilot(inclinationSecondPilot.getVerticalInclinationAngle());
+    FlightDataRecorder.saveInclinationHorizontalReference(inclinationReference.getHorizontalInclinationAngle());
+    FlightDataRecorder.saveInclinationVerticalReference(inclinationReference.getVerticalInclinationAngle());
+    FlightDataRecorder.saveLeftEngineStatus(left.getThrustInKNewton());
+    FlightDataRecorder.saveRightEngineStatus(right.getThrustInNewton());
+    FlightDataRecorder.saveFuel(_tank.getLevelFuelInGrams());
+    FlightDataRecorder.saveThrustReverser(thrustReversers.isThrustReversersEnabled());
+    FlightDataRecorder.saveVelocityVertical(velocity.getVelocityVertical());
+    FlightDataRecorder.saveVelocityHorizontal(velocity.getVelocityHorizontal());
+    FlightDataRecorder.saveWarningIsBadClapPosition(Warning.isBadClapPosition());
+    FlightDataRecorder.saveWarningIsLowLevelFuel(Warning.isLowLevelFuel());
+    FlightDataRecorder.saveWarningIsLowHeight(Warning.isLowHeight());
+    FlightDataRecorder.saveWarningIsCloseStall(Warning.isCloseStall());
+    FlightDataRecorder.saveWarningIsBrakeNoExpectedEnable(Warning.isBrakeNoExpectedEnabled());
+    FlightDataRecorder.saveWarningIsThrustReverserNoExpectedEnable(Warning.isThrustReversersNoExpectedEnabled());
+    FlightDataRecorder.saveWarningIsUnnecessarilyExtendedChassis(Warning.isUnnecessarilyExtendedChassisEnabled());
+    FlightDataRecorder.saveWarningIsSpeedAboveThreshold(Warning.isSpeedAboveThreshold());
+    FlightDataRecorder.saveWarningIsDifferentIndicators(Warning.isDifferentIndicators());
+    FlightDataRecorder.saveWarningLeftEngineFailure(Warning.isLeftEngineFailure());
+    FlightDataRecorder.saveWarningRightEngineFailure(Warning.isRightEngineFailure());
 
 
     _analiseWarning();

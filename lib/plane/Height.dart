@@ -200,7 +200,7 @@ class Height {
     double liftForce =
         (1 / 2) * cl * actualDensity * velocity.getVelocityHorizontal() * wingAreaM2;
 
-    double STALL_THRESHOOLD = 5000.0;
+    double STALL_THRESHOOLD = 4000.0;
     print("Clear cl ${cl}");
     print("CL ${liftForce}");
 

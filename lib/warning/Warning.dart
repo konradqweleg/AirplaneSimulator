@@ -15,7 +15,6 @@ class Warning{
   static bool _isUnnecessarilyExtendedChassis = false;
   static bool _isSpeedAboveThreshold = false;
   static bool _isDifferentIndicators = false;
-
   static bool _leftEngineFailure = false;
   static bool _rightEngineFailure = false;
 
