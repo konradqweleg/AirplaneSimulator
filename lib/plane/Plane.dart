@@ -18,7 +18,7 @@ import 'Tank.dart';
 import 'ThrustReversers.dart';
 
 class Boeing_737_800{
-  final Tank _tank = Tank(4900000.0);
+  final Tank _tank = Tank(8900000.0);
   Engine left = Engine("Lewy");
   Engine right = Engine("Prawy");
   Restrictor restrictor = Restrictor();
@@ -72,8 +72,7 @@ class Boeing_737_800{
     inclinationReference.simulateWithPossibilityFailure(0.000001,controlColumn, height, velocity);
     inclinationPilot.simulateWithPossibilityFailure(0.000001,controlColumn, height, velocity);
 
-    FlightDataRecorder.saveLeftEngineStatus(left.getThrustInKNewton());
-    FlightDataRecorder.saveRightEngineStatus(right.getThrustInNewton());
+
     FlightDataRecorder.saveBrakesStatus(brakes.isBrakesEnabled());
     FlightDataRecorder.saveChassisStatus(chassis.isEjectedChassis());
     FlightDataRecorder.saveControlColumnHorizontalStatus(controlColumn.getHorizontalAngle());
@@ -86,7 +85,7 @@ class Boeing_737_800{
     FlightDataRecorder.saveInclinationVerticalSecondPilot(inclinationSecondPilot.getVerticalInclinationAngle());
     FlightDataRecorder.saveInclinationHorizontalReference(inclinationReference.getHorizontalInclinationAngle());
     FlightDataRecorder.saveInclinationVerticalReference(inclinationReference.getVerticalInclinationAngle());
-    FlightDataRecorder.saveLeftEngineStatus(left.getThrustInKNewton());
+    FlightDataRecorder.saveLeftEngineStatus(left.getThrustInNewton());
     FlightDataRecorder.saveRightEngineStatus(right.getThrustInNewton());
     FlightDataRecorder.saveFuel(_tank.getLevelFuelInGrams());
     FlightDataRecorder.saveThrustReverser(thrustReversers.isThrustReversersEnabled());
@@ -103,7 +102,7 @@ class Boeing_737_800{
     FlightDataRecorder.saveWarningIsDifferentIndicators(Warning.isDifferentIndicators());
     FlightDataRecorder.saveWarningLeftEngineFailure(Warning.isLeftEngineFailure());
     FlightDataRecorder.saveWarningRightEngineFailure(Warning.isRightEngineFailure());
-
+    FlightDataRecorder.saveActualTime();
 
     _analiseWarning();
 

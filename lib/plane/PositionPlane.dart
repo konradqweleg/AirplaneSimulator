@@ -7,8 +7,8 @@ class PositionPlane{
 
   double startAirportPosition = 0;
   static double endRunway = 3000;
-  static double endFlightPosition = 497000;
-  double endYMetres = 500000; //600000
+  static double endFlightPosition = 17000;
+  double endYMetres =20000; //600000
 
   static double getEndRunwayDistanceInMetres(){
     return endRunway;

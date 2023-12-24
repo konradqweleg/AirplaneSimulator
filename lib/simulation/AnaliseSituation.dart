@@ -101,7 +101,7 @@ class AnaliseSituation {
   }
 
   bool _ifBadClapPositionOnStartAndLanding(Flaps flaps,Height height){
-    if( (height.getHeightPlaneAboveTheGroundInMetres()) > 0.001 &&  (height.getHeightPlaneAboveTheGroundInMetres() < 100)) {
+    if( (height.getHeightPlaneAboveTheGroundInMetres()) > 0.001 &&  (height.getHeightPlaneAboveTheGroundInMetres() < 0.05)) {
       if (flaps.getCurrentFlapsPosition() < 15) {
         return true;
       }

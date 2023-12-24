@@ -57,7 +57,7 @@ class FlightDataRecorder{
   static void _appendTextToCSVFile(String filePath, String nameFile, String textToAppend) {
     File file = File("$filePath\\$nameFile");
     RandomAccessFile rf = file.openSync(mode: FileMode.append);
-    rf.writeStringSync("$textToAppend,");
+    rf.writeStringSync("$textToAppend,\n");
     rf.closeSync();
   }
 
@@ -201,8 +201,11 @@ class FlightDataRecorder{
     _appendTextToCSVFile(_basePathForStatusFiles, _warningRightEngineFailureFileName,valuesAsInt.toString());
   }
 
+
+ static int _timeSeconds = 0;
   static void saveActualTime(){
-    int value = DateTime.now().millisecondsSinceEpoch;
+    _timeSeconds +=1;
+    int value = _timeSeconds;
     _appendTextToCSVFile(_basePathForStatusFiles, _actualTimeFileName,value.toString());
   }
 
