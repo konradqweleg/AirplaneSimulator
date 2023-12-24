@@ -265,11 +265,6 @@ class SimulateVelocity {
 
 
 
-
-      print("Zmiana + ${( ((maxVelocityOnPointRestrictor *
-          (sumPositionRestrictors) *
-          factorIncreaseVelocityBaseOnControlColumn) *
-          factorToClapsPosition)/factorResistanceBasedOnSpeedAndHeight)}");
       _log("Powiększona prędkość ${newVelocity}");
       newVelocity = _ifVelocityLowerThenZeroSetVelocityToZero(newVelocity);
       return newVelocity;
