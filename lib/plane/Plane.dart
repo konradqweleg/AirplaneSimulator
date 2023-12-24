@@ -18,7 +18,7 @@ import 'Tank.dart';
 import 'ThrustReversers.dart';
 
 class Boeing_737_800{
-  final Tank _tank = Tank(8900000.0);
+  final Tank _tank = Tank(9100000.0);
   Engine left = Engine("Lewy");
   Engine right = Engine("Prawy");
   Restrictor restrictor = Restrictor();
@@ -56,8 +56,15 @@ class Boeing_737_800{
 
   void process(){
     _tank.useFuel(left.getFuelInGramConsumptionPerSecond() + right.getFuelInGramConsumptionPerSecond());
-    left.setThrustInNewton(restrictor.getLeftPositionRestrictor());
-    right.setThrustInNewton(restrictor.getRightPositionRestrictor());
+    if(_tank.getLevelFuelInGrams() <= 0){
+      left.setThrustInNewton(0);
+      right.setThrustInNewton(0);
+    }else{
+      left.setThrustInNewton(restrictor.getLeftPositionRestrictor());
+      right.setThrustInNewton(restrictor.getRightPositionRestrictor());
+    }
+
+
 
     velocity = simulateVelocity.getActualAcceleration([left,right],restrictor, height,velocity,inclinationReality,flaps,brakes,thrustReversers);
     height.calculateHeight(velocity, inclinationReality,flaps);
